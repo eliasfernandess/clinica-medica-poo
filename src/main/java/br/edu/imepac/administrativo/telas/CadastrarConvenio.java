@@ -33,15 +33,15 @@ public class CadastrarConvenio extends javax.swing.JFrame {
         DataTerminoConv = new javax.swing.JFormattedTextField();
         DataInicioConv = new javax.swing.JFormattedTextField();
         StatusConv = new javax.swing.JCheckBox();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        NomeLabel = new javax.swing.JLabel();
+        LabelCodigo = new javax.swing.JLabel();
+        LabelDesc = new javax.swing.JLabel();
+        LabelDataInicio = new javax.swing.JLabel();
+        LabelDataTermino = new javax.swing.JLabel();
+        LabelStatus = new javax.swing.JLabel();
+        BotãoSalvar = new javax.swing.JButton();
+        BotãoLimpar = new javax.swing.JButton();
+        BotãoCancelar = new javax.swing.JButton();
         BotãoVoltar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -75,46 +75,46 @@ public class CadastrarConvenio extends javax.swing.JFrame {
         getContentPane().add(StatusConv);
         StatusConv.setBounds(46, 369, 160, 35);
 
-        jLabel1.setText("Nome do Convênio");
-        getContentPane().add(jLabel1);
-        jLabel1.setBounds(44, 62, 250, 16);
+        NomeLabel.setText("Nome do Convênio");
+        getContentPane().add(NomeLabel);
+        NomeLabel.setBounds(44, 62, 250, 16);
 
-        jLabel2.setText("Código co Convênio");
-        getContentPane().add(jLabel2);
-        jLabel2.setBounds(44, 134, 240, 16);
+        LabelCodigo.setText("Código co Convênio");
+        getContentPane().add(LabelCodigo);
+        LabelCodigo.setBounds(44, 134, 240, 16);
 
-        jLabel3.setText("Descrição");
-        getContentPane().add(jLabel3);
-        jLabel3.setBounds(44, 207, 260, 16);
+        LabelDesc.setText("Descrição");
+        getContentPane().add(LabelDesc);
+        LabelDesc.setBounds(44, 207, 260, 16);
 
-        jLabel4.setText("Data de Início");
-        getContentPane().add(jLabel4);
-        jLabel4.setBounds(46, 278, 110, 16);
+        LabelDataInicio.setText("Data de Início");
+        getContentPane().add(LabelDataInicio);
+        LabelDataInicio.setBounds(46, 278, 110, 16);
 
-        jLabel5.setText("Data de Término");
-        getContentPane().add(jLabel5);
-        jLabel5.setBounds(178, 278, 120, 16);
+        LabelDataTermino.setText("Data de Término");
+        getContentPane().add(LabelDataTermino);
+        LabelDataTermino.setBounds(178, 278, 120, 16);
 
-        jLabel6.setText("Status");
-        getContentPane().add(jLabel6);
-        jLabel6.setBounds(46, 351, 32, 16);
+        LabelStatus.setText("Status");
+        getContentPane().add(LabelStatus);
+        LabelStatus.setBounds(46, 351, 32, 16);
 
-        jButton1.setText("SALVAR");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        BotãoSalvar.setText("SALVAR");
+        BotãoSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                BotãoSalvarActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1);
-        jButton1.setBounds(48, 422, 118, 35);
+        getContentPane().add(BotãoSalvar);
+        BotãoSalvar.setBounds(48, 422, 118, 35);
 
-        jButton2.setText("LIMPAR");
-        getContentPane().add(jButton2);
-        jButton2.setBounds(184, 422, 120, 35);
+        BotãoLimpar.setText("LIMPAR");
+        getContentPane().add(BotãoLimpar);
+        BotãoLimpar.setBounds(184, 422, 120, 35);
 
-        jButton3.setText("CANCELAR");
-        getContentPane().add(jButton3);
-        jButton3.setBounds(48, 469, 256, 35);
+        BotãoCancelar.setText("CANCELAR");
+        getContentPane().add(BotãoCancelar);
+        BotãoCancelar.setBounds(48, 469, 256, 35);
 
         BotãoVoltar.setText("Voltar");
         BotãoVoltar.addActionListener(new java.awt.event.ActionListener() {
@@ -132,9 +132,9 @@ public class CadastrarConvenio extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_CampoNomeConvenioActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void BotãoSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotãoSalvarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_BotãoSalvarActionPerformed
 
     private void BotãoVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotãoVoltarActionPerformed
         // TODO add your handling code here:
@@ -179,21 +179,21 @@ public class CadastrarConvenio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BotãoCancelar;
+    private javax.swing.JButton BotãoLimpar;
+    private javax.swing.JButton BotãoSalvar;
     private javax.swing.JButton BotãoVoltar;
     private javax.swing.JTextField CampoCodigoConvenio;
     private javax.swing.JTextField CampoDescricao;
     private javax.swing.JTextField CampoNomeConvenio;
     private javax.swing.JFormattedTextField DataInicioConv;
     private javax.swing.JFormattedTextField DataTerminoConv;
+    private javax.swing.JLabel LabelCodigo;
+    private javax.swing.JLabel LabelDataInicio;
+    private javax.swing.JLabel LabelDataTermino;
+    private javax.swing.JLabel LabelDesc;
+    private javax.swing.JLabel LabelStatus;
+    private javax.swing.JLabel NomeLabel;
     private javax.swing.JCheckBox StatusConv;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     // End of variables declaration//GEN-END:variables
 }
