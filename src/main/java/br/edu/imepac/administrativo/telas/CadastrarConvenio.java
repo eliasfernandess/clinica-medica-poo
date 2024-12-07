@@ -4,6 +4,8 @@
  */
 package br.edu.imepac.administrativo.telas;
 
+import java.sql.Connection;
+
 /**
  *
  * @author elias
@@ -16,6 +18,10 @@ public class CadastrarConvenio extends javax.swing.JFrame {
     public CadastrarConvenio() {
         initComponents();
         setLocationRelativeTo(null);
+    }
+
+    CadastrarConvenio(Connection conn) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     /**
