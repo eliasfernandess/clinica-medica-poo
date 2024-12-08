@@ -107,6 +107,8 @@ public class ListagemConvenio extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+
+    
     private void BttEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BttEditarActionPerformed
         // TODO add your handling code here:
      int selectedRow = TabelaListConv.getSelectedRow(); 

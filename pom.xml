@@ -39,6 +39,7 @@
       <artifactId>junit-jupiter-params</artifactId>
       <scope>test</scope>
     </dependency>
+    
     <!-- MySQL Connector -->
     <dependency>
       <groupId>com.mysql</groupId>

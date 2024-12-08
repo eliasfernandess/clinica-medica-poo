@@ -4,7 +4,13 @@
  */
 package br.edu.imepac.administrativo.telas;
 
+import br.edu.imepac.administrativo.entidades.Convenio;
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.text.ParseException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -14,8 +20,11 @@ public class CadastrarConvenio extends javax.swing.JFrame {
 
     /**
      * Creates new form CadastrarConvenio
+     * @throws java.text.ParseException
      */
-    public CadastrarConvenio() {
+
+    public CadastrarConvenio() throws ParseException {
+
         initComponents();
         setLocationRelativeTo(null);
     }
@@ -72,7 +81,12 @@ public class CadastrarConvenio extends javax.swing.JFrame {
         getContentPane().add(DataTerminoConv);
         DataTerminoConv.setBounds(178, 300, 120, 33);
 
-        DataInicioConv.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+        DataInicioConv.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("y 'de' MMM 'de' d"))));
+        DataInicioConv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DataInicioConvActionPerformed(evt);
+            }
+        });
         getContentPane().add(DataInicioConv);
         DataInicioConv.setBounds(46, 300, 110, 33);
 
@@ -139,7 +153,68 @@ public class CadastrarConvenio extends javax.swing.JFrame {
     }//GEN-LAST:event_CampoNomeConvenioActionPerformed
 
     private void BotãoSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotãoSalvarActionPerformed
-        // TODO add your handling code here:
+    
+    try {
+        // Verificar se todos os campos obrigatórios foram preenchidos
+        if (CampoNomeConvenio.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "O campo 'Nome do Convênio' é obrigatório!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (CampoCodigoConvenio.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "O campo 'Código do Convênio' é obrigatório!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (CampoDescricao.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "O campo 'Descrição' é obrigatório!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+
+
+        // Criar o objeto Convenio
+        Convenio convenio = new Convenio();
+        convenio.setNomeConvenio(CampoNomeConvenio.getText());
+        convenio.setCodigoConvenio(Integer.parseInt(CampoCodigoConvenio.getText()));
+        convenio.setDescricao(CampoDescricao.getText());
+        convenio.setDataInicio(java.sql.Date.valueOf(DataInicioConv.getText()));
+        convenio.setDataFim(java.sql.Date.valueOf(DataTerminoConv.getText()));
+        convenio.setStatus(StatusConv.isSelected());
+
+        // Configurações do banco de dados
+        String url = "jdbc:mysql://localhost:3306/gerenciar_convenios"; // Substitua pelo nome do seu banco
+        String user = "root"; // Substitua pelo seu usuário do MySQL
+        String password = "elias"; // Substitua pela sua senha do MySQL
+
+        // Conexão e inserção no banco
+        String sql = "INSERT INTO convenio (nomeconvenio, codigoconvenio, descricao, datainicio, datatermino, status) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            // Preenchendo os valores no PreparedStatement
+            stmt.setString(1, convenio.getNomeConvenio());
+            stmt.setInt(2, convenio.getCodigoConvenio());
+            stmt.setString(3, convenio.getDescricao());
+            stmt.setDate(4, new java.sql.Date(convenio.getDataInicio().getTime()));
+            stmt.setDate(5, new java.sql.Date(convenio.getDataFim().getTime()));
+            stmt.setBoolean(6, convenio.isStatus());
+
+            // Executa a inserção
+            stmt.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Convênio salvo com sucesso!");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao salvar no banco de dados: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Erro: Código do convênio deve ser um número.", "Erro", JOptionPane.ERROR_MESSAGE);
+    } catch (IllegalArgumentException e) {
+        JOptionPane.showMessageDialog(this, "Erro: Certifique-se de que as datas estão no formato correto (yyyy-MM-dd).", "Erro", JOptionPane.ERROR_MESSAGE);
+    }
+
+    
     }//GEN-LAST:event_BotãoSalvarActionPerformed
 
     private void BotãoVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotãoVoltarActionPerformed
@@ -148,6 +223,10 @@ public class CadastrarConvenio extends javax.swing.JFrame {
         telaLobby.setVisible(true); // Exibe a nova tela
         this.dispose(); // Fecha a tela atual (TelaLogin)
     }//GEN-LAST:event_BotãoVoltarActionPerformed
+
+    private void DataInicioConvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DataInicioConvActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DataInicioConvActionPerformed
 
     /**
      * @param args the command line arguments
@@ -177,10 +256,8 @@ public class CadastrarConvenio extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CadastrarConvenio().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new CadastrarConvenio().setVisible(true);
         });
     }
 
@@ -202,4 +279,8 @@ public class CadastrarConvenio extends javax.swing.JFrame {
     private javax.swing.JLabel NomeLabel;
     private javax.swing.JCheckBox StatusConv;
     // End of variables declaration//GEN-END:variables
+
+
+
 }
+
