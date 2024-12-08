@@ -169,10 +169,8 @@ public class TelaLobby extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TelaLobby().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new TelaLobby().setVisible(true);
         });
     }
 

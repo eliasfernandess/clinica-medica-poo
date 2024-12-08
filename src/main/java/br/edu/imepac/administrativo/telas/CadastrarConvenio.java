@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.text.ParseException;
 import javax.swing.JOptionPane;
 
 /**
@@ -20,11 +19,8 @@ public class CadastrarConvenio extends javax.swing.JFrame {
 
     /**
      * Creates new form CadastrarConvenio
-     * @throws java.text.ParseException
      */
-
-    public CadastrarConvenio() throws ParseException {
-
+    public CadastrarConvenio() {
         initComponents();
         setLocationRelativeTo(null);
     }
@@ -77,11 +73,19 @@ public class CadastrarConvenio extends javax.swing.JFrame {
         getContentPane().add(CampoDescricao);
         CampoDescricao.setBounds(44, 227, 260, 33);
 
-        DataTerminoConv.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+        try {
+            DataTerminoConv.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-##-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
         getContentPane().add(DataTerminoConv);
         DataTerminoConv.setBounds(178, 300, 120, 33);
 
-        DataInicioConv.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("y 'de' MMM 'de' d"))));
+        try {
+            DataInicioConv.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-##-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
         DataInicioConv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DataInicioConvActionPerformed(evt);
