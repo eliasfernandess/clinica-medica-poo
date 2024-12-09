@@ -4,7 +4,14 @@
  */
 package br.edu.imepac.administrativo.telas;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -16,9 +23,11 @@ public class ListagemConvenio extends javax.swing.JFrame {
      * Creates new form ListagemConvenio
      */
     public ListagemConvenio() {
-        initComponents();
-        setLocationRelativeTo(null);
-    }
+    initComponents();
+    setLocationRelativeTo(null);
+    carregarDados(); // Carrega os dados no início
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -37,27 +46,24 @@ public class ListagemConvenio extends javax.swing.JFrame {
         VoltarListConv = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(522, 700));
-        setPreferredSize(new java.awt.Dimension(522, 700));
+        setMaximumSize(new java.awt.Dimension(779, 700));
+        setPreferredSize(new java.awt.Dimension(779, 700));
         setResizable(false);
         getContentPane().setLayout(null);
 
         TabelaListConv.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "Convênio", "Status", "Data Cadastro"
+                "Nome Convenio", "Código convenio", "Descrição", "Data Ínicio", "Data Termino", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Boolean.class, java.lang.Object.class
+                java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -71,7 +77,7 @@ public class ListagemConvenio extends javax.swing.JFrame {
         jScrollPane1.setViewportView(TabelaListConv);
 
         getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(52, 114, 415, 402);
+        jScrollPane1.setBounds(52, 114, 670, 402);
 
         BttEditar.setText("EDITAR");
         BttEditar.addActionListener(new java.awt.event.ActionListener() {
@@ -80,7 +86,7 @@ public class ListagemConvenio extends javax.swing.JFrame {
             }
         });
         getContentPane().add(BttEditar);
-        BttEditar.setBounds(52, 559, 135, 45);
+        BttEditar.setBounds(50, 540, 135, 45);
 
         BttSalvar.setText("SALVAR");
         BttSalvar.addActionListener(new java.awt.event.ActionListener() {
@@ -89,11 +95,16 @@ public class ListagemConvenio extends javax.swing.JFrame {
             }
         });
         getContentPane().add(BttSalvar);
-        BttSalvar.setBounds(193, 559, 133, 45);
+        BttSalvar.setBounds(190, 540, 133, 45);
 
         BttExcluir.setText("EXCLUIR");
+        BttExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BttExcluirActionPerformed(evt);
+            }
+        });
         getContentPane().add(BttExcluir);
-        BttExcluir.setBounds(332, 559, 135, 46);
+        BttExcluir.setBounds(330, 540, 135, 46);
 
         VoltarListConv.setText("Voltar");
         VoltarListConv.addActionListener(new java.awt.event.ActionListener() {
@@ -106,22 +117,58 @@ public class ListagemConvenio extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+ 
+private void carregarDados() {
+    String url = "jdbc:mysql://localhost:3306/gerenciar_convenios";
+    String user = "root";
+    String password = "elias";
 
+    String[] colunas = {"Nome Convenio", "Código convenio", "Descrição", "Data Ínicio", "Data Termino", "Status"};
+    DefaultTableModel tableModel = new DefaultTableModel(colunas, 0);
+
+    String sql = "SELECT nomeconvenio, codigoconvenio, descricao, datainicio, datatermino, status FROM convenio";
+
+    try (Connection connection = DriverManager.getConnection(url, user, password);
+         Statement statement = connection.createStatement();
+         ResultSet resultSet = statement.executeQuery(sql)) {
+
+        while (resultSet.next()) {
+            Object[] linha = {
+                resultSet.getString("nomeconvenio"),
+                resultSet.getInt("codigoconvenio"),
+                resultSet.getString("descricao"),
+                resultSet.getDate("datainicio"),
+                resultSet.getDate("datatermino"),
+                resultSet.getBoolean("status")
+            };
+            tableModel.addRow(linha);
+        }
+
+        TabelaListConv.setModel(tableModel);
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Erro ao carregar os dados: " + e.getMessage(),
+                "Erro", JOptionPane.ERROR_MESSAGE);
+    }
+}
 
     
     private void BttEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BttEditarActionPerformed
-        // TODO add your handling code here:
-     int selectedRow = TabelaListConv.getSelectedRow(); 
+     // Obter a linha selecionada
+    int selectedRow = TabelaListConv.getSelectedRow();
 
     if (selectedRow != -1) { // Verifica se uma linha foi selecionada
-        // Permite edição diretamente nas células da linha selecionada
-        TabelaListConv.editCellAt(selectedRow, 0); // Permite edição na coluna "Convênio"
-        TabelaListConv.editCellAt(selectedRow, 1); // Permite edição na coluna "Status"
-        TabelaListConv.editCellAt(selectedRow, 2); // Permite edição na coluna "Data Cadastro"
+        // Permite edição diretamente na linha selecionada
+        TabelaListConv.editCellAt(selectedRow, 0);
+        TabelaListConv.editCellAt(selectedRow, 1);
+        TabelaListConv.editCellAt(selectedRow, 2);
+        TabelaListConv.editCellAt(selectedRow, 3);
+        TabelaListConv.editCellAt(selectedRow, 4);
+        TabelaListConv.editCellAt(selectedRow, 5);
+
+        JOptionPane.showMessageDialog(this, "Você pode editar diretamente na tabela. Clique em SALVAR para confirmar as alterações.");
     } else {
-        // Exibe uma mensagem de aviso caso nenhuma linha tenha sido selecionada
-        JOptionPane.showMessageDialog(this, "Selecione uma linha para editar!", "Aviso", JOptionPane.WARNING_MESSAGE);
-    }
+        JOptionPane.showMessageDialog(this, "Selecione uma linha para editar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_BttEditarActionPerformed
 
     private void VoltarListConvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VoltarListConvActionPerformed
@@ -132,26 +179,112 @@ public class ListagemConvenio extends javax.swing.JFrame {
     }//GEN-LAST:event_VoltarListConvActionPerformed
 
     private void BttSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BttSalvarActionPerformed
-        // TODO add your handling code here:
-    int selectedRow = TabelaListConv.getSelectedRow(); // Obtém a linha selecionada
+ // Obter a linha selecionada
+    int selectedRow = TabelaListConv.getSelectedRow(); 
 
-    if (selectedRow != -1) {
-        // Pega os valores editados da tabela
-        String convenio = TabelaListConv.getValueAt(selectedRow, 0).toString();
-        String status = TabelaListConv.getValueAt(selectedRow, 1).toString();
-        String dataCadastro = TabelaListConv.getValueAt(selectedRow, 2).toString();
+    if (selectedRow != -1) { // Verifica se uma linha foi selecionada
+    // Obter a linha selecionada
 
-        // Salva as alterações (lógica personalizada)
-        System.out.println("Alterações Salvas:");
-        System.out.println("Convênio: " + convenio);
-        System.out.println("Status: " + status);
-        System.out.println("Data Cadastro: " + dataCadastro);
-        
-        JOptionPane.showMessageDialog(null, "Alterações salvas com sucesso!");
+    if (selectedRow != -1) { // Verifica se uma linha foi selecionada
+        try {
+            // Obter os valores da linha selecionada
+            String nomeConvenio = TabelaListConv.getValueAt(selectedRow, 0).toString();
+            int codigoConvenio = Integer.parseInt(TabelaListConv.getValueAt(selectedRow, 1).toString());
+            String descricao = TabelaListConv.getValueAt(selectedRow, 2).toString();
+            String dataInicio = TabelaListConv.getValueAt(selectedRow, 3).toString();
+            String dataTermino = TabelaListConv.getValueAt(selectedRow, 4).toString();
+            boolean status = Boolean.parseBoolean(TabelaListConv.getValueAt(selectedRow, 5).toString());
+
+            // Configuração do banco de dados
+            String url = "jdbc:mysql://localhost:3306/gerenciar_convenios";
+            String user = "root";
+            String password = "elias";
+
+            // SQL para atualizar o registro no banco
+            String sql = "UPDATE convenio SET nomeconvenio = ?, descricao = ?, datainicio = ?, datatermino = ?, status = ? WHERE codigoconvenio = ?";
+
+            try (Connection connection = DriverManager.getConnection(url, user, password);
+                 PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+                // Configurar os parâmetros no PreparedStatement
+                stmt.setString(1, nomeConvenio);
+                stmt.setString(2, descricao);
+                stmt.setString(3, dataInicio);
+                stmt.setString(4, dataTermino);
+                stmt.setBoolean(5, status);
+                stmt.setInt(6, codigoConvenio);
+
+                // Executar a atualização
+                int rowsAffected = stmt.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    JOptionPane.showMessageDialog(this, "Registro atualizado com sucesso!");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Nenhuma alteração foi feita.");
+                }
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao atualizar o banco de dados: " + e.getMessage(),
+                                          "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao processar os dados: " + e.getMessage(),
+                                          "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     } else {
-        JOptionPane.showMessageDialog(null, "Nenhuma linha foi selecionada!");
-    }
+        JOptionPane.showMessageDialog(this, "Selecione uma linha para salvar as alterações.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_BttSalvarActionPerformed
+
+    private void BttExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BttExcluirActionPerformed
+        // TODO add your handling code here:
+            int selectedRow = TabelaListConv.getSelectedRow();
+            if (selectedRow != -1) { // Verifica se uma linha foi selecionada
+        // Obter o código do convênio (chave única)
+        int codigoConvenio = Integer.parseInt(TabelaListConv.getValueAt(selectedRow, 1).toString());
+
+        // Exibir mensagem de confirmação
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "Deseja realmente excluir este convênio?",
+                "Confirmação",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            // Configuração do banco de dados
+            String url = "jdbc:mysql://localhost:3306/gerenciar_convenios";
+            String user = "root";
+            String password = "elias";
+
+            // SQL para excluir o registro no banco
+            String sql = "DELETE FROM convenio WHERE codigoconvenio = ?";
+
+            try (Connection connection = DriverManager.getConnection(url, user, password);
+                 PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+                // Configurar o código do convênio no PreparedStatement
+                stmt.setInt(1, codigoConvenio);
+
+                // Executar a exclusão
+                int rowsAffected = stmt.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    JOptionPane.showMessageDialog(this, "Convênio excluído com sucesso!");
+
+                    // Remover a linha da tabela na interface
+                    ((DefaultTableModel) TabelaListConv.getModel()).removeRow(selectedRow);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Não foi possível excluir o convênio.",
+                                                  "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Erro ao excluir do banco de dados: " + e.getMessage(),
+                                              "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "Selecione uma linha para excluir.", "Aviso", JOptionPane.WARNING_MESSAGE);
+    }
+    }//GEN-LAST:event_BttExcluirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -164,7 +297,7 @@ public class ListagemConvenio extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }

@@ -4,6 +4,15 @@
  */
 package br.edu.imepac.administrativo.telas;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.RenderingHints;
+import javax.swing.border.AbstractBorder;
+
 /**
  *
  * @author elias
@@ -15,6 +24,45 @@ public class TelaLogin extends javax.swing.JFrame {
      */
     public TelaLogin() {
         initComponents();
+UsuarioCampo.setBorder(new RoundedBorder(20)); // Define a borda arredondada
+UsuarioCampo.setOpaque(false); // Campo transparente
+UsuarioCampo.setBackground(new Color(0, 0, 0, 0)); // Fundo transparente
+UsuarioCampo.setForeground(Color.WHITE); // Texto branco
+
+SenhaCampo.setBorder(new RoundedBorder(20)); // Define a borda arredondada
+SenhaCampo.setOpaque(false); // Campo transparente
+SenhaCampo.setBackground(new Color(0, 0, 0, 0)); // Fundo transparente
+SenhaCampo.setForeground(Color.WHITE); // Texto branco
+
+BotaoAcessarLogin.setFocusPainted(false); // Remove o contorno ao clicar
+BotaoAcessarLogin.setBorderPainted(false); // Remove a borda padrão
+BotaoAcessarLogin.setContentAreaFilled(false); // Remove o fundo padrão
+BotaoAcessarLogin.setOpaque(true); // Permite transparência
+BotaoAcessarLogin.setBackground(new Color(120, 212, 255)); // Cor inicial
+BotaoAcessarLogin.setForeground(new Color(28, 103, 152)); // Cor do texto inicial
+
+// Adiciona efeito de hover e glow
+BotaoAcessarLogin.addMouseListener(new java.awt.event.MouseAdapter() {
+    @Override
+    public void mouseEntered(java.awt.event.MouseEvent evt) {
+        BotaoAcessarLogin.setBackground(new Color(255, 255, 255)); // Cor ao passar o mouse
+        BotaoAcessarLogin.setForeground(new Color(28, 103, 152)); // Texto muda para branco
+        BotaoAcessarLogin.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(0, 153, 255), 2)); // Glow azul
+    }
+
+    @Override
+    public void mouseExited(java.awt.event.MouseEvent evt) {
+        BotaoAcessarLogin.setBackground(new Color(120, 212, 255)); // Volta à cor original
+        BotaoAcessarLogin.setForeground(new Color(28, 103, 152)); // Volta ao texto original
+        BotaoAcessarLogin.setBorder(null); // Remove o glow
+    }
+});
+
+
+            
+            
+
+
         setLocationRelativeTo(null);
     }
 
@@ -89,6 +137,41 @@ public class TelaLogin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+public class RoundedBorder extends AbstractBorder {
+    private int radius;
+    
+    @Override
+    public Insets getBorderInsets(Component c) {
+    return new Insets(10, 15, 10, 15); // Ajusta o espaço interno
+}
+
+
+    public RoundedBorder(int radius) {
+        this.radius = radius;
+    }
+
+    @Override
+    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        g2.setColor(Color.WHITE); // Cor da borda
+        g2.setStroke(new BasicStroke(2)); // Define a espessura da borda
+        g2.drawRoundRect(x + 1, y + 1, width - 3, height - 3, radius, radius);
+    }
+}
+    public Insets getBorderInsets(Component c) {
+        return new Insets(10, 15, 10, 15); // Ajusta o espaço interno (padding)
+    }
+
+    public Insets getBorderInsets(Component c, Insets insets) {
+        insets.left = 15;
+        insets.right = 15;
+        insets.top = 10;
+        insets.bottom = 10;
+        return insets;
+    }
+
 
     private void SenhaCampoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SenhaCampoActionPerformed
         // TODO add your handling code here:
@@ -134,22 +217,16 @@ public class TelaLogin extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(TelaLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        
+        //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TelaLogin().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new TelaLogin().setVisible(true);
         });
     }
 

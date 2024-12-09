@@ -52,8 +52,8 @@ public class CadastrarConvenio extends javax.swing.JFrame {
         LabelStatus = new javax.swing.JLabel();
         BotãoSalvar = new javax.swing.JButton();
         BotãoLimpar = new javax.swing.JButton();
-        BotãoCancelar = new javax.swing.JButton();
         BotãoVoltar = new javax.swing.JButton();
+        AbrirListagem = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(830, 600));
@@ -133,12 +133,13 @@ public class CadastrarConvenio extends javax.swing.JFrame {
         BotãoSalvar.setBounds(48, 422, 118, 35);
 
         BotãoLimpar.setText("LIMPAR");
+        BotãoLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotãoLimparActionPerformed(evt);
+            }
+        });
         getContentPane().add(BotãoLimpar);
         BotãoLimpar.setBounds(184, 422, 120, 35);
-
-        BotãoCancelar.setText("CANCELAR");
-        getContentPane().add(BotãoCancelar);
-        BotãoCancelar.setBounds(48, 469, 256, 35);
 
         BotãoVoltar.setText("Voltar");
         BotãoVoltar.addActionListener(new java.awt.event.ActionListener() {
@@ -148,6 +149,15 @@ public class CadastrarConvenio extends javax.swing.JFrame {
         });
         getContentPane().add(BotãoVoltar);
         BotãoVoltar.setBounds(45, 30, 80, 23);
+
+        AbrirListagem.setText("LISTAR CONVENIOS");
+        AbrirListagem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AbrirListagemActionPerformed(evt);
+            }
+        });
+        getContentPane().add(AbrirListagem);
+        AbrirListagem.setBounds(50, 470, 250, 40);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -174,8 +184,7 @@ public class CadastrarConvenio extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "O campo 'Descrição' é obrigatório!", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
-
-
+        
 
         // Criar o objeto Convenio
         Convenio convenio = new Convenio();
@@ -217,6 +226,9 @@ public class CadastrarConvenio extends javax.swing.JFrame {
     } catch (IllegalArgumentException e) {
         JOptionPane.showMessageDialog(this, "Erro: Certifique-se de que as datas estão no formato correto (yyyy-MM-dd).", "Erro", JOptionPane.ERROR_MESSAGE);
     }
+    
+    JOptionPane.showMessageDialog(this, "Convênio salvo com sucesso!");
+    abrirListagemConvenio(); // Abre a tela de listagem
 
     
     }//GEN-LAST:event_BotãoSalvarActionPerformed
@@ -232,6 +244,27 @@ public class CadastrarConvenio extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_DataInicioConvActionPerformed
 
+    private void AbrirListagemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AbrirListagemActionPerformed
+        // TODO add your handling code here:
+            ListagemConvenio listagemConvenio = new ListagemConvenio();
+    listagemConvenio.setVisible(true);
+    this.dispose();
+    
+    }//GEN-LAST:event_AbrirListagemActionPerformed
+
+    private void BotãoLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotãoLimparActionPerformed
+        // TODO add your handling code here:
+         // Limpar os campos de texto
+    CampoNomeConvenio.setText("");
+    CampoCodigoConvenio.setText("");
+    CampoDescricao.setText("");
+    DataInicioConv.setText("");
+    DataTerminoConv.setText("");
+
+    // Desmarcar a caixa de seleção
+    StatusConv.setSelected(false);
+    }//GEN-LAST:event_BotãoLimparActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -243,20 +276,16 @@ public class CadastrarConvenio extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadastrarConvenio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadastrarConvenio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadastrarConvenio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(CadastrarConvenio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        
         //</editor-fold>
 
         /* Create and display the form */
@@ -266,7 +295,7 @@ public class CadastrarConvenio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BotãoCancelar;
+    private javax.swing.JButton AbrirListagem;
     private javax.swing.JButton BotãoLimpar;
     private javax.swing.JButton BotãoSalvar;
     private javax.swing.JButton BotãoVoltar;
@@ -283,6 +312,10 @@ public class CadastrarConvenio extends javax.swing.JFrame {
     private javax.swing.JLabel NomeLabel;
     private javax.swing.JCheckBox StatusConv;
     // End of variables declaration//GEN-END:variables
+
+    private void abrirListagemConvenio() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 
 
 
