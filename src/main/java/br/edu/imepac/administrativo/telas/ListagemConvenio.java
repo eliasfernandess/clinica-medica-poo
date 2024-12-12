@@ -121,7 +121,7 @@ public class ListagemConvenio extends javax.swing.JFrame {
 private void carregarDados() {
     String url = "jdbc:mysql://localhost:3306/gerenciar_convenios";
     String user = "root";
-    String password = "elias";
+    String password = "root";
 
     String[] colunas = {"Nome Convenio", "Código convenio", "Descrição", "Data Ínicio", "Data Termino", "Status"};
     DefaultTableModel tableModel = new DefaultTableModel(colunas, 0);
@@ -198,7 +198,7 @@ private void carregarDados() {
             // Configuração do banco de dados
             String url = "jdbc:mysql://localhost:3306/gerenciar_convenios";
             String user = "root";
-            String password = "elias";
+            String password = "root";
 
             // SQL para atualizar o registro no banco
             String sql = "UPDATE convenio SET nomeconvenio = ?, descricao = ?, datainicio = ?, datatermino = ?, status = ? WHERE codigoconvenio = ?";
@@ -253,7 +253,7 @@ private void carregarDados() {
             // Configuração do banco de dados
             String url = "jdbc:mysql://localhost:3306/gerenciar_convenios";
             String user = "root";
-            String password = "elias";
+            String password = "root";
 
             // SQL para excluir o registro no banco
             String sql = "DELETE FROM convenio WHERE codigoconvenio = ?";
