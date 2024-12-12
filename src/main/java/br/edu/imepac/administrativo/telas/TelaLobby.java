@@ -38,6 +38,7 @@ public class TelaLobby extends javax.swing.JFrame {
         ListPacientes = new javax.swing.JButton();
         CadPacientes = new javax.swing.JButton();
         BotaoSair = new javax.swing.JButton();
+        jScrollBar1 = new javax.swing.JScrollBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1000, 1050));
@@ -117,6 +118,8 @@ public class TelaLobby extends javax.swing.JFrame {
         });
         getContentPane().add(BotaoSair);
         BotaoSair.setBounds(90, 900, 340, 50);
+        getContentPane().add(jScrollBar1);
+        jScrollBar1.setBounds(980, 0, 17, 1050);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -186,5 +189,6 @@ public class TelaLobby extends javax.swing.JFrame {
     private javax.swing.JButton ListFuncionarios;
     private javax.swing.JButton ListPacientes;
     private javax.swing.JButton ListPerfis;
+    private javax.swing.JScrollBar jScrollBar1;
     // End of variables declaration//GEN-END:variables
 }

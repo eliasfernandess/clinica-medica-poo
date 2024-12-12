@@ -129,10 +129,8 @@ BotaoAcessarLogin.addMouseListener(new java.awt.event.MouseAdapter() {
         });
         getContentPane().add(BotaoAcessarLogin);
         BotaoAcessarLogin.setBounds(80, 450, 340, 60);
-
-        Imagem.setIcon(new javax.swing.ImageIcon("C:\\Users\\elias\\OneDrive\\Área de Trabalho\\multmed\\LOGIN.png")); // NOI18N
         getContentPane().add(Imagem);
-        Imagem.setBounds(0, 0, 500, 700);
+        Imagem.setBounds(0, 0, 500, 0);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

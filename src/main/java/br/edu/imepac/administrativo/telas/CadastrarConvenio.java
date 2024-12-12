@@ -198,7 +198,7 @@ public class CadastrarConvenio extends javax.swing.JFrame {
         // Configurações do banco de dados
         String url = "jdbc:mysql://localhost:3306/gerenciar_convenios"; // Substitua pelo nome do seu banco
         String user = "root"; // Substitua pelo seu usuário do MySQL
-        String password = "elias"; // Substitua pela sua senha do MySQL
+        String password = "root"; // Substitua pela sua senha do MySQL
 
         // Conexão e inserção no banco
         String sql = "INSERT INTO convenio (nomeconvenio, codigoconvenio, descricao, datainicio, datatermino, status) VALUES (?, ?, ?, ?, ?, ?)";

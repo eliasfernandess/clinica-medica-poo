@@ -4,7 +4,7 @@ import java.sql.Date;
 
     public class Paciente {
         private int id;
-        private Stri,ng nome;
+        private String nome;
         private int idade;
         private String sexo;
         private String rua;
