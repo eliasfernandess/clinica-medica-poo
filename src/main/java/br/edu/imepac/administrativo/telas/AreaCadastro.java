@@ -64,8 +64,6 @@ public class AreaCadastro extends javax.swing.JFrame {
         });
         getContentPane().add(jToggleButton3);
         jToggleButton3.setBounds(410, 230, 230, 70);
-
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lucas Gabriel\\Pictures\\Screenshots\\CADASTRO FUNCIONÁRIO.png")); // NOI18N
         getContentPane().add(jLabel1);
         jLabel1.setBounds(-3, -4, 1020, 520);
 

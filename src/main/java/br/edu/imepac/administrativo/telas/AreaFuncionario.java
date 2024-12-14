@@ -46,8 +46,6 @@ public class AreaFuncionario extends javax.swing.JFrame {
         jToggleButton2.setText("GERENCIAR FUNCIONÁRIOS");
         getContentPane().add(jToggleButton2);
         jToggleButton2.setBounds(400, 160, 230, 80);
-
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lucas Gabriel\\Pictures\\Screenshots\\AREA FUNCIONÁRIO.png")); // NOI18N
         getContentPane().add(jLabel1);
         jLabel1.setBounds(-3, -4, 1060, 520);
 
