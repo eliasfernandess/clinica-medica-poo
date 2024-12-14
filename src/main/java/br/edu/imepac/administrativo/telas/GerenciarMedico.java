@@ -63,8 +63,6 @@ public class GerenciarMedico extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane1);
         jScrollPane1.setBounds(300, 110, 452, 250);
-
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lucas Gabriel\\Pictures\\Screenshots\\GERENCIAR MÉDICO.png")); // NOI18N
         getContentPane().add(jLabel1);
         jLabel1.setBounds(-3, -4, 1060, 530);
 
