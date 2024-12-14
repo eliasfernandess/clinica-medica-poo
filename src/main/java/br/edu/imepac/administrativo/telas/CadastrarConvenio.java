@@ -4,7 +4,9 @@
  */
 package br.edu.imepac.administrativo.telas;
 
+import br.edu.imepac.administrativo.daos.ConvenioDAO;
 import br.edu.imepac.administrativo.entidades.Convenio;
+import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -148,7 +150,7 @@ public class CadastrarConvenio extends javax.swing.JFrame {
             }
         });
         getContentPane().add(BotãoVoltar);
-        BotãoVoltar.setBounds(45, 30, 80, 25);
+        BotãoVoltar.setBounds(45, 30, 80, 23);
 
         AbrirListagem.setText("LISTAR CONVENIOS");
         AbrirListagem.addActionListener(new java.awt.event.ActionListener() {
@@ -167,9 +169,8 @@ public class CadastrarConvenio extends javax.swing.JFrame {
     }//GEN-LAST:event_CampoNomeConvenioActionPerformed
 
     private void BotãoSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotãoSalvarActionPerformed
-    
-    try {
-        // Verificar se todos os campos obrigatórios foram preenchidos
+  try {
+        // Validação de campos obrigatórios
         if (CampoNomeConvenio.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "O campo 'Nome do Convênio' é obrigatório!", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
@@ -184,7 +185,22 @@ public class CadastrarConvenio extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "O campo 'Descrição' é obrigatório!", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+
+        if (DataInicioConv.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "O campo 'Data de Início' é obrigatório!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (DataTerminoConv.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "O campo 'Data de Término' é obrigatório!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Validação do formato de data
+        if (!DataInicioConv.getText().matches("\\d{4}-\\d{2}-\\d{2}") || !DataTerminoConv.getText().matches("\\d{4}-\\d{2}-\\d{2}")) {
+            JOptionPane.showMessageDialog(this, "As datas devem estar no formato yyyy-MM-dd.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
         // Criar o objeto Convenio
         Convenio convenio = new Convenio();
@@ -195,42 +211,24 @@ public class CadastrarConvenio extends javax.swing.JFrame {
         convenio.setDataFim(java.sql.Date.valueOf(DataTerminoConv.getText()));
         convenio.setStatus(StatusConv.isSelected());
 
-        // Configurações do banco de dados
-        String url = "jdbc:mysql://localhost:3306/gerenciar_convenios"; // Substitua pelo nome do seu banco
-        String user = "root"; // Substitua pelo seu usuário do MySQL
-        String password = "root"; // Substitua pela sua senha do MySQL
+        // Usar a ConvenioDAO para salvar o convênio
+        ConvenioDAO convenioDAO = new ConvenioDAO();
+        convenioDAO.create(convenio);
 
-        // Conexão e inserção no banco
-        String sql = "INSERT INTO convenio (nomeconvenio, codigoconvenio, descricao, datainicio, datatermino, status) VALUES (?, ?, ?, ?, ?, ?)";
+        // Exibir mensagem de sucesso
+        JOptionPane.showMessageDialog(this, "Convênio salvo com sucesso!");
 
-        try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
-
-            // Preenchendo os valores no PreparedStatement
-            stmt.setString(1, convenio.getNomeConvenio());
-            stmt.setInt(2, convenio.getCodigoConvenio());
-            stmt.setString(3, convenio.getDescricao());
-            stmt.setDate(4, new java.sql.Date(convenio.getDataInicio().getTime()));
-            stmt.setDate(5, new java.sql.Date(convenio.getDataFim().getTime()));
-            stmt.setBoolean(6, convenio.isStatus());
-
-            // Executa a inserção
-            stmt.executeUpdate();
-            JOptionPane.showMessageDialog(this, "Convênio salvo com sucesso!");
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Erro ao salvar no banco de dados: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-        }
 
     } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Erro: Código do convênio deve ser um número.", "Erro", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Erro: Código do convênio deve ser um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);
     } catch (IllegalArgumentException e) {
         JOptionPane.showMessageDialog(this, "Erro: Certifique-se de que as datas estão no formato correto (yyyy-MM-dd).", "Erro", JOptionPane.ERROR_MESSAGE);
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Erro ao salvar o convênio: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+    } catch (HeadlessException e) {
+        JOptionPane.showMessageDialog(this, "Erro inesperado: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
     }
-    
-    JOptionPane.showMessageDialog(this, "Convênio salvo com sucesso!");
-    abrirListagemConvenio(); // Abre a tela de listagem
 
-    
     }//GEN-LAST:event_BotãoSalvarActionPerformed
 
     private void BotãoVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotãoVoltarActionPerformed

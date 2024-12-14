@@ -99,8 +99,6 @@ public class CadastroFaxina extends javax.swing.JFrame {
         jToggleButton1.setText("CADASTRAR");
         getContentPane().add(jToggleButton1);
         jToggleButton1.setBounds(450, 420, 160, 50);
-
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Lucas Gabriel\\Pictures\\Screenshots\\CADASTRO FAXINA.png")); // NOI18N
         getContentPane().add(jLabel1);
         jLabel1.setBounds(-3, -4, 1050, 520);
 
