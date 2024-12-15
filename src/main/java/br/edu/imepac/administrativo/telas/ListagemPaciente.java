@@ -1,16 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package br.edu.imepac.administrativo.telas;
 
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import br.edu.imepac.administrativo.daos.PacienteDAO;
+import br.edu.imepac.administrativo.entidades.Paciente;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -21,13 +14,20 @@ import javax.swing.table.DefaultTableModel;
 public class ListagemPaciente extends javax.swing.JFrame {
 
     /**
-     * Creates new form ListagemConvenio
+     * Creates new form ListagemPaciente
      */
     public ListagemPaciente() {
-    initComponents();
-    setLocationRelativeTo(null);
-    carregarDados(); // Carrega os dados no início
-}
+        initComponents();
+        carregarPacientes(); // Carregar os pacientes ao iniciar
+        setLocationRelativeTo(null);
+        
+                this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                carregarPacientes();
+            }
+        });
+    }
 
 
     /**
@@ -39,30 +39,60 @@ public class ListagemPaciente extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        TabelaP = new javax.swing.JTable();
         BttEditar = new javax.swing.JButton();
-        BttSalvar = new javax.swing.JButton();
         BttExcluir = new javax.swing.JButton();
-        VoltarListConv = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabel1 = new javax.swing.JLabel();
+        BotãoVoltar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(557, 666));
+        setMinimumSize(new java.awt.Dimension(557, 666));
+        setPreferredSize(new java.awt.Dimension(557, 666));
         setResizable(false);
         getContentPane().setLayout(null);
 
-        TabelaP.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+        BttEditar.setBackground(new java.awt.Color(255, 255, 153));
+        BttEditar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        BttEditar.setText("EDITAR");
+        BttEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BttEditarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(BttEditar);
+        BttEditar.setBounds(50, 550, 210, 60);
 
+        BttExcluir.setBackground(new java.awt.Color(255, 153, 153));
+        BttExcluir.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        BttExcluir.setText("EXCLUIR");
+        BttExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BttExcluirActionPerformed(evt);
+            }
+        });
+        getContentPane().add(BttExcluir);
+        BttExcluir.setBounds(290, 550, 210, 60);
+
+        jTable1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "ID", "Nome", "Cpf", "Nascimento", "Sexo", "Cidade", "UF", "Cep"
+                "Nome", "Idade", "E-mail"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.Integer.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -73,243 +103,126 @@ public class ListagemPaciente extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(TabelaP);
-        if (TabelaP.getColumnModel().getColumnCount() > 0) {
-            TabelaP.getColumnModel().getColumn(0).setResizable(false);
-            TabelaP.getColumnModel().getColumn(0).setHeaderValue("ID");
-            TabelaP.getColumnModel().getColumn(1).setResizable(false);
-            TabelaP.getColumnModel().getColumn(1).setHeaderValue("Nome");
-            TabelaP.getColumnModel().getColumn(2).setHeaderValue("Cpf");
-            TabelaP.getColumnModel().getColumn(3).setHeaderValue("Nascimento");
-            TabelaP.getColumnModel().getColumn(4).setResizable(false);
-            TabelaP.getColumnModel().getColumn(4).setHeaderValue("Sexo");
-            TabelaP.getColumnModel().getColumn(5).setHeaderValue("Cidade");
-            TabelaP.getColumnModel().getColumn(6).setHeaderValue("UF");
-            TabelaP.getColumnModel().getColumn(7).setHeaderValue("Cep");
-        }
+        jScrollPane2.setViewportView(jTable1);
 
-        getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(10, 110, 670, 400);
+        getContentPane().add(jScrollPane2);
+        jScrollPane2.setBounds(50, 120, 452, 402);
+        getContentPane().add(jSeparator1);
+        jSeparator1.setBounds(0, 80, 1210, 3);
 
-        BttEditar.setText("EDITAR");
-        BttEditar.addActionListener(new java.awt.event.ActionListener() {
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
+        jLabel1.setText("LISTAGEM PACIENTES");
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(60, 30, 260, 32);
+
+        BotãoVoltar.setBackground(new java.awt.Color(255, 153, 153));
+        BotãoVoltar.setText("Voltar");
+        BotãoVoltar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BttEditarActionPerformed(evt);
+                BotãoVoltarActionPerformed(evt);
             }
         });
-        getContentPane().add(BttEditar);
-        BttEditar.setBounds(50, 540, 135, 45);
-
-        BttSalvar.setText("SALVAR");
-        BttSalvar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BttSalvarActionPerformed(evt);
-            }
-        });
-        getContentPane().add(BttSalvar);
-        BttSalvar.setBounds(190, 540, 133, 45);
-
-        BttExcluir.setText("EXCLUIR");
-        BttExcluir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BttExcluirActionPerformed(evt);
-            }
-        });
-        getContentPane().add(BttExcluir);
-        BttExcluir.setBounds(330, 540, 135, 46);
-
-        VoltarListConv.setText("Voltar");
-        VoltarListConv.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                VoltarListConvActionPerformed(evt);
-            }
-        });
-        getContentPane().add(VoltarListConv);
-        VoltarListConv.setBounds(55, 80, 70, 23);
+        getContentPane().add(BotãoVoltar);
+        BotãoVoltar.setBounds(390, 30, 90, 30);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
  
-private void carregarDados() {
-    String url = "jdbc:mysql://localhost:3306/gerenciar_paciente";
-    String user = "root";
-    String password = "root";
+    public void adicionarPaciente(Paciente paciente) {
+    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    model.addRow(new Object[]{
+    paciente.getNome(),       // Nome
+    paciente.getIdade(),      // Idade
+    paciente.getEmail()       // E-mail
+});
+}
 
-    String[] colunas = {"id","nome", "cpf", "nascimento",
-        "sexo","cidade", "uf", "cep"};
-    DefaultTableModel tableModel = new DefaultTableModel(colunas, 0);
+    
+private void carregarPacientes() {
+    DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
+    tableModel.setRowCount(0); // Limpa os dados existentes na tabela
 
-    String sql = "SELECT id,nome,cpf,nascimento,sexo,cidade,uf,cep FROM paciente";
+    try {
+        // Instancia o DAO e busca todos os pacientes
+        PacienteDAO pacienteDAO = new PacienteDAO();
+        List<Paciente> pacientes = pacienteDAO.readAll();
 
-    try (Connection connection = DriverManager.getConnection(url, user, password);
-         Statement statement = connection.createStatement();
-         ResultSet resultSet = statement.executeQuery(sql)) {
-
-        while (resultSet.next()) {
-            Object[] linha = {
-                resultSet.getString("nome"),
-                resultSet.getString("cpf"),
-                resultSet.getDate("nascimento"),
-                resultSet.getString("sexo"),
-                resultSet.getString("cidade"),
-                resultSet.getString("uf"),
-                resultSet.getString("cep"),
-            };
-            tableModel.addRow(linha);
+        // Itera sobre a lista de pacientes e preenche a tabela
+        for (Paciente paciente : pacientes) {
+            tableModel.addRow(new Object[]{
+                paciente.getId(),                       // Coluna 1: ID
+                paciente.getNome() != null ? paciente.getNome() : "",         // Coluna 2: Nome
+                paciente.getIdade(),                    // Coluna 3: Idade
+                paciente.getContato() != null ? paciente.getContato() : "-",  // Coluna 4: Contato (evita null)
+                paciente.getEmail() != null ? paciente.getEmail() : "-"       // Coluna 5: E-mail (evita null)
+            });
         }
-
-        TabelaP.setModel(tableModel);
     } catch (SQLException e) {
-        JOptionPane.showMessageDialog(this, "Erro ao carregar os dados: " + e.getMessage(),
+        JOptionPane.showMessageDialog(this, 
+                "Erro ao carregar pacientes: " + e.getMessage(), 
+                "Erro", JOptionPane.ERROR_MESSAGE);
+    } catch (Exception e) {
+        // Captura qualquer outro erro inesperado
+        JOptionPane.showMessageDialog(this, 
+                "Ocorreu um erro inesperado ao carregar os pacientes: " + e.getMessage(), 
                 "Erro", JOptionPane.ERROR_MESSAGE);
     }
 }
 
+
     
     private void BttEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BttEditarActionPerformed
-     // Obter a linha selecionada
-    int selectedRow = TabelaP.getSelectedRow();
+    int selectedRow = jTable1.getSelectedRow();
+    if (selectedRow != -1) {
+        try {
+            Long id = Long.valueOf(jTable1.getValueAt(selectedRow, 0).toString());
+            PacienteDAO pacienteDAO = new PacienteDAO();
+            Paciente paciente = pacienteDAO.readById(id);
 
-    if (selectedRow != -1) { // Verifica se uma linha foi selecionada
-        // Permite edição diretamente na linha selecionada
-        TabelaP.editCellAt(selectedRow, 0);
-        TabelaP.editCellAt(selectedRow, 1);
-        TabelaP.editCellAt(selectedRow, 2);
-        TabelaP.editCellAt(selectedRow, 3);
-        TabelaP.editCellAt(selectedRow, 4);
-        TabelaP.editCellAt(selectedRow, 5);
-        TabelaP.editCellAt(selectedRow, 6);
-        TabelaP.editCellAt(selectedRow, 7);
-
-        JOptionPane.showMessageDialog(this, "Você pode editar diretamente na tabela."
-                + " Clique em SALVAR para confirmar as alterações.");
-    } else {
-        JOptionPane.showMessageDialog(this, "Selecione uma linha para editar.",
-                "Aviso", JOptionPane.WARNING_MESSAGE);
+            if (paciente != null) {
+                EditarPaciente editarPaciente = new EditarPaciente(paciente);
+                editarPaciente.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(this, "Paciente não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao buscar paciente: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
+    } else {
+        JOptionPane.showMessageDialog(this, "Selecione um paciente para editar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+    }
     }//GEN-LAST:event_BttEditarActionPerformed
 
-    private void VoltarListConvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VoltarListConvActionPerformed
+    private void BttExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BttExcluirActionPerformed
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow != -1) {
+            int confirm = JOptionPane.showConfirmDialog(this, "Deseja realmente excluir este paciente?",
+                    "Confirmação", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                try {
+                    Long id = Long.valueOf(jTable1.getValueAt(selectedRow, 0).toString());
+
+                    PacienteDAO pacienteDAO = new PacienteDAO();
+                    pacienteDAO.delete(id);
+
+                    carregarPacientes();
+                    JOptionPane.showMessageDialog(this, "Paciente excluído com sucesso!");
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(this, "Erro ao excluir paciente: " + e.getMessage(),
+                            "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione um paciente para excluir.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_BttExcluirActionPerformed
+
+    private void BotãoVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotãoVoltarActionPerformed
         // TODO add your handling code here:
         TelaLobby telaLobby = new TelaLobby(); // Instancia a próxima tela
         telaLobby.setVisible(true); // Exibe a nova tela
         this.dispose(); // Fecha a tela atual (TelaLogin)
-    }//GEN-LAST:event_VoltarListConvActionPerformed
-
-    private void BttSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BttSalvarActionPerformed
- // Obter a linha selecionada
-    int selectedRow = TabelaP.getSelectedRow(); 
-
-    if (selectedRow != -1) { // Verifica se uma linha foi selecionada
-    // Obter a linha selecionada
-
-    if (selectedRow != -1) { // Verifica se uma linha foi selecionada
-        try {
-            // Obter os valores da linha selecionada
-            int id = Integer.parseInt(TabelaP.getValueAt(selectedRow, 0).toString());
-            String nome = TabelaP.getValueAt(selectedRow, 1).toString();
-            String cpf = TabelaP.getValueAt(selectedRow, 2).toString();
-            String nascimento = TabelaP.getValueAt(selectedRow, 3).toString();
-            String sexo = TabelaP.getValueAt(selectedRow, 4).toString();
-            String cidade = TabelaP.getValueAt(selectedRow, 5).toString();
-            String uf = TabelaP.getValueAt(selectedRow, 6).toString();
-            String cep = TabelaP.getValueAt(selectedRow, 7).toString();
-
-            // Configuração do banco de dados
-            String url = "jdbc:mysql://localhost:3306/gerenciar_paciente";
-            String user = "root";
-            String password = "root";
-
-            // SQL para atualizar o registro no banco
-            String sql = "UPDATE paciente SET nome = ?, cpf = ?,"
-                    + " nascimento = ?, sexo = ?, cidade = ?, uf = ?, "
-                    + "cep = ? WHERE id = ?";
-
-            try (Connection connection = DriverManager.getConnection(url, user, password);
-                 PreparedStatement stmt = connection.prepareStatement(sql)) {
-
-                // Configurar os parâmetros no PreparedStatement
-                stmt.setString(1, nome);
-                stmt.setString(2, cpf);
-                stmt.setString(3, nascimento);
-                stmt.setString(4, sexo);
-                stmt.setString(5, cidade);
-                stmt.setString(6, uf);
-                stmt.setString(7, cep);
-   
-                // Executar a atualização
-                int rowsAffected = stmt.executeUpdate();
-
-                if (rowsAffected > 0) {
-                    JOptionPane.showMessageDialog(this, "Registro atualizado com sucesso!");
-                } else {
-                    JOptionPane.showMessageDialog(this, "Nenhuma alteração foi feita.");
-                }
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Erro ao atualizar o banco de dados: " + e.getMessage(),
-                                          "Erro", JOptionPane.ERROR_MESSAGE);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Erro ao processar os dados: " + e.getMessage(),
-                                          "Erro", JOptionPane.ERROR_MESSAGE);
-        }
-    } else {
-        JOptionPane.showMessageDialog(this, 
-                "Selecione uma linha para salvar as alterações.",
-                "Aviso", JOptionPane.WARNING_MESSAGE);
-            }
-        }
-    }//GEN-LAST:event_BttSalvarActionPerformed
-
-    private void BttExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BttExcluirActionPerformed
-        // TODO add your handling code here:
-            int selectedRow = TabelaP.getSelectedRow();
-            if (selectedRow != -1) { // Verifica se uma linha foi selecionada
-        // Obter o código do convênio (chave única)
-        int codigoConvenio = Integer.parseInt(TabelaP.getValueAt(selectedRow, 1).toString());
-
-        // Exibir mensagem de confirmação
-        int confirm = JOptionPane.showConfirmDialog(this,
-                "Deseja realmente excluir este Paciente?",
-                "Confirmação",
-                JOptionPane.YES_NO_OPTION);
-
-        if (confirm == JOptionPane.YES_OPTION) {
-            // Configuração do banco de dados
-            String url = "jdbc:mysql://localhost:3306/gerenciar_paciente";
-            String user = "root";
-            String password = "root";
-
-            // SQL para excluir o registro no banco
-            String sql = "DELETE FROM paciente WHERE id = ?";
-
-            try (Connection connection = DriverManager.getConnection(url, user, password);
-                 PreparedStatement stmt = connection.prepareStatement(sql)) {
-
-                // Configurar o código do convênio no PreparedStatement
-                stmt.setInt(1, codigoConvenio);
-
-                // Executar a exclusão
-                int rowsAffected = stmt.executeUpdate();
-
-                if (rowsAffected > 0) {
-                    JOptionPane.showMessageDialog(this, "Paciente excluído com sucesso!");
-
-                    // Remover a linha da tabela na interface
-                    ((DefaultTableModel) TabelaP.getModel()).removeRow(selectedRow);
-                } else {
-                    JOptionPane.showMessageDialog(this, "Não foi possível excluir o paciente.",
-                                                  "Erro", JOptionPane.ERROR_MESSAGE);
-                }
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(this, "Erro ao excluir do banco de dados: "+ e.getMessage(),
-                                              "Erro", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    } else {
-        JOptionPane.showMessageDialog(this, "Selecione uma linha para excluir.", "Aviso", JOptionPane.WARNING_MESSAGE);
-    }
-    }//GEN-LAST:event_BttExcluirActionPerformed
+    }//GEN-LAST:event_BotãoVoltarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -348,11 +261,12 @@ private void carregarDados() {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BotãoVoltar;
     private javax.swing.JButton BttEditar;
     private javax.swing.JButton BttExcluir;
-    private javax.swing.JButton BttSalvar;
-    private javax.swing.JTable TabelaP;
-    private javax.swing.JButton VoltarListConv;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

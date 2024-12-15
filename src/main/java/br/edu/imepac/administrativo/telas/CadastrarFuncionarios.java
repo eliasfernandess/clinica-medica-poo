@@ -165,6 +165,7 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
         getContentPane().add(jSeparator1);
         jSeparator1.setBounds(-10, 640, 1250, 10);
 
+        senhaTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         senhaTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 senhaTextFieldActionPerformed(evt);
@@ -173,6 +174,7 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
         getContentPane().add(senhaTextField);
         senhaTextField.setBounds(140, 830, 390, 50);
 
+        emailTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         emailTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 emailTextFieldActionPerformed(evt);
@@ -295,6 +297,7 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
         getContentPane().add(jLabel20);
         jLabel20.setBounds(140, 710, 70, 25);
 
+        nomeCompletoTextfield.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         nomeCompletoTextfield.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nomeCompletoTextfieldActionPerformed(evt);
@@ -303,6 +306,7 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
         getContentPane().add(nomeCompletoTextfield);
         nomeCompletoTextfield.setBounds(140, 120, 520, 50);
 
+        complementoTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         complementoTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 complementoTextFieldActionPerformed(evt);
@@ -311,6 +315,7 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
         getContentPane().add(complementoTextField);
         complementoTextField.setBounds(140, 560, 236, 50);
 
+        cidadeTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         cidadeTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cidadeTextFieldActionPerformed(evt);
@@ -319,6 +324,7 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
         getContentPane().add(cidadeTextField);
         cidadeTextField.setBounds(400, 560, 236, 50);
 
+        numeroTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         numeroTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 numeroTextFieldActionPerformed(evt);
@@ -327,6 +333,7 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
         getContentPane().add(numeroTextField);
         numeroTextField.setBounds(700, 470, 90, 50);
 
+        bairroTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         bairroTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bairroTextFieldActionPerformed(evt);
@@ -335,6 +342,7 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
         getContentPane().add(bairroTextField);
         bairroTextField.setBounds(660, 560, 236, 50);
 
+        logradouroTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         logradouroTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 logradouroTextFieldActionPerformed(evt);
@@ -343,6 +351,7 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
         getContentPane().add(logradouroTextField);
         logradouroTextField.setBounds(140, 470, 520, 50);
 
+        usuarioTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         usuarioTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 usuarioTextFieldActionPerformed(evt);
@@ -362,6 +371,7 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
         jSeparator4.setBounds(0, 360, 1250, 3);
 
         CancelarBotao.setBackground(new java.awt.Color(255, 102, 102));
+        CancelarBotao.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         CancelarBotao.setText("CANCELAR/SAIR");
         CancelarBotao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -369,9 +379,10 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
             }
         });
         getContentPane().add(CancelarBotao);
-        CancelarBotao.setBounds(1020, 850, 160, 60);
+        CancelarBotao.setBounds(1000, 840, 230, 70);
 
         SalvarBotão.setBackground(new java.awt.Color(153, 255, 153));
+        SalvarBotão.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         SalvarBotão.setText("SALVAR");
         SalvarBotão.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -379,12 +390,13 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
             }
         });
         getContentPane().add(SalvarBotão);
-        SalvarBotão.setBounds(1020, 690, 160, 60);
+        SalvarBotão.setBounds(1000, 680, 230, 70);
 
         LimparBotao.setBackground(new java.awt.Color(255, 255, 153));
+        LimparBotao.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         LimparBotao.setText("LIMPAR CAMPOS");
         getContentPane().add(LimparBotao);
-        LimparBotao.setBounds(1020, 770, 160, 60);
+        LimparBotao.setBounds(1000, 760, 230, 70);
 
         jSeparator5.setOrientation(javax.swing.SwingConstants.VERTICAL);
         getContentPane().add(jSeparator5);

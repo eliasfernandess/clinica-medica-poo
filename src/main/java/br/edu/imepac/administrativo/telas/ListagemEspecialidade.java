@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package br.edu.imepac.administrativo.telas;
 
 import br.edu.imepac.administrativo.daos.EspecialidadeDAO;
@@ -20,10 +16,10 @@ public class ListagemEspecialidade extends javax.swing.JFrame {
     /**
      * Creates new form ListagemEspecialidade
      */
-public ListagemEspecialidade() {
-    initComponents();
-    carregarEspecialidades();
-}
+    public ListagemEspecialidade() {
+        initComponents();
+        carregarEspecialidades();
+    }
 
 
     /**
@@ -90,6 +86,8 @@ public ListagemEspecialidade() {
         getContentPane().add(jScrollPane1);
         jScrollPane1.setBounds(20, 120, 452, 402);
 
+        ExcluitBtt.setBackground(new java.awt.Color(255, 102, 102));
+        ExcluitBtt.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         ExcluitBtt.setText("EXCLUIR");
         ExcluitBtt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -99,6 +97,8 @@ public ListagemEspecialidade() {
         getContentPane().add(ExcluitBtt);
         ExcluitBtt.setBounds(210, 550, 170, 60);
 
+        EditarBtt.setBackground(new java.awt.Color(255, 255, 153));
+        EditarBtt.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         EditarBtt.setText("EDITAR");
         EditarBtt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -115,25 +115,24 @@ public ListagemEspecialidade() {
 
     
     private void carregarEspecialidades() {
-    DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
-    tableModel.setRowCount(0); // Limpa os dados existentes na tabela
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0); // Limpa a tabela antes de adicionar os dados
 
-    try {
-        EspecialidadeDAO especialidadeDAO = new EspecialidadeDAO();
-        List<Especialidade> especialidades = especialidadeDAO.readAll();
+        try {
+            EspecialidadeDAO especialidadeDAO = new EspecialidadeDAO();
+            List<Especialidade> especialidades = especialidadeDAO.readAll();
 
-        for (Especialidade especialidade : especialidades) {
-            tableModel.addRow(new Object[]{
-                especialidade.getId(),       // Coluna 0: ID
-                especialidade.getNome(),     // Coluna 1: Nome
-                especialidade.getDescricao() // Coluna 2: Descrição
-            });
+            for (Especialidade especialidade : especialidades) {
+                model.addRow(new Object[]{
+                    especialidade.getId(),
+                    especialidade.getNome(),
+                    especialidade.getDescricao()
+                });
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao carregar especialidades: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(this, "Erro ao carregar especialidades: " + e.getMessage(),
-                "Erro", JOptionPane.ERROR_MESSAGE);
     }
-}
 
 
     
@@ -145,51 +144,47 @@ public ListagemEspecialidade() {
     }//GEN-LAST:event_BotãoVoltarActionPerformed
 
     private void EditarBttActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarBttActionPerformed
-    int selectedRow = jTable1.getSelectedRow(); // Obter a linha selecionada
-    if (selectedRow != -1) { // Verificar se uma linha foi selecionada
-        try {
-            // Obter os valores da linha selecionada
-            Long id = Long.valueOf(jTable1.getValueAt(selectedRow, 0).toString()); // Coluna 0: ID
-            String nome = jTable1.getValueAt(selectedRow, 1).toString(); // Coluna 1: Nome
-            String descricao = jTable1.getValueAt(selectedRow, 2).toString(); // Coluna 2: Descrição
+      int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow != -1) {
+            try {
+                Long id = Long.valueOf(jTable1.getValueAt(selectedRow, 0).toString());
+                EspecialidadeDAO especialidadeDAO = new EspecialidadeDAO();
+                Especialidade especialidade = especialidadeDAO.readById(id);
 
-            // Abrir a tela de edição e preencher os dados
-            EditarEspecialidades editarEspecialidades = new EditarEspecialidades();
-            editarEspecialidades.preencherDados(id, nome, descricao); // Crie este método na tela de edição
-            editarEspecialidades.setVisible(true);
-            this.dispose(); // Fechar a tela atual
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Erro ao abrir a tela de edição: " + e.getMessage(),
-                    "Erro", JOptionPane.ERROR_MESSAGE);
+                if (especialidade != null) {
+                    EditarEspecialidades editarEspecialidades = new EditarEspecialidades(especialidade);
+                    editarEspecialidades.setVisible(true);
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Especialidade não encontrada.", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Erro ao buscar especialidade: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione uma linha para editar.", "Aviso", JOptionPane.WARNING_MESSAGE);
         }
-    } else {
-        JOptionPane.showMessageDialog(this, "Selecione uma linha para editar.", "Aviso", JOptionPane.WARNING_MESSAGE);
-    }
     }//GEN-LAST:event_EditarBttActionPerformed
 
     private void ExcluitBttActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExcluitBttActionPerformed
       int selectedRow = jTable1.getSelectedRow();
-    if (selectedRow != -1) { // Verifica se uma linha foi selecionada
-        int confirm = JOptionPane.showConfirmDialog(this, "Deseja realmente excluir esta especialidade?",
-                "Confirmação", JOptionPane.YES_NO_OPTION);
+        if (selectedRow != -1) {
+            int confirm = JOptionPane.showConfirmDialog(this, "Deseja realmente excluir esta especialidade?", "Confirmação", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                try {
+                    Long id = Long.valueOf(jTable1.getValueAt(selectedRow, 0).toString());
+                    EspecialidadeDAO especialidadeDAO = new EspecialidadeDAO();
+                    especialidadeDAO.delete(id);
 
-        if (confirm == JOptionPane.YES_OPTION) {
-            try {
-                Long id = Long.valueOf(jTable1.getValueAt(selectedRow, 0).toString()); // Obter o ID
-                EspecialidadeDAO especialidadeDAO = new EspecialidadeDAO();
-                especialidadeDAO.delete(id); // Excluir do banco
-
-                // Remover a linha da tabela
-                ((DefaultTableModel) jTable1.getModel()).removeRow(selectedRow);
-                JOptionPane.showMessageDialog(this, "Especialidade excluída com sucesso!");
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(this, "Erro ao excluir a especialidade: " + e.getMessage(),
-                        "Erro", JOptionPane.ERROR_MESSAGE);
+                    ((DefaultTableModel) jTable1.getModel()).removeRow(selectedRow);
+                    JOptionPane.showMessageDialog(this, "Especialidade excluída com sucesso!");
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(this, "Erro ao excluir especialidade: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                }
             }
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione uma linha para excluir.", "Aviso", JOptionPane.WARNING_MESSAGE);
         }
-    } else {
-        JOptionPane.showMessageDialog(this, "Selecione uma linha para excluir.", "Aviso", JOptionPane.WARNING_MESSAGE);
-    }
     }//GEN-LAST:event_ExcluitBttActionPerformed
 
     /**
@@ -223,6 +218,7 @@ public ListagemEspecialidade() {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ListagemEspecialidade().setVisible(true);
+                java.awt.EventQueue.invokeLater(() -> new ListagemEspecialidade().setVisible(true));
             }
         });
     }

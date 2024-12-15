@@ -71,4 +71,21 @@ public class EspecialidadeDAO extends BaseDao {
             stmt.executeUpdate();
         }
     }
+
+    public Especialidade readById(Long id) throws SQLException {
+    String query = "SELECT * FROM especialidade WHERE id = ?";
+    try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        stmt.setLong(1, id);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            return new Especialidade(
+                rs.getLong("id"),
+                rs.getString("nome"),
+                rs.getString("descricao")
+            );
+        }
+    }
+    return null; // Retorna null se não encontrar
+}
+
 }

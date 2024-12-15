@@ -9,6 +9,8 @@ import br.edu.imepac.administrativo.entidades.Funcionario;
 import java.awt.HeadlessException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -23,6 +25,7 @@ public class ListagemFuncionarios extends javax.swing.JFrame {
      */
     public ListagemFuncionarios() {
         initComponents();
+        carregarFuncionarios();
     }
 
     /**
@@ -65,35 +68,39 @@ public class ListagemFuncionarios extends javax.swing.JFrame {
         getContentPane().add(jLabel1);
         jLabel1.setBounds(60, 30, 320, 32);
 
-        jTable1.setModel(new DefaultTableModel(
-                new Object[][]{},
-                new String[]{
-                        "Funcionário", "Idade", "E-mail", "Tipo de Funcionário"
-                }
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Funcionário", "Idade", "E-mail", "Tipo de Funcionário", "id"
+            }
         ) {
-            Class[] types = new Class[]{
-                    String.class, Integer.class, String.class, String.class
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
-            boolean[] canEdit = new boolean[]{
-                    false, false, false, false
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
             };
 
-            @Override
             public Class getColumnClass(int columnIndex) {
-                return types[columnIndex];
+                return types [columnIndex];
             }
 
-            @Override
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return canEdit [columnIndex];
             }
         });
-
         jScrollPane1.setViewportView(jTable1);
 
         getContentPane().add(jScrollPane1);
         jScrollPane1.setBounds(50, 120, 750, 402);
 
+        EXCLUIRBTT.setBackground(new java.awt.Color(255, 153, 153));
+        EXCLUIRBTT.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         EXCLUIRBTT.setText("EXCLUIR");
         EXCLUIRBTT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -103,6 +110,8 @@ public class ListagemFuncionarios extends javax.swing.JFrame {
         getContentPane().add(EXCLUIRBTT);
         EXCLUIRBTT.setBounds(840, 230, 210, 60);
 
+        EDITARBTT.setBackground(new java.awt.Color(255, 255, 153));
+        EDITARBTT.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         EDITARBTT.setText("EDITAR");
         EDITARBTT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -115,26 +124,35 @@ public class ListagemFuncionarios extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
 private void carregarFuncionarios() {
-    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-    model.setRowCount(0);
+    DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
+    tableModel.setRowCount(0); // Limpa os dados existentes na tabela
+
+    jTable1.getColumnModel().getColumn(0).setMinWidth(0);
+    jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
+    jTable1.getColumnModel().getColumn(0).setWidth(0);
 
     try {
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
         List<Funcionario> funcionarios = funcionarioDAO.readAll();
 
-        for (Funcionario f : funcionarios) {
-            model.addRow(new Object[]{
-                f.getNome(),
-                f.getIdade(),
-                f.getEmail(),
-                f.getTipoFuncionario()
+        for (Funcionario funcionario : funcionarios) {
+            tableModel.addRow(new Object[]{
+                funcionario.getId(),            // Coluna de ID
+                funcionario.getNome(),          // Coluna de Nome
+                funcionario.getIdade(),         // Coluna de Idade
+                funcionario.getEmail(),         // Coluna de E-mail
+                funcionario.getTipoFuncionario()// Coluna de Tipo de Funcionário
             });
         }
     } catch (SQLException e) {
-        JOptionPane.showMessageDialog(this, "Erro ao carregar funcionários: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Erro ao carregar funcionários: " + e.getMessage(),
+                "Erro", JOptionPane.ERROR_MESSAGE);
     }
 }
+
 
 
     
@@ -146,26 +164,35 @@ private void carregarFuncionarios() {
     }//GEN-LAST:event_VoltarListConvActionPerformed
 
     private void EDITARBTTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EDITARBTTActionPerformed
-    int selectedRow = jTable1.getSelectedRow();
-    if (selectedRow != -1) {
+      int selectedRow = jTable1.getSelectedRow(); // Obter a linha selecionada
+    if (selectedRow != -1) { // Verificar se uma linha foi selecionada
         try {
-            String nome = jTable1.getValueAt(selectedRow, 0).toString();
+            // Obter o ID da linha selecionada
+            Long id = Long.valueOf(jTable1.getValueAt(selectedRow, 0).toString()); // Coluna 0: ID
+            
+            // Buscar os dados completos do funcionário pelo ID
             FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-            Funcionario funcionario = funcionarioDAO.findByName(nome);
-
+            Funcionario funcionario = funcionarioDAO.readById(id);
+            
             if (funcionario != null) {
-                EditarFuncionarios editarFuncionarios = new EditarFuncionarios();
-                editarFuncionarios.preencherDados(funcionario);
+                // Abrir a tela de edição e passar o funcionário
+                EditarFuncionarios editarFuncionarios = new EditarFuncionarios(funcionario);
                 editarFuncionarios.setVisible(true);
-                this.dispose();
+                this.dispose(); // Fechar a tela atual
             } else {
-                JOptionPane.showMessageDialog(this, "Funcionário não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Funcionário não encontrado.", 
+                        "Erro", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (HeadlessException | SQLException e) {
-            JOptionPane.showMessageDialog(this, "Erro ao abrir tela de edição: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao converter o ID: " + e.getMessage(),
+                    "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao buscar funcionário: " + e.getMessage(),
+                    "Erro", JOptionPane.ERROR_MESSAGE);
         }
     } else {
-        JOptionPane.showMessageDialog(this, "Selecione um funcionário para editar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Selecione uma linha para editar.", 
+                "Aviso", JOptionPane.WARNING_MESSAGE);
     }
     }//GEN-LAST:event_EDITARBTTActionPerformed
 

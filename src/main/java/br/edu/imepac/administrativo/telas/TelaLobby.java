@@ -232,11 +232,15 @@ public class TelaLobby extends javax.swing.JFrame {
     }//GEN-LAST:event_CadFuncionariosActionPerformed
 
     private void ListPacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListPacientesActionPerformed
-        // TODO add your handling code here:
+     ListagemPaciente listagemPaciente = new ListagemPaciente(); // Instancia a próxima tela
+    listagemPaciente.setVisible(true); // Exibe a nova tela
+    this.dispose();
     }//GEN-LAST:event_ListPacientesActionPerformed
 
     private void CadPacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CadPacientesActionPerformed
-        // TODO add your handling code here:
+    CadastrarPacientes cadastrarPacientes = new CadastrarPacientes(); // Instancia a próxima tela
+    cadastrarPacientes.setVisible(true); // Exibe a nova tela
+    this.dispose(); // Fecha a tela atual
     }//GEN-LAST:event_CadPacientesActionPerformed
 
     /**

@@ -4,15 +4,17 @@
  */
 package br.edu.imepac.administrativo.telas;
 
+import br.edu.imepac.administrativo.daos.EspecialidadeDAO;
 import br.edu.imepac.administrativo.daos.FuncionarioDAO;
+import br.edu.imepac.administrativo.daos.PerfilDAO;
 import br.edu.imepac.administrativo.entidades.Especialidade;
 import br.edu.imepac.administrativo.entidades.Funcionario;
 import br.edu.imepac.administrativo.entidades.Perfil;
-import java.awt.HeadlessException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -23,10 +25,93 @@ public class EditarFuncionarios extends javax.swing.JFrame {
 
     /**
      * Creates new form EditarFuncionarios
+     * @param funcionario
      */
-    public EditarFuncionarios() {
-        initComponents();
+    public EditarFuncionarios(Funcionario funcionario) {
+    initComponents();
+    carregarPerfis(); // Carrega os perfis
+    carregarEspecialidades(); // Carrega as especialidades
+    this.funcionarioAtual = funcionario;
+    preencherDados(funcionario);
+
+}
+
+private void carregarEspecialidades() {
+    try {
+        EspecialidadeDAO especialidadeDAO = new EspecialidadeDAO(); // Assumindo que você tem uma classe DAO para Especialidades
+        List<Especialidade> especialidades = especialidadeDAO.readAll(); // Busca todas as especialidades do banco
+
+        especialidadeField.removeAllItems(); // Limpa os itens do ComboBox
+        for (Especialidade especialidade : especialidades) {
+            System.out.println("Carregando especialidade: " + especialidade.getNome()); // Para depuração
+            especialidadeField.addItem(especialidade);
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, 
+                "Erro ao carregar especialidades: " + e.getMessage(), 
+                "Erro", JOptionPane.ERROR_MESSAGE);
     }
+}
+
+
+    private EditarFuncionarios() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    // Método para preencher os campos com os dados do funcionário
+public void preencherDados(Funcionario funcionario) {
+    usuarioTextField.setText(funcionario.getUsuario());
+    senhaTextField.setText(String.valueOf(funcionario.getSenha()));
+    nomeCompletoTextfield.setText(funcionario.getNome());
+    idadeTextField.setText(String.valueOf(funcionario.getIdade()));
+    sexoTextField.setSelectedItem(String.valueOf(funcionario.getSexo()));
+    identificacaoTextField.setText(funcionario.getCpf());
+    logradouroTextField.setText(funcionario.getRua());
+    numeroTextField.setText(funcionario.getNumero());
+    complementoTextField.setText(funcionario.getComplemento());
+    bairroTextField.setText(funcionario.getBairro());
+    cidadeTextField.setText(funcionario.getCidade());
+    estadoTextField1.setSelectedItem(funcionario.getEstado());
+    contatoTextField.setText(funcionario.getContato());
+    emailTextField.setText(funcionario.getEmail());
+
+    // Data de nascimento
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    if (funcionario.getDataNascimento() != null) {
+        String dataFormatada = funcionario.getDataNascimento().format(formatter);
+        dataNascimentoTextField.setText(dataFormatada);
+    }
+
+    // Selecionar perfil no ComboBox
+    for (int i = 0; i < perfilField.getItemCount(); i++) {
+        Perfil perfil = perfilField.getItemAt(i);
+        if (perfil.getId().equals(funcionario.getPerfilId())) {
+            perfilField.setSelectedItem(perfil);
+            break;
+        }
+    }
+}
+
+
+
+private void carregarPerfis() {
+    try {
+        PerfilDAO perfilDAO = new PerfilDAO();
+        List<Perfil> perfis = perfilDAO.readAll(); // Busca todos os perfis no banco
+
+        perfilField.removeAllItems(); // Limpa os itens do ComboBox
+        for (Perfil perfil : perfis) {
+            perfilField.addItem(perfil); // Adiciona o perfil ao ComboBox
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, 
+                "Erro ao carregar perfis: " + e.getMessage(), 
+                "Erro", JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -72,7 +157,7 @@ public class EditarFuncionarios extends javax.swing.JFrame {
         jLabel21 = new javax.swing.JLabel();
         jSeparator4 = new javax.swing.JSeparator();
         CancelarBotao = new javax.swing.JButton();
-        AttBotão = new javax.swing.JButton();
+        AtualizarBotão = new javax.swing.JButton();
         LimparBotao = new javax.swing.JButton();
         jSeparator5 = new javax.swing.JSeparator();
         dataNascimentoTextField = new javax.swing.JFormattedTextField();
@@ -89,6 +174,7 @@ public class EditarFuncionarios extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1278, 932));
         setMinimumSize(new java.awt.Dimension(1278, 932));
+        setPreferredSize(new java.awt.Dimension(1278, 932));
         getContentPane().setLayout(null);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -163,9 +249,9 @@ public class EditarFuncionarios extends javax.swing.JFrame {
         jLabel9.setBounds(480, 180, 33, 20);
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel10.setText("ATUALIZAR FUNCIONARIOS");
+        jLabel10.setText("EDITAR FUNCIONARIOS");
         getContentPane().add(jLabel10);
-        jLabel10.setBounds(140, 20, 250, 25);
+        jLabel10.setBounds(140, 20, 240, 25);
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel11.setText("Rua");
@@ -293,6 +379,7 @@ public class EditarFuncionarios extends javax.swing.JFrame {
         jSeparator4.setBounds(0, 360, 1250, 3);
 
         CancelarBotao.setBackground(new java.awt.Color(255, 102, 102));
+        CancelarBotao.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         CancelarBotao.setText("CANCELAR/SAIR");
         CancelarBotao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -300,27 +387,24 @@ public class EditarFuncionarios extends javax.swing.JFrame {
             }
         });
         getContentPane().add(CancelarBotao);
-        CancelarBotao.setBounds(1020, 850, 160, 60);
+        CancelarBotao.setBounds(990, 850, 230, 60);
 
-        AttBotão.setBackground(new java.awt.Color(153, 204, 255));
-        AttBotão.setText("ATUALIZAR");
-        AttBotão.addActionListener(new java.awt.event.ActionListener() {
+        AtualizarBotão.setBackground(new java.awt.Color(153, 255, 153));
+        AtualizarBotão.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        AtualizarBotão.setText("ATUALIZAR");
+        AtualizarBotão.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AttBotãoActionPerformed(evt);
+                AtualizarBotãoActionPerformed(evt);
             }
         });
-        getContentPane().add(AttBotão);
-        AttBotão.setBounds(1020, 690, 160, 60);
+        getContentPane().add(AtualizarBotão);
+        AtualizarBotão.setBounds(990, 690, 230, 60);
 
         LimparBotao.setBackground(new java.awt.Color(255, 255, 153));
+        LimparBotao.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         LimparBotao.setText("LIMPAR CAMPOS");
-        LimparBotao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                LimparBotaoActionPerformed(evt);
-            }
-        });
         getContentPane().add(LimparBotao);
-        LimparBotao.setBounds(1020, 770, 160, 60);
+        LimparBotao.setBounds(990, 770, 230, 60);
 
         jSeparator5.setOrientation(javax.swing.SwingConstants.VERTICAL);
         getContentPane().add(jSeparator5);
@@ -432,37 +516,8 @@ public class EditarFuncionarios extends javax.swing.JFrame {
         BotãoVoltar.setBounds(1050, 20, 170, 30);
 
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private Funcionario funcionarioAtual;
-    
-    public void preencherDados(Funcionario funcionario) {
-    this.funcionarioAtual = funcionario; // Armazena o objeto atual para edição
-    usuarioTextField.setText(funcionario.getUsuario());
-    senhaTextField.setText(String.valueOf(funcionario.getSenha()));
-    nomeCompletoTextfield.setText(funcionario.getNome());
-    idadeTextField.setText(String.valueOf(funcionario.getIdade()));
-    sexoTextField.setSelectedItem(funcionario.getSexo() == 'M' ? "Masculino" : "Feminino");
-    identificacaoTextField.setText(funcionario.getCpf());
-    logradouroTextField.setText(funcionario.getRua());
-    numeroTextField.setText(funcionario.getNumero());
-    complementoTextField.setText(funcionario.getComplemento());
-    bairroTextField.setText(funcionario.getBairro());
-    cidadeTextField.setText(funcionario.getCidade());
-    estadoTextField1.setSelectedItem(funcionario.getEstado());
-    contatoTextField.setText(funcionario.getContato());
-    emailTextField.setText(funcionario.getEmail());
-    dataNascimentoTextField.setText(funcionario.getDataNascimento().toString());
-    tipoFuncionarioField.setSelectedItem(funcionario.getTipoFuncionario());
-    perfilField.setSelectedItem(funcionario.getPerfil());
-    especialidadeField.setSelectedItem(funcionario.getEspecialidade());
-}
-
-
-
-
-    
     private void senhaTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_senhaTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_senhaTextFieldActionPerformed
@@ -503,47 +558,99 @@ public class EditarFuncionarios extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_CancelarBotaoActionPerformed
 
-    @SuppressWarnings("empty-statement")
-    private void AttBotãoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AttBotãoActionPerformed
-      if (camposValidos()) {
+    private boolean camposValidos() {
+    if (usuarioTextField.getText().trim().isEmpty() ||
+        senhaTextField.getText().trim().isEmpty() ||
+        nomeCompletoTextfield.getText().trim().isEmpty() ||
+        idadeTextField.getText().trim().isEmpty() ||
+        dataNascimentoTextField.getText().trim().isEmpty() ||
+        sexoTextField.getSelectedItem() == null ||
+        perfilField.getSelectedItem() == null) {
+        JOptionPane.showMessageDialog(this, "Preencha todos os campos obrigatórios.", "Erro", JOptionPane.ERROR_MESSAGE);
+        return false;
+    }
+    return true;
+}
+
+    private Funcionario funcionarioAtual; // Variável para armazenar o funcionário que está sendo editado
+
+    private void AtualizarBotãoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AtualizarBotãoActionPerformed
+  if (camposValidos()) {
         try {
+            // Obtém o ID armazenado no objeto funcionário atual
+            Long id = funcionarioAtual.getId();
+            
+            // Validações de campos obrigatórios e numéricos
+            int senha = Integer.parseInt(senhaTextField.getText());
+            int idade = Integer.parseInt(idadeTextField.getText());
+
+            // Processar data de nascimento
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate dataNascimento = LocalDate.parse(dataNascimentoTextField.getText(), formatter);
 
-            // Atualiza os dados no objeto funcionarioAtual
-            funcionarioAtual.setUsuario(usuarioTextField.getText());
-            funcionarioAtual.setSenha(Integer.parseInt(senhaTextField.getText()));
-            funcionarioAtual.setNome(nomeCompletoTextfield.getText());
-            funcionarioAtual.setIdade(Integer.parseInt(idadeTextField.getText()));
-            funcionarioAtual.setSexo(sexoTextField.getSelectedItem().toString().charAt(0));
-            funcionarioAtual.setCpf(identificacaoTextField.getText());
-            funcionarioAtual.setRua(logradouroTextField.getText());
-            funcionarioAtual.setNumero(numeroTextField.getText());
-            funcionarioAtual.setComplemento(complementoTextField.getText());
-            funcionarioAtual.setBairro(bairroTextField.getText());
-            funcionarioAtual.setCidade(cidadeTextField.getText());
-            funcionarioAtual.setEstado(estadoTextField1.getSelectedItem().toString());
-            funcionarioAtual.setContato(contatoTextField.getText());
-            funcionarioAtual.setEmail(emailTextField.getText());
-            funcionarioAtual.setDataNascimento(dataNascimento);
-            funcionarioAtual.setTipoFuncionario(tipoFuncionarioField.getSelectedItem().toString());
-            funcionarioAtual.setEspecialidadeId(((Especialidade) especialidadeField.getSelectedItem()).getId());
-            funcionarioAtual.setPerfilId(((Perfil) perfilField.getSelectedItem()).getId());
+            // Obter o perfil selecionado
+            Perfil perfilSelecionado = (Perfil) perfilField.getSelectedItem();
+            if (perfilSelecionado == null || perfilSelecionado.getId() == null) {
+                JOptionPane.showMessageDialog(this, "Erro: Selecione um perfil válido antes de atualizar.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            Long perfilId = perfilSelecionado.getId();
+            System.out.println("Perfil selecionado: " + perfilSelecionado.getNome() + " | ID: " + perfilId); // Depuração
 
-            // Chama o método update da DAO
+            // Obter a especialidade selecionada (se aplicável)
+            Long especialidadeId = null;
+            if (especialidadeField.isVisible()) {
+                Especialidade especialidadeSelecionada = (Especialidade) especialidadeField.getSelectedItem();
+                if (especialidadeSelecionada != null) {
+                    especialidadeId = especialidadeSelecionada.getId();
+                }
+            }
+
+            // Atualizar os dados do funcionário
+            Funcionario funcionario = new Funcionario(
+                id,
+                usuarioTextField.getText(),
+                senha,
+                nomeCompletoTextfield.getText(),
+                idade,
+                sexoTextField.getSelectedItem().toString().charAt(0),
+                identificacaoTextField.getText(),
+                logradouroTextField.getText(),
+                numeroTextField.getText(),
+                complementoTextField.getText(),
+                bairroTextField.getText(),
+                cidadeTextField.getText(),
+                estadoTextField1.getSelectedItem().toString(),
+                contatoTextField.getText(),
+                emailTextField.getText(),
+                dataNascimento,
+                tipoFuncionarioField.getSelectedItem().toString(),
+                especialidadeId,
+                perfilId
+            );
+
+            // Atualiza no banco de dados
             FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-            funcionarioDAO.update(funcionarioAtual);
+            funcionarioDAO.update(funcionario);
 
+            // Confirmação ao usuário
             JOptionPane.showMessageDialog(this, "Funcionário atualizado com sucesso!");
+
+            // Redirecionar para a listagem
             ListagemFuncionarios listagemFuncionarios = new ListagemFuncionarios();
             listagemFuncionarios.setVisible(true);
-            this.dispose();
-
-        } catch (HeadlessException | NumberFormatException | SQLException e) {
-            JOptionPane.showMessageDialog(this, "Erro ao atualizar funcionário: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            this.dispose(); // Fecha a tela atual
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao processar campos numéricos: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao atualizar o funcionário: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro inesperado: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
+    } else {
+        JOptionPane.showMessageDialog(this, "Preencha todos os campos obrigatórios.", "Erro", JOptionPane.ERROR_MESSAGE);
     }
-    }//GEN-LAST:event_AttBotãoActionPerformed
+    }//GEN-LAST:event_AtualizarBotãoActionPerformed
 
     private void dataNascimentoTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_dataNascimentoTextFieldFocusLost
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -595,68 +702,32 @@ public class EditarFuncionarios extends javax.swing.JFrame {
 
     }//GEN-LAST:event_BotãoVoltarActionPerformed
 
-    private void limparCampos() {
-    usuarioTextField.setText("");
-    senhaTextField.setText("");
-    nomeCompletoTextfield.setText("");
-    idadeTextField.setText("");
-    sexoTextField.setSelectedIndex(0);
-    identificacaoTextField.setText("");
-    logradouroTextField.setText("");
-    numeroTextField.setText("");
-    complementoTextField.setText("");
-    bairroTextField.setText("");
-    cidadeTextField.setText("");
-    estadoTextField1.setSelectedIndex(0);
-    contatoTextField.setText("");
-    emailTextField.setText("");
-    dataNascimentoTextField.setText("");
-    tipoFuncionarioField.setSelectedIndex(0);
-    perfilField.setSelectedIndex(0);
-    especialidadeField.setSelectedIndex(0);
-}
-    
-    private void LimparBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LimparBotaoActionPerformed
-      limparCampos();
-    }//GEN-LAST:event_LimparBotaoActionPerformed
-
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+public static void main(String[] args) {
+    // Define o estilo Nimbus, se disponível
+    try {
+        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) {
+                javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                break;
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EditarFuncionarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EditarFuncionarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EditarFuncionarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EditarFuncionarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new EditarFuncionarios().setVisible(true);
-            }
-        });
+    } catch (Exception ex) {
+        // Caso ocorra algum erro ao configurar o estilo, exibe o erro no console
+        java.util.logging.Logger.getLogger(EditarFuncionarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     }
 
+    // Inicia a interface gráfica da aplicação
+    java.awt.EventQueue.invokeLater(() -> {
+        new EditarFuncionarios().setVisible(true);
+    });
+}
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton AttBotão;
+    private javax.swing.JButton AtualizarBotão;
     private javax.swing.JButton BotãoVoltar;
     private javax.swing.JButton CancelarBotao;
     private javax.swing.JButton LimparBotao;
@@ -705,18 +776,4 @@ public class EditarFuncionarios extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> tipoFuncionarioField;
     private javax.swing.JTextField usuarioTextField;
     // End of variables declaration//GEN-END:variables
-
-    private boolean camposValidos() {
-    if (usuarioTextField.getText().isEmpty() ||
-        senhaTextField.getText().isEmpty() ||
-        nomeCompletoTextfield.getText().isEmpty() ||
-        identificacaoTextField.getText().isEmpty() ||
-        emailTextField.getText().isEmpty() ||
-        dataNascimentoTextField.getText().isEmpty() ||
-        logradouroTextField.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Preencha todos os campos obrigatórios!", "Aviso", JOptionPane.WARNING_MESSAGE);
-        return false;
-    }
-    return true;
-    }
 }

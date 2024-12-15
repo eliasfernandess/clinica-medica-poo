@@ -73,8 +73,9 @@ public class EditarPerfil extends javax.swing.JFrame {
         BotãoVoltar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(570, 899));
-        setMinimumSize(new java.awt.Dimension(570, 899));
+        setMaximumSize(new java.awt.Dimension(518, 899));
+        setMinimumSize(new java.awt.Dimension(518, 899));
+        setPreferredSize(new java.awt.Dimension(518, 899));
         getContentPane().setLayout(null);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N

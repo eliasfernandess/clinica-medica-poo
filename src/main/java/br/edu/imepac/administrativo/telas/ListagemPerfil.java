@@ -89,6 +89,7 @@ public class ListagemPerfil extends javax.swing.JFrame {
         getContentPane().add(jScrollPane1);
         jScrollPane1.setBounds(40, 110, 420, 400);
 
+        BttEditar.setBackground(new java.awt.Color(255, 255, 153));
         BttEditar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         BttEditar.setText("EDITAR");
         BttEditar.addActionListener(new java.awt.event.ActionListener() {
@@ -97,8 +98,9 @@ public class ListagemPerfil extends javax.swing.JFrame {
             }
         });
         getContentPane().add(BttEditar);
-        BttEditar.setBounds(40, 540, 135, 60);
+        BttEditar.setBounds(40, 540, 170, 60);
 
+        BttExcluir.setBackground(new java.awt.Color(255, 153, 153));
         BttExcluir.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         BttExcluir.setText("EXCLUIR");
         BttExcluir.addActionListener(new java.awt.event.ActionListener() {
@@ -107,7 +109,7 @@ public class ListagemPerfil extends javax.swing.JFrame {
             }
         });
         getContentPane().add(BttExcluir);
-        BttExcluir.setBounds(190, 540, 135, 60);
+        BttExcluir.setBounds(230, 540, 170, 60);
         getContentPane().add(jSeparator1);
         jSeparator1.setBounds(0, 73, 500, 10);
 

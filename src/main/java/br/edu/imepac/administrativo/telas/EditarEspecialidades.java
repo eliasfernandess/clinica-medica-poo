@@ -16,13 +16,33 @@ import javax.swing.JOptionPane;
  */
 public class EditarEspecialidades extends javax.swing.JFrame {
 
+    private Especialidade especialidadeAtual;
+
     /**
-     * Creates new form EditarEspecialidades
+     * Construtor padrão (usado em outros cenários, se necessário)
      */
     public EditarEspecialidades() {
         initComponents();
     }
 
+    /**
+     * Construtor que recebe a especialidade a ser editada
+     * 
+     * @param especialidade Instância de Especialidade com os dados para edição
+     */
+    public EditarEspecialidades(Especialidade especialidade) {
+        initComponents();
+        this.especialidadeAtual = especialidade;
+        preencherDados(especialidade);
+    }
+
+    private void preencherDados(Especialidade especialidade) {
+        if (especialidade != null) {
+            nomeField.setText(especialidade.getNome());
+            descricaoField.setText(especialidade.getDescricao());
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -130,41 +150,46 @@ public class EditarEspecialidades extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void preencherDados(Long id, String nome, String descricao) {
-    nomeField.setText(nome);
-    descricaoField.setText(descricao);
-    nomeField.putClientProperty("idEspecialidade", id); // Armazena o ID nos campos para referência
-}
+
     
     private void cancelarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarButtonActionPerformed
-        // TODO add your handling code here:
+       int confirm = JOptionPane.showConfirmDialog(this, "Deseja cancelar as alterações?", "Confirmação", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            // Retorna para a tela de listagem
+            ListagemEspecialidade listagemEspecialidade = new ListagemEspecialidade();
+            listagemEspecialidade.setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_cancelarButtonActionPerformed
 
     private void AtualizarBttActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AtualizarBttActionPerformed
-       if (descricaoField.getText().isEmpty() || nomeField.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Preencha todos os campos obrigatórios", "Erro", JOptionPane.ERROR_MESSAGE);
-    } else {
-        try {
-            // Obtém o ID armazenado nos campos
-            Long id = (Long) nomeField.getClientProperty("idEspecialidade");
+       if (nomeField.getText().isEmpty() || descricaoField.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Preencha todos os campos obrigatórios!", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-            // Atualiza a especialidade
-            Especialidade especialidade = new Especialidade(id, nomeField.getText(), descricaoField.getText());
+        try {
+            // Atualiza os dados da especialidade
+            especialidadeAtual.setNome(nomeField.getText());
+            especialidadeAtual.setDescricao(descricaoField.getText());
+
             EspecialidadeDAO especialidadeDAO = new EspecialidadeDAO();
-            especialidadeDAO.update(especialidade);
+            especialidadeDAO.update(especialidadeAtual);
 
             JOptionPane.showMessageDialog(this, "Especialidade atualizada com sucesso!");
-    ListagemEspecialidade listagemEspecialidade = new ListagemEspecialidade(); // Instancia a próxima tela
-    listagemEspecialidade.setVisible(true); // Exibe a nova tela
-    this.dispose(); // Fecha a tela atual
+            
+            // Retorna para a listagem de especialidades
+            ListagemEspecialidade listagemEspecialidade = new ListagemEspecialidade();
+            listagemEspecialidade.setVisible(true);
+            this.dispose();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Erro ao atualizar a especialidade: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Erro ao atualizar especialidade: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
-    }
     }//GEN-LAST:event_AtualizarBttActionPerformed
 
     private void limparBottonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limparBottonActionPerformed
-        // TODO add your handling code here:
+        nomeField.setText("");
+        descricaoField.setText("");
     }//GEN-LAST:event_limparBottonActionPerformed
 
     private void BotãoVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotãoVoltarActionPerformed
@@ -202,10 +227,8 @@ public class EditarEspecialidades extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new EditarEspecialidades().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new EditarEspecialidades().setVisible(true);
         });
     }
 

@@ -19,10 +19,14 @@ public class Paciente {
     private String email;
     private LocalDate dataNascimento;
 
+    // Construtor vazio padrão
     public Paciente() {
     }
 
-    public Paciente(String nome, int idade, char sexo, String cpf, String rua, String numero, String complemento, String bairro, String cidade, String estado, String contato, String email, LocalDate dataNascimento) {
+    // Construtor completo SEM ID (para criação de novos pacientes)
+    public Paciente(String nome, int idade, char sexo, String cpf, String rua, String numero,
+                    String complemento, String bairro, String cidade, String estado, String contato,
+                    String email, LocalDate dataNascimento) {
         this.nome = nome;
         this.idade = idade;
         this.sexo = sexo;
@@ -38,7 +42,10 @@ public class Paciente {
         this.dataNascimento = dataNascimento;
     }
 
-    public Paciente(Long id, String nome, int idade, char sexo, String cpf, String rua, String numero, String complemento, String bairro, String cidade, String estado, String contato, String email, LocalDate dataNascimento) {
+    // Construtor completo COM ID (para pacientes existentes)
+    public Paciente(Long id, String nome, int idade, char sexo, String cpf, String rua, String numero,
+                    String complemento, String bairro, String cidade, String estado, String contato,
+                    String email, LocalDate dataNascimento) {
         this.id = id;
         this.nome = nome;
         this.idade = idade;
@@ -55,6 +62,7 @@ public class Paciente {
         this.dataNascimento = dataNascimento;
     }
 
+    // Getters e Setters
     public Long getId() {
         return id;
     }
@@ -166,5 +174,4 @@ public class Paciente {
     public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
-
 }

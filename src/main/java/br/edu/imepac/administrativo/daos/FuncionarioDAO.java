@@ -73,37 +73,45 @@ try (PreparedStatement stmt = connection.prepareStatement(sql)) {
         return null;
     }
 
-    public List<Funcionario> readAll() throws SQLException {
-        String sql = "SELECT * FROM funcionario";
-        List<Funcionario> funcionarios = new ArrayList<>();
+public List<Funcionario> readAll() throws SQLException {
+    String sql = "SELECT * FROM funcionario";
+    List<Funcionario> funcionarios = new ArrayList<>();
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                funcionarios.add(new Funcionario(
-                        rs.getLong("id"),
-                        rs.getString("usuario"),
-                        rs.getInt("senha"),
-                        rs.getString("nome"),
-                        rs.getInt("idade"),
-                        rs.getString("sexo").charAt(0),
-                        rs.getString("cpf"),
-                        rs.getString("rua"),
-                        rs.getString("numero"),
-                        rs.getString("complemento"),
-                        rs.getString("bairro"),
-                        rs.getString("cidade"),
-                        rs.getString("estado"),
-                        rs.getString("contato"),
-                        rs.getString("email"),
-                        rs.getDate("data_nascimento").toLocalDate(),
-                        rs.getString("tipo_funcionario"),
-                        null, null
-                ));
-            }
+    try (PreparedStatement stmt = connection.prepareStatement(sql);
+         ResultSet rs = stmt.executeQuery()) {
+
+        while (rs.next()) {
+            Long especialidadeId = rs.getObject("especialidade_id") != null ? rs.getLong("especialidade_id") : null;
+            Long perfilId = rs.getObject("perfil_id") != null ? rs.getLong("perfil_id") : null;
+
+            Funcionario funcionario = new Funcionario(
+                    rs.getLong("id"),
+                    rs.getString("usuario"),
+                    rs.getInt("senha"),
+                    rs.getString("nome"),
+                    rs.getInt("idade"),
+                    rs.getString("sexo").charAt(0),
+                    rs.getString("cpf"),
+                    rs.getString("rua"),
+                    rs.getString("numero"),
+                    rs.getString("complemento"),
+                    rs.getString("bairro"),
+                    rs.getString("cidade"),
+                    rs.getString("estado"),
+                    rs.getString("contato"),
+                    rs.getString("email"),
+                    rs.getDate("data_nascimento").toLocalDate(),
+                    rs.getString("tipo_funcionario"),
+                    especialidadeId,
+                    perfilId
+            );
+            funcionarios.add(funcionario);
         }
-        return funcionarios;
     }
+
+    return funcionarios;
+}
+
 
     public void update(Funcionario funcionario) throws SQLException {
     String sql = "UPDATE funcionario SET usuario = ?, senha = ?, nome = ?, idade = ?, sexo = ?, cpf = ?, rua = ?, numero = ?, complemento = ?, bairro = ?, cidade = ?, estado = ?, contato = ?, email = ?, data_nascimento = ?, tipo_funcionario = ?, especialidade_id = ?, perfil_id = ? WHERE id = ?";
@@ -165,6 +173,9 @@ public Funcionario findByName(String nome) throws SQLException {
         ResultSet rs = stmt.executeQuery();
 
         if (rs.next()) {
+            Long especialidadeId = rs.getObject("especialidade_id") != null ? rs.getLong("especialidade_id") : null;
+            Long perfilId = rs.getObject("perfil_id") != null ? rs.getLong("perfil_id") : null;
+
             return new Funcionario(
                     rs.getLong("id"),
                     rs.getString("usuario"),
@@ -183,10 +194,50 @@ public Funcionario findByName(String nome) throws SQLException {
                     rs.getString("email"),
                     rs.getDate("data_nascimento").toLocalDate(),
                     rs.getString("tipo_funcionario"),
-                    null, null
+                    especialidadeId, // especialidade_id
+                    perfilId         // perfil_id
             );
         }
     }
     return null; // Retorna null se não encontrar
 }
+
+   public Funcionario readById(Long id) throws SQLException {
+    String sql = "SELECT * FROM funcionario WHERE id = ?";
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        stmt.setLong(1, id);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            Long especialidadeId = rs.getObject("especialidade_id") != null ? rs.getLong("especialidade_id") : null;
+            Long perfilId = rs.getObject("perfil_id") != null ? rs.getLong("perfil_id") : null;
+
+            return new Funcionario(
+                    rs.getLong("id"),
+                    rs.getString("usuario"),
+                    rs.getInt("senha"),
+                    rs.getString("nome"),
+                    rs.getInt("idade"),
+                    rs.getString("sexo").charAt(0),
+                    rs.getString("cpf"),
+                    rs.getString("rua"),
+                    rs.getString("numero"),
+                    rs.getString("complemento"),
+                    rs.getString("bairro"),
+                    rs.getString("cidade"),
+                    rs.getString("estado"),
+                    rs.getString("contato"),
+                    rs.getString("email"),
+                    rs.getDate("data_nascimento").toLocalDate(),
+                    rs.getString("tipo_funcionario"),
+                    especialidadeId, // especialidade_id
+                    perfilId         // perfil_id
+            );
+        }
+    }
+    return null; // Retorna null se o funcionário não for encontrado
+}
+
+
+
 }

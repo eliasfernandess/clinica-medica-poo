@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class Funcionario {
 
+    // Atributos
     private Long id;
     private String usuario;
     private int senha;
@@ -20,19 +21,20 @@ public class Funcionario {
     private String contato;
     private String email;
     private LocalDate dataNascimento;
-
     private String tipoFuncionario;
-
     private Long especialidadeId;
-    private Especialidade especialidade;
-
     private Long perfilId;
+
+    private Especialidade especialidade;
     private Perfil perfil;
 
-    public Funcionario(long aLong, String text, int senha1, String text1, int idade1, char charAt, String text2, String text3, String text4, String text5, String text6, String text7, String toString, String text8, String text9, LocalDate dataNascimento1, String toString1, Integer perfilId1, Integer object1) {
-    }
+    // Construtor vazio
+    public Funcionario() {}
 
-    public Funcionario(Long id, String usuario, int senha, String nome, int idade, char sexo, String cpf, String rua, String numero, String complemento, String bairro, String cidade, String estado, String contato, String email, LocalDate dataNascimento, String tipoFuncionario, Long especialidadeId, Long perfilId) {
+    // Construtor principal com todos os campos
+    public Funcionario(Long id, String usuario, int senha, String nome, int idade, char sexo, String cpf, String rua,
+                       String numero, String complemento, String bairro, String cidade, String estado, String contato,
+                       String email, LocalDate dataNascimento, String tipoFuncionario, Long especialidadeId, Long perfilId) {
         this.id = id;
         this.usuario = usuario;
         this.senha = senha;
@@ -54,7 +56,10 @@ public class Funcionario {
         this.perfilId = perfilId;
     }
 
-    public Funcionario(String usuario, int senha, String nome, int idade, char sexo, String cpf, String rua, String numero, String complemento, String bairro, String cidade, String estado, String contato, String email, LocalDate dataNascimento, String tipoFuncionario, Long especialidadeId, Long perfilId) {
+    // Construtor para inserir novo funcionário sem ID (ID será gerado automaticamente pelo banco)
+    public Funcionario(String usuario, int senha, String nome, int idade, char sexo, String cpf, String rua,
+                       String numero, String complemento, String bairro, String cidade, String estado, String contato,
+                       String email, LocalDate dataNascimento, String tipoFuncionario, Long especialidadeId, Long perfilId) {
         this.usuario = usuario;
         this.senha = senha;
         this.nome = nome;
@@ -75,19 +80,7 @@ public class Funcionario {
         this.perfilId = perfilId;
     }
 
-    public Funcionario(String text, int senha, String text0, int idade, char charAt, String text1, String text2, String text3, String text4, String text5, String text6, String toString, String text7, String text8, LocalDate dataNascimento, String toString0, int especialidadeId, int perfilId) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-
-    public String getTipoFuncionario() {
-        return tipoFuncionario;
-    }
-
-    public void setTipoFuncionario(String tipoFuncionario) {
-        this.tipoFuncionario = tipoFuncionario;
-    }
-
+    // Getters e Setters
     public Long getId() {
         return id;
     }
@@ -216,20 +209,20 @@ public class Funcionario {
         this.dataNascimento = dataNascimento;
     }
 
+    public String getTipoFuncionario() {
+        return tipoFuncionario;
+    }
+
+    public void setTipoFuncionario(String tipoFuncionario) {
+        this.tipoFuncionario = tipoFuncionario;
+    }
+
     public Long getEspecialidadeId() {
         return especialidadeId;
     }
 
     public void setEspecialidadeId(Long especialidadeId) {
         this.especialidadeId = especialidadeId;
-    }
-
-    public Especialidade getEspecialidade() {
-        return especialidade;
-    }
-
-    public void setEspecialidade(Especialidade especialidade) {
-        this.especialidade = especialidade;
     }
 
     public Long getPerfilId() {
@@ -240,6 +233,14 @@ public class Funcionario {
         this.perfilId = perfilId;
     }
 
+    public Especialidade getEspecialidade() {
+        return especialidade;
+    }
+
+    public void setEspecialidade(Especialidade especialidade) {
+        this.especialidade = especialidade;
+    }
+
     public Perfil getPerfil() {
         return perfil;
     }
@@ -248,4 +249,14 @@ public class Funcionario {
         this.perfil = perfil;
     }
 
+    @Override
+    public String toString() {
+        return "Funcionario{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", idade=" + idade +
+                ", email='" + email + '\'' +
+                ", tipoFuncionario='" + tipoFuncionario + '\'' +
+                '}';
+    }
 }
