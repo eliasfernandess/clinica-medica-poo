@@ -7,9 +7,6 @@ package br.edu.imepac.administrativo.telas;
 import br.edu.imepac.administrativo.daos.ConvenioDAO;
 import br.edu.imepac.administrativo.entidades.Convenio;
 import java.awt.HeadlessException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
@@ -17,18 +14,13 @@ import javax.swing.JOptionPane;
  *
  * @author elias
  */
-public class CadastrarConvenio extends javax.swing.JFrame {
+public class EditarConvenio extends javax.swing.JFrame {
 
     /**
-     * Creates new form CadastrarConvenio
+     * Creates new form EditarConvenio
      */
-    public CadastrarConvenio() {
+    public EditarConvenio() {
         initComponents();
-        setLocationRelativeTo(null);
-    }
-
-    CadastrarConvenio(Connection conn) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     /**
@@ -52,7 +44,7 @@ public class CadastrarConvenio extends javax.swing.JFrame {
         LabelDataInicio = new javax.swing.JLabel();
         LabelDataTermino = new javax.swing.JLabel();
         LabelStatus = new javax.swing.JLabel();
-        BotãoSalvar = new javax.swing.JButton();
+        ATUALIZAR = new javax.swing.JButton();
         BotãoLimpar = new javax.swing.JButton();
         BotãoVoltar = new javax.swing.JButton();
         AbrirListagem = new javax.swing.JButton();
@@ -66,7 +58,6 @@ public class CadastrarConvenio extends javax.swing.JFrame {
         setMaximumSize(new java.awt.Dimension(830, 843));
         setMinimumSize(new java.awt.Dimension(830, 843));
         setPreferredSize(new java.awt.Dimension(830, 843));
-        setResizable(false);
         getContentPane().setLayout(null);
 
         CampoNomeConvenio.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -151,16 +142,16 @@ public class CadastrarConvenio extends javax.swing.JFrame {
         getContentPane().add(LabelStatus);
         LabelStatus.setBounds(50, 510, 49, 25);
 
-        BotãoSalvar.setBackground(new java.awt.Color(153, 255, 153));
-        BotãoSalvar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        BotãoSalvar.setText("SALVAR");
-        BotãoSalvar.addActionListener(new java.awt.event.ActionListener() {
+        ATUALIZAR.setBackground(new java.awt.Color(153, 204, 255));
+        ATUALIZAR.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        ATUALIZAR.setText("ATUALIZAR");
+        ATUALIZAR.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BotãoSalvarActionPerformed(evt);
+                ATUALIZARActionPerformed(evt);
             }
         });
-        getContentPane().add(BotãoSalvar);
-        BotãoSalvar.setBounds(50, 630, 160, 60);
+        getContentPane().add(ATUALIZAR);
+        ATUALIZAR.setBounds(50, 630, 160, 60);
 
         BotãoLimpar.setBackground(new java.awt.Color(255, 102, 102));
         BotãoLimpar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -205,7 +196,7 @@ public class CadastrarConvenio extends javax.swing.JFrame {
         jSeparator1.setBounds(-40, 90, 900, 10);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel3.setText("CADASTRAR CONVENIOS");
+        jLabel3.setText("EDITAR CONVENIOS");
         getContentPane().add(jLabel3);
         jLabel3.setBounds(60, 30, 220, 25);
 
@@ -216,14 +207,21 @@ public class CadastrarConvenio extends javax.swing.JFrame {
         jLabel21.setBounds(60, 60, 280, 20);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    
 
     private void CampoNomeConvenioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CampoNomeConvenioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_CampoNomeConvenioActionPerformed
 
-    private void BotãoSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotãoSalvarActionPerformed
-  try {
+    private void DataInicioConvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DataInicioConvActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DataInicioConvActionPerformed
+
+    private void ATUALIZARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ATUALIZARActionPerformed
+       try {
         // Validação de campos obrigatórios
         if (CampoNomeConvenio.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "O campo 'Nome do Convênio' é obrigatório!", "Aviso", JOptionPane.WARNING_MESSAGE);
@@ -250,14 +248,12 @@ public class CadastrarConvenio extends javax.swing.JFrame {
             return;
         }
 
-        // Validação do formato de data
-        if (!DataInicioConv.getText().matches("\\d{4}-\\d{2}-\\d{2}") || !DataTerminoConv.getText().matches("\\d{4}-\\d{2}-\\d{2}")) {
-            JOptionPane.showMessageDialog(this, "As datas devem estar no formato yyyy-MM-dd.", "Aviso", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+        // Recupera o ID do convênio (armazenado no campo NomeConvenio como propriedade)
+        int id = (int) CampoNomeConvenio.getClientProperty("idConvenio");
 
-        // Criar o objeto Convenio
+        // Atualiza os dados do convênio
         Convenio convenio = new Convenio();
+        convenio.setId(id);
         convenio.setNomeConvenio(CampoNomeConvenio.getText());
         convenio.setCodigoConvenio(Integer.parseInt(CampoCodigoConvenio.getText()));
         convenio.setDescricao(CampoDescricao.getText());
@@ -265,25 +261,33 @@ public class CadastrarConvenio extends javax.swing.JFrame {
         convenio.setDataFim(java.sql.Date.valueOf(DataTerminoConv.getText()));
         convenio.setStatus(StatusConv.isSelected());
 
-        // Usar a ConvenioDAO para salvar o convênio
+        // Usar ConvenioDAO para atualizar
         ConvenioDAO convenioDAO = new ConvenioDAO();
-        convenioDAO.create(convenio);
+        convenioDAO.update(convenio);
 
-        // Exibir mensagem de sucesso
-        JOptionPane.showMessageDialog(this, "Convênio salvo com sucesso!");
+        JOptionPane.showMessageDialog(this, "Convênio atualizado com sucesso!");
 
-
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Erro: Código do convênio deve ser um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);
-    } catch (IllegalArgumentException e) {
-        JOptionPane.showMessageDialog(this, "Erro: Certifique-se de que as datas estão no formato correto (yyyy-MM-dd).", "Erro", JOptionPane.ERROR_MESSAGE);
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(this, "Erro ao salvar o convênio: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-    } catch (HeadlessException e) {
-        JOptionPane.showMessageDialog(this, "Erro inesperado: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        // Voltar para a tela de listagem
+        ListagemConvenio listagemConvenio = new ListagemConvenio();
+        listagemConvenio.setVisible(true);
+        this.dispose();
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Erro ao atualizar o convênio: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
     }
+    }//GEN-LAST:event_ATUALIZARActionPerformed
 
-    }//GEN-LAST:event_BotãoSalvarActionPerformed
+    private void BotãoLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotãoLimparActionPerformed
+        // TODO add your handling code here:
+        // Limpar os campos de texto
+        CampoNomeConvenio.setText("");
+        CampoCodigoConvenio.setText("");
+        CampoDescricao.setText("");
+        DataInicioConv.setText("");
+        DataTerminoConv.setText("");
+
+        // Desmarcar a caixa de seleção
+        StatusConv.setSelected(false);
+    }//GEN-LAST:event_BotãoLimparActionPerformed
 
     private void BotãoVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotãoVoltarActionPerformed
         // TODO add your handling code here:
@@ -292,30 +296,26 @@ public class CadastrarConvenio extends javax.swing.JFrame {
         this.dispose(); // Fecha a tela atual (TelaLogin)
     }//GEN-LAST:event_BotãoVoltarActionPerformed
 
-    private void DataInicioConvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DataInicioConvActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_DataInicioConvActionPerformed
-
     private void AbrirListagemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AbrirListagemActionPerformed
         // TODO add your handling code here:
-            ListagemConvenio listagemConvenio = new ListagemConvenio();
-    listagemConvenio.setVisible(true);
-    this.dispose();
-    
+        ListagemConvenio listagemConvenio = new ListagemConvenio();
+        listagemConvenio.setVisible(true);
+        this.dispose();
+
     }//GEN-LAST:event_AbrirListagemActionPerformed
 
-    private void BotãoLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotãoLimparActionPerformed
-        // TODO add your handling code here:
-         // Limpar os campos de texto
-    CampoNomeConvenio.setText("");
-    CampoCodigoConvenio.setText("");
-    CampoDescricao.setText("");
-    DataInicioConv.setText("");
-    DataTerminoConv.setText("");
+    public void preencherCampos(int id, String nomeConvenio, int codigoConvenio, String descricao, String dataInicio, String dataTermino, boolean status) {
+    // Preenche os campos da tela EditarConvenio
+    CampoNomeConvenio.setText(nomeConvenio);
+    CampoCodigoConvenio.setText(String.valueOf(codigoConvenio));
+    CampoDescricao.setText(descricao);
+    DataInicioConv.setText(dataInicio);
+    DataTerminoConv.setText(dataTermino);
+    StatusConv.setSelected(status);
 
-    // Desmarcar a caixa de seleção
-    StatusConv.setSelected(false);
-    }//GEN-LAST:event_BotãoLimparActionPerformed
+    // Armazena o ID do convênio (caso necessário para salvar)
+    CampoNomeConvenio.putClientProperty("idConvenio", id);
+}
 
     /**
      * @param args the command line arguments
@@ -333,23 +333,29 @@ public class CadastrarConvenio extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadastrarConvenio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(EditarConvenio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(EditarConvenio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(EditarConvenio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(EditarConvenio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new CadastrarConvenio().setVisible(true);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new EditarConvenio().setVisible(true);
+            }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton ATUALIZAR;
     private javax.swing.JButton AbrirListagem;
     private javax.swing.JButton BotãoLimpar;
-    private javax.swing.JButton BotãoSalvar;
     private javax.swing.JButton BotãoVoltar;
     private javax.swing.JTextField CampoCodigoConvenio;
     private javax.swing.JTextField CampoDescricao;
@@ -369,12 +375,4 @@ public class CadastrarConvenio extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
-
-    private void abrirListagemConvenio() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-
-
 }
-

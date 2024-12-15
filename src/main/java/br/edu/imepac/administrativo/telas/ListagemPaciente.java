@@ -74,6 +74,19 @@ public class ListagemPaciente extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(TabelaP);
+        if (TabelaP.getColumnModel().getColumnCount() > 0) {
+            TabelaP.getColumnModel().getColumn(0).setResizable(false);
+            TabelaP.getColumnModel().getColumn(0).setHeaderValue("ID");
+            TabelaP.getColumnModel().getColumn(1).setResizable(false);
+            TabelaP.getColumnModel().getColumn(1).setHeaderValue("Nome");
+            TabelaP.getColumnModel().getColumn(2).setHeaderValue("Cpf");
+            TabelaP.getColumnModel().getColumn(3).setHeaderValue("Nascimento");
+            TabelaP.getColumnModel().getColumn(4).setResizable(false);
+            TabelaP.getColumnModel().getColumn(4).setHeaderValue("Sexo");
+            TabelaP.getColumnModel().getColumn(5).setHeaderValue("Cidade");
+            TabelaP.getColumnModel().getColumn(6).setHeaderValue("UF");
+            TabelaP.getColumnModel().getColumn(7).setHeaderValue("Cep");
+        }
 
         getContentPane().add(jScrollPane1);
         jScrollPane1.setBounds(10, 110, 670, 400);

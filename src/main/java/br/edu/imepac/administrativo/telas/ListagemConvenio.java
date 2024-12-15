@@ -24,16 +24,20 @@ public class ListagemConvenio extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         TabelaListConv = new javax.swing.JTable();
         BttEditar = new javax.swing.JButton();
-        BttSalvar = new javax.swing.JButton();
         BttExcluir = new javax.swing.JButton();
         VoltarListConv = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(779, 700));
-        setPreferredSize(new java.awt.Dimension(779, 700));
+        setMaximumSize(new java.awt.Dimension(936, 700));
+        setMinimumSize(new java.awt.Dimension(936, 700));
+        setPreferredSize(new java.awt.Dimension(936, 700));
         setResizable(false);
         getContentPane().setLayout(null);
 
+        TabelaListConv.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         TabelaListConv.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -60,8 +64,10 @@ public class ListagemConvenio extends javax.swing.JFrame {
         jScrollPane1.setViewportView(TabelaListConv);
 
         getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(52, 114, 670, 402);
+        jScrollPane1.setBounds(40, 110, 850, 402);
 
+        BttEditar.setBackground(new java.awt.Color(255, 255, 153));
+        BttEditar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         BttEditar.setText("EDITAR");
         BttEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -69,17 +75,10 @@ public class ListagemConvenio extends javax.swing.JFrame {
             }
         });
         getContentPane().add(BttEditar);
-        BttEditar.setBounds(50, 540, 135, 45);
+        BttEditar.setBounds(40, 560, 135, 60);
 
-        BttSalvar.setText("SALVAR");
-        BttSalvar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BttSalvarActionPerformed(evt);
-            }
-        });
-        getContentPane().add(BttSalvar);
-        BttSalvar.setBounds(190, 540, 133, 45);
-
+        BttExcluir.setBackground(new java.awt.Color(255, 153, 153));
+        BttExcluir.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         BttExcluir.setText("EXCLUIR");
         BttExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -87,8 +86,9 @@ public class ListagemConvenio extends javax.swing.JFrame {
             }
         });
         getContentPane().add(BttExcluir);
-        BttExcluir.setBounds(330, 540, 135, 46);
+        BttExcluir.setBounds(190, 560, 135, 60);
 
+        VoltarListConv.setBackground(new java.awt.Color(255, 153, 153));
         VoltarListConv.setText("Voltar");
         VoltarListConv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -96,7 +96,20 @@ public class ListagemConvenio extends javax.swing.JFrame {
             }
         });
         getContentPane().add(VoltarListConv);
-        VoltarListConv.setBounds(55, 80, 70, 23);
+        VoltarListConv.setBounds(800, 30, 90, 30);
+        getContentPane().add(jSeparator1);
+        jSeparator1.setBounds(0, 80, 940, 3);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
+        jLabel1.setText("LISTAGEM CONVENIOS");
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(60, 30, 270, 32);
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 2, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(51, 102, 255));
+        jLabel2.setText("DICA: Para editar algo você precisa clicar na linha escolhida e clicar no botão de Editar.");
+        getContentPane().add(jLabel2);
+        jLabel2.setBounds(40, 530, 700, 20);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -170,12 +183,31 @@ public class ListagemConvenio extends javax.swing.JFrame {
 
     
     private void BttEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BttEditarActionPerformed
-    int selectedRow = TabelaListConv.getSelectedRow();
-        if (selectedRow != -1) {
-            JOptionPane.showMessageDialog(this, "Você pode editar diretamente na tabela. Clique em 'Salvar' para confirmar as alterações.");
-        } else {
-            JOptionPane.showMessageDialog(this, "Selecione uma linha para editar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+     int selectedRow = TabelaListConv.getSelectedRow();
+    if (selectedRow != -1) {
+        try {
+            // Captura os dados da linha selecionada
+            int id = (int) TabelaListConv.getValueAt(selectedRow, 0);
+            String nomeConvenio = TabelaListConv.getValueAt(selectedRow, 1).toString();
+            int codigoConvenio = Integer.parseInt(TabelaListConv.getValueAt(selectedRow, 2).toString());
+            String descricao = TabelaListConv.getValueAt(selectedRow, 3).toString();
+            String dataInicio = TabelaListConv.getValueAt(selectedRow, 4).toString();
+            String dataTermino = TabelaListConv.getValueAt(selectedRow, 5).toString();
+            boolean status = Boolean.parseBoolean(TabelaListConv.getValueAt(selectedRow, 6).toString());
+
+            // Cria uma instância da tela EditarConvenio e preenche os campos
+            EditarConvenio editarConvenio = new EditarConvenio();
+            editarConvenio.preencherCampos(id, nomeConvenio, codigoConvenio, descricao, dataInicio, dataTermino, status);
+
+            // Exibe a nova tela
+            editarConvenio.setVisible(true);
+            this.dispose(); // Fecha a tela atual
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao carregar dados para edição: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
+    } else {
+        JOptionPane.showMessageDialog(this, "Selecione uma linha para editar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+    }
     }//GEN-LAST:event_BttEditarActionPerformed
 
     private void VoltarListConvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VoltarListConvActionPerformed
@@ -184,32 +216,6 @@ public class ListagemConvenio extends javax.swing.JFrame {
         telaLobby.setVisible(true); // Exibe a nova tela
         this.dispose(); // Fecha a tela atual (TelaLogin)
     }//GEN-LAST:event_VoltarListConvActionPerformed
-
-    private void BttSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BttSalvarActionPerformed
-  int selectedRow = TabelaListConv.getSelectedRow();
-        if (selectedRow != -1) {
-            try {
-                int id = (int) TabelaListConv.getValueAt(selectedRow, 0);
-                String nomeConvenio = TabelaListConv.getValueAt(selectedRow, 1).toString();
-                int codigoConvenio = Integer.parseInt(TabelaListConv.getValueAt(selectedRow, 2).toString());
-                String descricao = TabelaListConv.getValueAt(selectedRow, 3).toString();
-                java.sql.Date dataInicio = java.sql.Date.valueOf(TabelaListConv.getValueAt(selectedRow, 4).toString());
-                java.sql.Date dataTermino = java.sql.Date.valueOf(TabelaListConv.getValueAt(selectedRow, 5).toString());
-                boolean status = Boolean.parseBoolean(TabelaListConv.getValueAt(selectedRow, 6).toString());
-
-                Convenio convenio = new Convenio(id, nomeConvenio, codigoConvenio, descricao, dataInicio, dataTermino, status);
-                convenioDAO.update(convenio); // Uso do ConvenioDAO para atualizar
-
-                JOptionPane.showMessageDialog(this, "Convênio atualizado com sucesso!");
-                carregarDados();
-            } catch (HeadlessException | NumberFormatException | SQLException e) {
-                JOptionPane.showMessageDialog(this, "Erro ao salvar no banco de dados: " + e.getMessage(),
-                        "Erro", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Selecione uma linha para salvar as alterações.", "Aviso", JOptionPane.WARNING_MESSAGE);
-        }
-    }//GEN-LAST:event_BttSalvarActionPerformed
 
     private void BttExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BttExcluirActionPerformed
      int selectedRow = TabelaListConv.getSelectedRow();
@@ -242,10 +248,12 @@ public class ListagemConvenio extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BttEditar;
     private javax.swing.JButton BttExcluir;
-    private javax.swing.JButton BttSalvar;
     private javax.swing.JTable TabelaListConv;
     private javax.swing.JButton VoltarListConv;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
 
   

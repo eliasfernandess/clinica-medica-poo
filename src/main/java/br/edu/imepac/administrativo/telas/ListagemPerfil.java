@@ -5,12 +5,17 @@
 package br.edu.imepac.administrativo.telas;
 
 
+import br.edu.imepac.administrativo.daos.PerfilDAO;
+import br.edu.imepac.administrativo.entidades.Perfil;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -24,10 +29,11 @@ public class ListagemPerfil extends javax.swing.JFrame {
      * Creates new form ListagemConvenio
      */
     public ListagemPerfil() {
-    initComponents();
+    initComponents(); // Inicializa os componentes da interface
     setLocationRelativeTo(null);
     carregarDados(); // Carrega os dados no início
 }
+
 
 
     /**
@@ -40,29 +46,34 @@ public class ListagemPerfil extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        TabelaP = new javax.swing.JTable();
+        TablePerfil = new javax.swing.JTable();
         BttEditar = new javax.swing.JButton();
-        BttSalvar = new javax.swing.JButton();
         BttExcluir = new javax.swing.JButton();
-        VoltarListConv = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabel1 = new javax.swing.JLabel();
+        BotãoVoltar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(499, 700));
+        setMinimumSize(new java.awt.Dimension(499, 700));
+        setPreferredSize(new java.awt.Dimension(499, 700));
         setResizable(false);
         getContentPane().setLayout(null);
 
-        TabelaP.setModel(new javax.swing.table.DefaultTableModel(
+        TablePerfil.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        TablePerfil.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Nome", "Tipo", "Descriçao"
+                "Nome do Pefil"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, true, true
+                false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -73,14 +84,12 @@ public class ListagemPerfil extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(TabelaP);
-        if (TabelaP.getColumnModel().getColumnCount() > 0) {
-            TabelaP.getColumnModel().getColumn(3).setResizable(false);
-        }
+        jScrollPane1.setViewportView(TablePerfil);
 
         getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(40, 110, 670, 400);
+        jScrollPane1.setBounds(40, 110, 420, 400);
 
+        BttEditar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         BttEditar.setText("EDITAR");
         BttEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -88,17 +97,9 @@ public class ListagemPerfil extends javax.swing.JFrame {
             }
         });
         getContentPane().add(BttEditar);
-        BttEditar.setBounds(50, 540, 135, 45);
+        BttEditar.setBounds(40, 540, 135, 60);
 
-        BttSalvar.setText("SALVAR");
-        BttSalvar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BttSalvarActionPerformed(evt);
-            }
-        });
-        getContentPane().add(BttSalvar);
-        BttSalvar.setBounds(190, 540, 133, 45);
-
+        BttExcluir.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         BttExcluir.setText("EXCLUIR");
         BttExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -106,231 +107,136 @@ public class ListagemPerfil extends javax.swing.JFrame {
             }
         });
         getContentPane().add(BttExcluir);
-        BttExcluir.setBounds(330, 540, 135, 46);
+        BttExcluir.setBounds(190, 540, 135, 60);
+        getContentPane().add(jSeparator1);
+        jSeparator1.setBounds(0, 73, 500, 10);
 
-        VoltarListConv.setText("Voltar");
-        VoltarListConv.addActionListener(new java.awt.event.ActionListener() {
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
+        jLabel1.setText("LISTAGEM PERFIL");
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(50, 20, 270, 32);
+
+        BotãoVoltar.setBackground(new java.awt.Color(255, 153, 153));
+        BotãoVoltar.setText("Voltar");
+        BotãoVoltar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                VoltarListConvActionPerformed(evt);
+                BotãoVoltarActionPerformed(evt);
             }
         });
-        getContentPane().add(VoltarListConv);
-        VoltarListConv.setBounds(55, 80, 70, 23);
+        getContentPane().add(BotãoVoltar);
+        BotãoVoltar.setBounds(330, 20, 90, 30);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
  
-private void carregarDados() {
-    String url = "jdbc:mysql://localhost:3306/gerenciar_perfil";
-    String user = "root";
-    String password = "root";
+     private void carregarDados() {
+        PerfilDAO perfilDAO = new PerfilDAO(); // Instância da DAO
+        String[] colunas = { "ID", "Nome do Perfil" }; // Colunas da tabela
+        DefaultTableModel tableModel = new DefaultTableModel(colunas, 0); // Modelo da tabela
 
-    String[] colunas = {"id","nome", "tipo", "descricao" };
-    DefaultTableModel tableModel = new DefaultTableModel(colunas, 0);
+        try {
+            // Obtemos a lista de perfis usando a DAO
+            List<Perfil> perfis = perfilDAO.readAll();
 
-    String sql = "SELECT id,nome,tipo,descricao FROM perfil";
+            // Iteramos sobre a lista de perfis para adicionar ao modelo da tabela
+            for (Perfil perfil : perfis) {
+                Object[] linha = { perfil.getId(), perfil.getNome() };
+                tableModel.addRow(linha); // Adiciona a linha ao modelo
+            }
 
-    try (Connection connection = DriverManager.getConnection(url, user, password);
-         Statement statement = connection.createStatement();
-         ResultSet resultSet = statement.executeQuery(sql)) {
-
-        while (resultSet.next()) {
-            Object[] linha = {
-                resultSet.getString("nome"),
-                resultSet.getString("tipo"),
-                resultSet.getString("descricao"),
-            
-            };
-            tableModel.addRow(linha);
+            TablePerfil.setModel(tableModel); // Define o modelo na tabela
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao carregar os dados: " + e.getMessage(),
+                    "Erro", JOptionPane.ERROR_MESSAGE);
         }
-
-        TabelaP.setModel(tableModel);
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(this, "Erro ao carregar os dados: " + e.getMessage(),
-                "Erro", JOptionPane.ERROR_MESSAGE);
     }
-}
 
     
     private void BttEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BttEditarActionPerformed
-     // Obter a linha selecionada
-    int selectedRow = TabelaP.getSelectedRow();
+  int selectedRow = TablePerfil.getSelectedRow(); // Linha selecionada na tabela
+        if (selectedRow != -1) {
+            try {
+                // Obtém o ID e o nome do perfil selecionado
+                Long id = Long.valueOf(TablePerfil.getValueAt(selectedRow, 0).toString());
 
-    if (selectedRow != -1) { // Verifica se uma linha foi selecionada
-        // Permite edição diretamente na linha selecionada
-        TabelaP.editCellAt(selectedRow, 0);
-        TabelaP.editCellAt(selectedRow, 1);
-        TabelaP.editCellAt(selectedRow, 2);
-        TabelaP.editCellAt(selectedRow, 3);
+                String nomePerfil = TablePerfil.getValueAt(selectedRow, 1).toString();
 
-        JOptionPane.showMessageDialog(this, "Você pode editar diretamente na tabela."
-                + " Clique em SALVAR para confirmar as alterações.");
-    } else {
-        JOptionPane.showMessageDialog(this, "Selecione uma linha para editar.",
-                "Aviso", JOptionPane.WARNING_MESSAGE);
+                // Redireciona para a tela de edição
+                EditarPerfil editarPerfil = new EditarPerfil();
+                editarPerfil.preencherDados(id, nomePerfil); // Preenche os dados na tela de edição
+                editarPerfil.setVisible(true);
+                this.dispose(); // Fecha a tela atual
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Erro ao abrir a tela de edição: " + e.getMessage(),
+                        "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione uma linha para editar.", "Aviso",
+                    JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_BttEditarActionPerformed
 
-    private void VoltarListConvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VoltarListConvActionPerformed
+    private void BttExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BttExcluirActionPerformed
+        int selectedRow = TablePerfil.getSelectedRow(); // Obtém a linha selecionada
+    if (selectedRow != -1) { // Verifica se há uma linha selecionada
+        // Obtém o ID do perfil da linha selecionada
+        Long id = Long.valueOf(TablePerfil.getValueAt(selectedRow, 0).toString());
+
+        // Solicita confirmação do usuário
+        int confirm = JOptionPane.showConfirmDialog(this, 
+                "Deseja realmente excluir este Perfil?", 
+                "Confirmação", 
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) { // Se o usuário confirmar
+            try {
+                // Chama o método de exclusão da DAO
+                PerfilDAO perfilDAO = new PerfilDAO();
+                perfilDAO.delete(id); // Exclui o perfil pelo ID
+
+                // Remove a linha do modelo da tabela
+                ((DefaultTableModel) TablePerfil.getModel()).removeRow(selectedRow);
+
+                // Mensagem de sucesso
+                JOptionPane.showMessageDialog(this, "Perfil excluído com sucesso!");
+            } catch (SQLException e) {
+                // Exibe mensagem de erro
+                JOptionPane.showMessageDialog(this, 
+                        "Erro ao excluir o perfil: " + e.getMessage(), 
+                        "Erro", 
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    } else {
+        // Exibe mensagem se nenhuma linha for selecionada
+        JOptionPane.showMessageDialog(this, 
+                "Selecione uma linha para excluir.", 
+                "Aviso", 
+                JOptionPane.WARNING_MESSAGE);
+    }
+    }//GEN-LAST:event_BttExcluirActionPerformed
+
+    private void BotãoVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotãoVoltarActionPerformed
         // TODO add your handling code here:
         TelaLobby telaLobby = new TelaLobby(); // Instancia a próxima tela
         telaLobby.setVisible(true); // Exibe a nova tela
         this.dispose(); // Fecha a tela atual (TelaLogin)
-    }//GEN-LAST:event_VoltarListConvActionPerformed
-
-    private void BttSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BttSalvarActionPerformed
- // Obter a linha selecionada
-    int selectedRow = TabelaP.getSelectedRow(); 
-
-    if (selectedRow != -1) { // Verifica se uma linha foi selecionada
-    // Obter a linha selecionada
-
-    if (selectedRow != -1) { // Verifica se uma linha foi selecionada
-        try {
-            // Obter os valores da linha selecionada
-            int id = Integer.parseInt(TabelaP.getValueAt(selectedRow, 0).toString());
-            String nome = TabelaP.getValueAt(selectedRow, 1).toString();
-            String tipo = TabelaP.getValueAt(selectedRow, 2).toString();
-            String descricao = TabelaP.getValueAt(selectedRow, 3).toString();
-          
-
-            // Configuração do banco de dados
-            String url = "jdbc:mysql://localhost:3306/gerenciar_perfil";
-            String user = "root";
-            String password = "root";
-
-            // SQL para atualizar o registro no banco
-            String sql = "UPDATE Perfil SET nome = ?, "
-                    + "tipo = ?, descricao = ?,"
-                    + " WHERE id = ?";
-
-            try (Connection connection = DriverManager.getConnection(url, user, password);
-                 PreparedStatement stmt = connection.prepareStatement(sql)) {
-
-                // Configurar os parâmetros no PreparedStatement
-                stmt.setString(1, nome);
-                stmt.setString(2, tipo);
-                stmt.setString(3, descricao);
-          
-   
-                // Executar a atualização
-                int rowsAffected = stmt.executeUpdate();
-
-                if (rowsAffected > 0) {
-                    JOptionPane.showMessageDialog(this, "Registro atualizado com sucesso!");
-                } else {
-                    JOptionPane.showMessageDialog(this, "Nenhuma alteração foi feita.");
-                }
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Erro ao atualizar o banco de dados: " + e.getMessage(),
-                                          "Erro", JOptionPane.ERROR_MESSAGE);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Erro ao processar os dados: " + e.getMessage(),
-                                          "Erro", JOptionPane.ERROR_MESSAGE);
-        }
-    } else {
-        JOptionPane.showMessageDialog(this, 
-                "Selecione uma linha para salvar as alterações.",
-                "Aviso", JOptionPane.WARNING_MESSAGE);
-            }
-        }
-    }//GEN-LAST:event_BttSalvarActionPerformed
-
-    private void BttExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BttExcluirActionPerformed
-        // TODO add your handling code here:
-            int selectedRow = TabelaP.getSelectedRow();
-            if (selectedRow != -1) { // Verifica se uma linha foi selecionada
-        // Obter o código do convênio (chave única)
-        int codigoConvenio = Integer.parseInt(TabelaP.getValueAt(selectedRow, 1).toString());
-
-        // Exibir mensagem de confirmação
-        int confirm = JOptionPane.showConfirmDialog(this,
-                "Deseja realmente excluir este Perfil?",
-                "Confirmação",
-                JOptionPane.YES_NO_OPTION);
-
-        if (confirm == JOptionPane.YES_OPTION) {
-            // Configuração do banco de dados
-            String url = "jdbc:mysql://localhost:3306/gerenciar_perfil";
-            String user = "root";
-            String password = "root";
-
-            // SQL para excluir o registro no banco
-            String sql = "DELETE FROM perfil WHERE id = ?";
-
-            try (Connection connection = DriverManager.getConnection(url, user, password);
-                 PreparedStatement stmt = connection.prepareStatement(sql)) {
-
-                // Configurar o código do convênio no PreparedStatement
-                stmt.setInt(1, codigoConvenio);
-
-                // Executar a exclusão
-                int rowsAffected = stmt.executeUpdate();
-
-                if (rowsAffected > 0) {
-                    JOptionPane.showMessageDialog(this, "perfil excluído com sucesso!");
-
-                    // Remover a linha da tabela na interface
-                    ((DefaultTableModel) TabelaP.getModel()).removeRow(selectedRow);
-                } else {
-                    JOptionPane.showMessageDialog(this, "Não foi possível excluir o perfil.",
-                                                  "Erro", JOptionPane.ERROR_MESSAGE);
-                }
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(this, "Erro ao excluir do banco de dados: "+ e.getMessage(),
-                                              "Erro", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    } else {
-        JOptionPane.showMessageDialog(this, "Selecione uma linha para excluir.", "Aviso", JOptionPane.WARNING_MESSAGE);
-    }
-    }//GEN-LAST:event_BttExcluirActionPerformed
+    }//GEN-LAST:event_BotãoVoltarActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ListagemPerfil.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ListagemPerfil.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ListagemPerfil.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ListagemPerfil.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ListagemPerfil().setVisible(true);
-            }
-        });
+     public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(() -> new ListagemPerfil().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BotãoVoltar;
     private javax.swing.JButton BttEditar;
     private javax.swing.JButton BttExcluir;
-    private javax.swing.JButton BttSalvar;
-    private javax.swing.JTable TabelaP;
-    private javax.swing.JButton VoltarListConv;
+    private javax.swing.JTable TablePerfil;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
 }

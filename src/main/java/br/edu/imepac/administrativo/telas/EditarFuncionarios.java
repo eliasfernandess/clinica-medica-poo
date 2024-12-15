@@ -4,95 +4,29 @@
  */
 package br.edu.imepac.administrativo.telas;
 
-import br.edu.imepac.administrativo.daos.EspecialidadeDAO;
 import br.edu.imepac.administrativo.daos.FuncionarioDAO;
-import br.edu.imepac.administrativo.daos.PerfilDAO;
 import br.edu.imepac.administrativo.entidades.Especialidade;
 import br.edu.imepac.administrativo.entidades.Funcionario;
 import br.edu.imepac.administrativo.entidades.Perfil;
 import java.awt.HeadlessException;
 import java.sql.SQLException;
-
-import javax.swing.*;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author elias
  */
-public class CadastrarFuncionarios extends javax.swing.JFrame {
+public class EditarFuncionarios extends javax.swing.JFrame {
 
     /**
-     * Creates new form CadastrarFuncionarios
-     * @throws java.sql.SQLException
+     * Creates new form EditarFuncionarios
      */
-    public CadastrarFuncionarios() throws SQLException {
-        perfilDAO = new PerfilDAO();
-        especialidadeDAO = new EspecialidadeDAO();
-        funcionarioDAO = new FuncionarioDAO();
-
+    public EditarFuncionarios() {
         initComponents();
-
-        loadDataFieldsFromDB();
-
     }
-    
-    private void loadDataFieldsFromDB() throws SQLException {
-    try {
-        // Carregar perfis do banco
-        perfis = perfilDAO.readAll();
-
-        if (perfilField != null) {
-            perfilField.removeAllItems();
-            for (Perfil perfil : perfis) {
-                perfilField.addItem(perfil); // Objeto agora renderiza adequadamente com toString
-            }
-        } else {
-            System.err.println("Campo 'perfilField' não inicializado.");
-        }
-
-        // Carregar especialidades do banco
-        especialidades = especialidadeDAO.readAll();
-
-        if (especialidadeField != null) {
-            especialidadeField.removeAllItems();
-            for (Especialidade especialidade : especialidades) {
-                especialidadeField.addItem(especialidade); // Objeto agora renderiza adequadamente com toString
-            }
-        } else {
-            System.err.println("Campo 'especialidadeField' não inicializado.");
-        }
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(this, "Erro ao carregar dados do banco de dados: " + e.getMessage(),
-                "Erro de Banco de Dados", JOptionPane.ERROR_MESSAGE);
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Erro inesperado: " + e.getMessage(),
-                "Erro", JOptionPane.ERROR_MESSAGE);
-    }
-}
-
-
-    
-   private boolean camposValidos() {
-    if (usuarioTextField.getText().trim().isEmpty() ||
-        senhaTextField.getText().trim().isEmpty() ||
-        nomeCompletoTextfield.getText().trim().isEmpty() ||
-        idadeTextField.getText().trim().isEmpty() ||
-        dataNascimentoTextField.getText().trim().isEmpty() ||
-        sexoTextField.getSelectedItem() == null ||
-        perfilField.getSelectedItem() == null) {
-        JOptionPane.showMessageDialog(this, "Preencha todos os campos obrigatórios.", "Erro", JOptionPane.ERROR_MESSAGE);
-        return false;
-    }
-    return true;
-}
-
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -115,7 +49,6 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jSeparator2 = new javax.swing.JSeparator();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
@@ -139,7 +72,7 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
         jLabel21 = new javax.swing.JLabel();
         jSeparator4 = new javax.swing.JSeparator();
         CancelarBotao = new javax.swing.JButton();
-        SalvarBotão = new javax.swing.JButton();
+        AttBotão = new javax.swing.JButton();
         LimparBotao = new javax.swing.JButton();
         jSeparator5 = new javax.swing.JSeparator();
         dataNascimentoTextField = new javax.swing.JFormattedTextField();
@@ -228,13 +161,11 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
         jLabel9.setText("SEXO");
         getContentPane().add(jLabel9);
         jLabel9.setBounds(480, 180, 33, 20);
-        getContentPane().add(jSeparator2);
-        jSeparator2.setBounds(0, 68, 1250, 0);
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel10.setText("CADASTRO FUNCIONARIOS");
+        jLabel10.setText("ATUALIZAR FUNCIONARIOS");
         getContentPane().add(jLabel10);
-        jLabel10.setBounds(140, 20, 240, 25);
+        jLabel10.setBounds(140, 20, 250, 25);
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel11.setText("Rua");
@@ -371,18 +302,23 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
         getContentPane().add(CancelarBotao);
         CancelarBotao.setBounds(1020, 850, 160, 60);
 
-        SalvarBotão.setBackground(new java.awt.Color(153, 255, 153));
-        SalvarBotão.setText("SALVAR");
-        SalvarBotão.addActionListener(new java.awt.event.ActionListener() {
+        AttBotão.setBackground(new java.awt.Color(153, 204, 255));
+        AttBotão.setText("ATUALIZAR");
+        AttBotão.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SalvarBotãoActionPerformed(evt);
+                AttBotãoActionPerformed(evt);
             }
         });
-        getContentPane().add(SalvarBotão);
-        SalvarBotão.setBounds(1020, 690, 160, 60);
+        getContentPane().add(AttBotão);
+        AttBotão.setBounds(1020, 690, 160, 60);
 
         LimparBotao.setBackground(new java.awt.Color(255, 255, 153));
         LimparBotao.setText("LIMPAR CAMPOS");
+        LimparBotao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LimparBotaoActionPerformed(evt);
+            }
+        });
         getContentPane().add(LimparBotao);
         LimparBotao.setBounds(1020, 770, 160, 60);
 
@@ -450,7 +386,6 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
         estadoTextField1.setBounds(920, 560, 230, 50);
 
         especialidadeField.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        especialidadeField.setSelectedItem(especialidadeField);
         especialidadeField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 especialidadeFieldActionPerformed(evt);
@@ -500,15 +435,41 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private Funcionario funcionarioAtual;
+    
+    public void preencherDados(Funcionario funcionario) {
+    this.funcionarioAtual = funcionario; // Armazena o objeto atual para edição
+    usuarioTextField.setText(funcionario.getUsuario());
+    senhaTextField.setText(String.valueOf(funcionario.getSenha()));
+    nomeCompletoTextfield.setText(funcionario.getNome());
+    idadeTextField.setText(String.valueOf(funcionario.getIdade()));
+    sexoTextField.setSelectedItem(funcionario.getSexo() == 'M' ? "Masculino" : "Feminino");
+    identificacaoTextField.setText(funcionario.getCpf());
+    logradouroTextField.setText(funcionario.getRua());
+    numeroTextField.setText(funcionario.getNumero());
+    complementoTextField.setText(funcionario.getComplemento());
+    bairroTextField.setText(funcionario.getBairro());
+    cidadeTextField.setText(funcionario.getCidade());
+    estadoTextField1.setSelectedItem(funcionario.getEstado());
+    contatoTextField.setText(funcionario.getContato());
+    emailTextField.setText(funcionario.getEmail());
+    dataNascimentoTextField.setText(funcionario.getDataNascimento().toString());
+    tipoFuncionarioField.setSelectedItem(funcionario.getTipoFuncionario());
+    perfilField.setSelectedItem(funcionario.getPerfil());
+    especialidadeField.setSelectedItem(funcionario.getEspecialidade());
+}
+
+
+
 
     
-    private void emailTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_emailTextFieldActionPerformed
-
     private void senhaTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_senhaTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_senhaTextFieldActionPerformed
+
+    private void emailTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_emailTextFieldActionPerformed
 
     private void nomeCompletoTextfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nomeCompletoTextfieldActionPerformed
         // TODO add your handling code here:
@@ -538,67 +499,51 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_usuarioTextFieldActionPerformed
 
-    private void SalvarBotãoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalvarBotãoActionPerformed
-   if (camposValidos()) {
-        try {
-            // Validações de campos numéricos
-            int senha = Integer.parseInt(senhaTextField.getText());
-            int idade = Integer.parseInt(idadeTextField.getText());
+    private void CancelarBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelarBotaoActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_CancelarBotaoActionPerformed
 
-            // Processar data de nascimento
+    @SuppressWarnings("empty-statement")
+    private void AttBotãoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AttBotãoActionPerformed
+      if (camposValidos()) {
+        try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate dataNascimento = LocalDate.parse(dataNascimentoTextField.getText(), formatter);
 
-            // Obter perfil selecionado
-            Perfil perfilSelecionado = (Perfil) perfilField.getSelectedItem();
-            if (perfilSelecionado == null) {
-                JOptionPane.showMessageDialog(this, "Selecione um perfil válido.", "Erro", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            Long perfilId = perfilSelecionado.getId();
+            // Atualiza os dados no objeto funcionarioAtual
+            funcionarioAtual.setUsuario(usuarioTextField.getText());
+            funcionarioAtual.setSenha(Integer.parseInt(senhaTextField.getText()));
+            funcionarioAtual.setNome(nomeCompletoTextfield.getText());
+            funcionarioAtual.setIdade(Integer.parseInt(idadeTextField.getText()));
+            funcionarioAtual.setSexo(sexoTextField.getSelectedItem().toString().charAt(0));
+            funcionarioAtual.setCpf(identificacaoTextField.getText());
+            funcionarioAtual.setRua(logradouroTextField.getText());
+            funcionarioAtual.setNumero(numeroTextField.getText());
+            funcionarioAtual.setComplemento(complementoTextField.getText());
+            funcionarioAtual.setBairro(bairroTextField.getText());
+            funcionarioAtual.setCidade(cidadeTextField.getText());
+            funcionarioAtual.setEstado(estadoTextField1.getSelectedItem().toString());
+            funcionarioAtual.setContato(contatoTextField.getText());
+            funcionarioAtual.setEmail(emailTextField.getText());
+            funcionarioAtual.setDataNascimento(dataNascimento);
+            funcionarioAtual.setTipoFuncionario(tipoFuncionarioField.getSelectedItem().toString());
+            funcionarioAtual.setEspecialidadeId(((Especialidade) especialidadeField.getSelectedItem()).getId());
+            funcionarioAtual.setPerfilId(((Perfil) perfilField.getSelectedItem()).getId());
 
-            // Obter especialidade selecionada (se aplicável)
-            Long especialidadeId = null; // Inicializamos como nulo
-            if (especialidadeField.isVisible()) {
-                Especialidade especialidadeSelecionada = (Especialidade) especialidadeField.getSelectedItem();
-                if (especialidadeSelecionada != null) {
-                    especialidadeId = especialidadeSelecionada.getId();
-                }
-            }
+            // Chama o método update da DAO
+            FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+            funcionarioDAO.update(funcionarioAtual);
 
-            // Criar objeto Funcionario
-            Funcionario funcionario = new Funcionario(
-                usuarioTextField.getText(),
-                senha,
-                nomeCompletoTextfield.getText(),
-                idade,
-                sexoTextField.getSelectedItem().toString().charAt(0),
-                identificacaoTextField.getText(),
-                logradouroTextField.getText(),
-                numeroTextField.getText(),
-                complementoTextField.getText(),
-                bairroTextField.getText(),
-                cidadeTextField.getText(),
-                estadoTextField1.getSelectedItem().toString(),
-                contatoTextField.getText(),
-                emailTextField.getText(),
-                dataNascimento,
-                tipoFuncionarioField.getSelectedItem().toString(),
-                especialidadeId, // Pode ser nulo
-                perfilId
-            );
+            JOptionPane.showMessageDialog(this, "Funcionário atualizado com sucesso!");
+            ListagemFuncionarios listagemFuncionarios = new ListagemFuncionarios();
+            listagemFuncionarios.setVisible(true);
+            this.dispose();
 
-            // Salvar no banco de dados
-            funcionarioDAO.create(funcionario);
-            JOptionPane.showMessageDialog(this, "Funcionário cadastrado com sucesso!");
-            this.dispose(); // Fecha a tela após salvar
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Erro ao processar campos numéricos: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Erro ao salvar funcionário: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (HeadlessException | NumberFormatException | SQLException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao atualizar funcionário: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
-    }//GEN-LAST:event_SalvarBotãoActionPerformed
+    }//GEN-LAST:event_AttBotãoActionPerformed
 
     private void dataNascimentoTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_dataNascimentoTextFieldFocusLost
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -638,10 +583,6 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_especialidadeFieldActionPerformed
 
-    private void CancelarBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelarBotaoActionPerformed
-      this.dispose();
-    }//GEN-LAST:event_CancelarBotaoActionPerformed
-
     private void perfilFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_perfilFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_perfilFieldActionPerformed
@@ -651,8 +592,33 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
         TelaLobby telaLobby = new TelaLobby(); // Instancia a próxima tela
         telaLobby.setVisible(true); // Exibe a nova tela
         this.dispose(); // Fecha a tela atual (TelaLogin)
-        
+
     }//GEN-LAST:event_BotãoVoltarActionPerformed
+
+    private void limparCampos() {
+    usuarioTextField.setText("");
+    senhaTextField.setText("");
+    nomeCompletoTextfield.setText("");
+    idadeTextField.setText("");
+    sexoTextField.setSelectedIndex(0);
+    identificacaoTextField.setText("");
+    logradouroTextField.setText("");
+    numeroTextField.setText("");
+    complementoTextField.setText("");
+    bairroTextField.setText("");
+    cidadeTextField.setText("");
+    estadoTextField1.setSelectedIndex(0);
+    contatoTextField.setText("");
+    emailTextField.setText("");
+    dataNascimentoTextField.setText("");
+    tipoFuncionarioField.setSelectedIndex(0);
+    perfilField.setSelectedIndex(0);
+    especialidadeField.setSelectedIndex(0);
+}
+    
+    private void LimparBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LimparBotaoActionPerformed
+      limparCampos();
+    }//GEN-LAST:event_LimparBotaoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -671,31 +637,29 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadastrarFuncionarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarFuncionarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadastrarFuncionarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarFuncionarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadastrarFuncionarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarFuncionarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadastrarFuncionarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarFuncionarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            try {
-                new CadastrarFuncionarios().setVisible(true);
-            } catch (SQLException ex) {
-                Logger.getLogger(CadastrarFuncionarios.class.getName()).log(Level.SEVERE, null, ex);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new EditarFuncionarios().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton AttBotão;
     private javax.swing.JButton BotãoVoltar;
     private javax.swing.JButton CancelarBotao;
     private javax.swing.JButton LimparBotao;
-    private javax.swing.JButton SalvarBotão;
     private javax.swing.JTextField bairroTextField;
     private javax.swing.JTextField cidadeTextField;
     private javax.swing.JTextField complementoTextField;
@@ -729,7 +693,6 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
@@ -743,10 +706,17 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
     private javax.swing.JTextField usuarioTextField;
     // End of variables declaration//GEN-END:variables
 
-    private List<Perfil> perfis;
-    private PerfilDAO perfilDAO;
-    private List<Especialidade> especialidades;
-    private EspecialidadeDAO especialidadeDAO;
-    private FuncionarioDAO funcionarioDAO;
-    
+    private boolean camposValidos() {
+    if (usuarioTextField.getText().isEmpty() ||
+        senhaTextField.getText().isEmpty() ||
+        nomeCompletoTextfield.getText().isEmpty() ||
+        identificacaoTextField.getText().isEmpty() ||
+        emailTextField.getText().isEmpty() ||
+        dataNascimentoTextField.getText().isEmpty() ||
+        logradouroTextField.getText().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Preencha todos os campos obrigatórios!", "Aviso", JOptionPane.WARNING_MESSAGE);
+        return false;
+    }
+    return true;
+    }
 }

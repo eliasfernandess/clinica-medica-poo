@@ -4,6 +4,9 @@
  */
 package br.edu.imepac.administrativo.telas;
 
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author elias
@@ -67,42 +70,82 @@ public class TelaLobby extends javax.swing.JFrame {
 
         ListEspecialidades.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         ListEspecialidades.setText("Listagem de especialidades");
+        ListEspecialidades.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ListEspecialidadesActionPerformed(evt);
+            }
+        });
         getContentPane().add(ListEspecialidades);
         ListEspecialidades.setBounds(90, 260, 340, 52);
 
         CadEspecialidades.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         CadEspecialidades.setText("Cadastrar especialidades");
+        CadEspecialidades.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CadEspecialidadesActionPerformed(evt);
+            }
+        });
         getContentPane().add(CadEspecialidades);
         CadEspecialidades.setBounds(90, 330, 340, 52);
 
         ListPerfis.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         ListPerfis.setText("Listagem de perfis");
+        ListPerfis.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ListPerfisActionPerformed(evt);
+            }
+        });
         getContentPane().add(ListPerfis);
         ListPerfis.setBounds(90, 420, 340, 52);
 
         CadPerfis.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         CadPerfis.setText("Cadastrar perfis");
         CadPerfis.setToolTipText("");
+        CadPerfis.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CadPerfisActionPerformed(evt);
+            }
+        });
         getContentPane().add(CadPerfis);
         CadPerfis.setBounds(90, 490, 340, 52);
 
         ListFuncionarios.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         ListFuncionarios.setText("Listagem de funcionarios");
+        ListFuncionarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ListFuncionariosActionPerformed(evt);
+            }
+        });
         getContentPane().add(ListFuncionarios);
         ListFuncionarios.setBounds(90, 580, 340, 52);
 
         CadFuncionarios.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         CadFuncionarios.setText("Cadastrar funcionarios");
+        CadFuncionarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CadFuncionariosActionPerformed(evt);
+            }
+        });
         getContentPane().add(CadFuncionarios);
         CadFuncionarios.setBounds(90, 650, 340, 52);
 
         ListPacientes.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         ListPacientes.setText("Listagem Pacientes\n");
+        ListPacientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ListPacientesActionPerformed(evt);
+            }
+        });
         getContentPane().add(ListPacientes);
         ListPacientes.setBounds(90, 740, 340, 52);
 
         CadPacientes.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         CadPacientes.setText("Cadastrar Pacientes");
+        CadPacientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CadPacientesActionPerformed(evt);
+            }
+        });
         getContentPane().add(CadPacientes);
         CadPacientes.setBounds(90, 810, 340, 52);
 
@@ -141,6 +184,61 @@ public class TelaLobby extends javax.swing.JFrame {
         this.dispose(); // Fecha a tela atual (TelaLogin)
     }//GEN-LAST:event_BotaoSairActionPerformed
 
+    private void ListEspecialidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListEspecialidadesActionPerformed
+    ListagemEspecialidade listagemEspecialidade = new ListagemEspecialidade(); // Instancia a próxima tela
+    listagemEspecialidade.setVisible(true); // Exibe a nova tela
+    this.dispose(); // Fecha a tela atual
+    }//GEN-LAST:event_ListEspecialidadesActionPerformed
+
+    private void CadEspecialidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CadEspecialidadesActionPerformed
+        // TODO add your handling code here:
+    CadastrarEspecialidade cadastrarEspecialidade = new CadastrarEspecialidade(); // Instancia a próxima tela
+    cadastrarEspecialidade.setVisible(true); // Exibe a nova tela
+    this.dispose(); // Fecha a tela atual
+
+    }//GEN-LAST:event_CadEspecialidadesActionPerformed
+
+    private void ListPerfisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListPerfisActionPerformed
+     
+        ListagemPerfil listagemPerfil = new ListagemPerfil(); // Instancia a próxima tela
+        listagemPerfil.setVisible(true); // Exibe a nova tela
+        this.dispose(); // Fecha a tela atual (TelaLogin)
+    }//GEN-LAST:event_ListPerfisActionPerformed
+
+    private void CadPerfisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CadPerfisActionPerformed
+        // TODO add your handling code here:
+    CadastrarPerfil cadastrarPerfil = new CadastrarPerfil(); // Instancia a próxima tela
+    cadastrarPerfil.setVisible(true); // Exibe a nova tela
+    this.dispose(); // Fecha a tela atual
+    }//GEN-LAST:event_CadPerfisActionPerformed
+
+    private void ListFuncionariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListFuncionariosActionPerformed
+     ListagemFuncionarios listagemFuncionarios = new ListagemFuncionarios(); // Instancia a próxima tela
+    listagemFuncionarios.setVisible(true); // Exibe a nova tela
+    this.dispose();
+    }//GEN-LAST:event_ListFuncionariosActionPerformed
+
+    private void CadFuncionariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CadFuncionariosActionPerformed
+
+        try {
+            CadastrarFuncionarios cadastrarFuncionarios = new CadastrarFuncionarios(); // Instancia a próxima tela
+            cadastrarFuncionarios.setVisible(true); // Exibe a nova tela
+            this.dispose(); // Fecha a tela atual
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao abrir a tela de cadastro: " + e.getMessage(),
+                    "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    
+    }//GEN-LAST:event_CadFuncionariosActionPerformed
+
+    private void ListPacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListPacientesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ListPacientesActionPerformed
+
+    private void CadPacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CadPacientesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CadPacientesActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -152,7 +250,7 @@ public class TelaLobby extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
+                if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }

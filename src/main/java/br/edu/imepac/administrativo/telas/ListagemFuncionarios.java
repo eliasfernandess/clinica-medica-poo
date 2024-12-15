@@ -4,6 +4,14 @@
  */
 package br.edu.imepac.administrativo.telas;
 
+import br.edu.imepac.administrativo.daos.FuncionarioDAO;
+import br.edu.imepac.administrativo.entidades.Funcionario;
+import java.awt.HeadlessException;
+import java.sql.SQLException;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author elias
@@ -26,21 +34,160 @@ public class ListagemFuncionarios extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        VoltarListConv = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        EXCLUIRBTT = new javax.swing.JToggleButton();
+        EDITARBTT = new javax.swing.JToggleButton();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1023, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 520, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(1081, 593));
+        setMinimumSize(new java.awt.Dimension(1081, 593));
+        setPreferredSize(new java.awt.Dimension(1081, 593));
+        getContentPane().setLayout(null);
+
+        VoltarListConv.setBackground(new java.awt.Color(255, 153, 153));
+        VoltarListConv.setText("Voltar");
+        VoltarListConv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                VoltarListConvActionPerformed(evt);
+            }
+        });
+        getContentPane().add(VoltarListConv);
+        VoltarListConv.setBounds(950, 30, 90, 30);
+        getContentPane().add(jSeparator1);
+        jSeparator1.setBounds(0, 80, 1210, 3);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
+        jLabel1.setText("LISTAGEM FUNCIONARIOS");
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(60, 30, 320, 32);
+
+        jTable1.setModel(new DefaultTableModel(
+                new Object[][]{},
+                new String[]{
+                        "Funcionário", "Idade", "E-mail", "Tipo de Funcionário"
+                }
+        ) {
+            Class[] types = new Class[]{
+                    String.class, Integer.class, String.class, String.class
+            };
+            boolean[] canEdit = new boolean[]{
+                    false, false, false, false
+            };
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
+        });
+
+        jScrollPane1.setViewportView(jTable1);
+
+        getContentPane().add(jScrollPane1);
+        jScrollPane1.setBounds(50, 120, 750, 402);
+
+        EXCLUIRBTT.setText("EXCLUIR");
+        EXCLUIRBTT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EXCLUIRBTTActionPerformed(evt);
+            }
+        });
+        getContentPane().add(EXCLUIRBTT);
+        EXCLUIRBTT.setBounds(840, 230, 210, 60);
+
+        EDITARBTT.setText("EDITAR");
+        EDITARBTT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EDITARBTTActionPerformed(evt);
+            }
+        });
+        getContentPane().add(EDITARBTT);
+        EDITARBTT.setBounds(840, 140, 210, 60);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+private void carregarFuncionarios() {
+    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    model.setRowCount(0);
+
+    try {
+        FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+        List<Funcionario> funcionarios = funcionarioDAO.readAll();
+
+        for (Funcionario f : funcionarios) {
+            model.addRow(new Object[]{
+                f.getNome(),
+                f.getIdade(),
+                f.getEmail(),
+                f.getTipoFuncionario()
+            });
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Erro ao carregar funcionários: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+
+    
+    private void VoltarListConvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VoltarListConvActionPerformed
+        // TODO add your handling code here:
+        TelaLobby telaLobby = new TelaLobby(); // Instancia a próxima tela
+        telaLobby.setVisible(true); // Exibe a nova tela
+        this.dispose(); // Fecha a tela atual (TelaLogin)
+    }//GEN-LAST:event_VoltarListConvActionPerformed
+
+    private void EDITARBTTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EDITARBTTActionPerformed
+    int selectedRow = jTable1.getSelectedRow();
+    if (selectedRow != -1) {
+        try {
+            String nome = jTable1.getValueAt(selectedRow, 0).toString();
+            FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+            Funcionario funcionario = funcionarioDAO.findByName(nome);
+
+            if (funcionario != null) {
+                EditarFuncionarios editarFuncionarios = new EditarFuncionarios();
+                editarFuncionarios.preencherDados(funcionario);
+                editarFuncionarios.setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Funcionário não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (HeadlessException | SQLException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao abrir tela de edição: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "Selecione um funcionário para editar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+    }
+    }//GEN-LAST:event_EDITARBTTActionPerformed
+
+    private void EXCLUIRBTTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EXCLUIRBTTActionPerformed
+    int selectedRow = jTable1.getSelectedRow();
+    if (selectedRow != -1) {
+        int confirm = JOptionPane.showConfirmDialog(this, "Deseja realmente excluir este funcionário?", "Confirmação", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                String nome = jTable1.getValueAt(selectedRow, 0).toString();
+                FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+                funcionarioDAO.deleteByName(nome);
+                carregarFuncionarios();
+                JOptionPane.showMessageDialog(this, "Funcionário excluído com sucesso!");
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Erro ao excluir funcionário: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "Selecione um funcionário para excluir.", "Aviso", JOptionPane.WARNING_MESSAGE);
+    }
+    }//GEN-LAST:event_EXCLUIRBTTActionPerformed
 
     /**
      * @param args the command line arguments
@@ -70,13 +217,18 @@ public class ListagemFuncionarios extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ListagemFuncionarios().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new ListagemFuncionarios().setVisible(true);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToggleButton EDITARBTT;
+    private javax.swing.JToggleButton EXCLUIRBTT;
+    private javax.swing.JButton VoltarListConv;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

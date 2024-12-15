@@ -29,7 +29,7 @@ public class Funcionario {
     private Long perfilId;
     private Perfil perfil;
 
-    public Funcionario() {
+    public Funcionario(long aLong, String text, int senha1, String text1, int idade1, char charAt, String text2, String text3, String text4, String text5, String text6, String text7, String toString, String text8, String text9, LocalDate dataNascimento1, String toString1, Integer perfilId1, Integer object1) {
     }
 
     public Funcionario(Long id, String usuario, int senha, String nome, int idade, char sexo, String cpf, String rua, String numero, String complemento, String bairro, String cidade, String estado, String contato, String email, LocalDate dataNascimento, String tipoFuncionario, Long especialidadeId, Long perfilId) {
@@ -73,6 +73,10 @@ public class Funcionario {
         this.tipoFuncionario = tipoFuncionario;
         this.especialidadeId = especialidadeId;
         this.perfilId = perfilId;
+    }
+
+    public Funcionario(String text, int senha, String text0, int idade, char charAt, String text1, String text2, String text3, String text4, String text5, String text6, String toString, String text7, String text8, LocalDate dataNascimento, String toString0, int especialidadeId, int perfilId) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 
