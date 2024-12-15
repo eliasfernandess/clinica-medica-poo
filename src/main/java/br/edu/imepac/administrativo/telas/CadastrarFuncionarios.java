@@ -603,7 +603,9 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
             // Salvar no banco de dados
             funcionarioDAO.create(funcionario);
             JOptionPane.showMessageDialog(this, "Funcionário cadastrado com sucesso!");
-            this.dispose(); // Fecha a tela após salvar
+            TelaLobby telaLobby = new TelaLobby(); // Instancia a próxima tela
+        telaLobby.setVisible(true); // Exibe a nova tela
+        this.dispose(); // Fecha a tela atual (TelaLogin)
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Erro ao processar campos numéricos: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         } catch (SQLException e) {

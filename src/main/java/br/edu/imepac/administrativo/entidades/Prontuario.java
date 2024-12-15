@@ -10,11 +10,13 @@ public class Prontuario {
     public Prontuario() {
     }
 
-    public Prontuario(String receituario, String exames, String observacoes) {
-        this.receituario = receituario;
+
+    public Prontuario(String exames, String receituario, String observacoes) {
         this.exames = exames;
+        this.receituario = receituario;
         this.observacoes = observacoes;
-    }
+}
+
 
     public Prontuario(Long id, String receituario, String exames, String observacoes) {
         this.id = id;
@@ -54,5 +56,15 @@ public class Prontuario {
     public void setObservacoes(String observacoes) {
         this.observacoes = observacoes;
     }
+    
+    @Override
+    public String toString() {
+    return "Prontuario{" +
+           "id=" + id +
+           ", receituario='" + receituario + '\'' +
+           ", exames='" + exames + '\'' +
+           ", observacoes='" + observacoes + '\'' +
+           '}';
+}
 
 }

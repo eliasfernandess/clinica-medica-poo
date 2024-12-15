@@ -197,22 +197,37 @@ private void carregarFuncionarios() {
     }//GEN-LAST:event_EDITARBTTActionPerformed
 
     private void EXCLUIRBTTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EXCLUIRBTTActionPerformed
-    int selectedRow = jTable1.getSelectedRow();
+     int selectedRow = jTable1.getSelectedRow(); // Verifica a linha selecionada
     if (selectedRow != -1) {
-        int confirm = JOptionPane.showConfirmDialog(this, "Deseja realmente excluir este funcionário?", "Confirmação", JOptionPane.YES_NO_OPTION);
+        int confirm = JOptionPane.showConfirmDialog(this, 
+                "Deseja realmente excluir este funcionário?", 
+                "Confirmação", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             try {
-                String nome = jTable1.getValueAt(selectedRow, 0).toString();
+                // Obtém o ID do funcionário selecionado (assumindo que a coluna 0 é o ID)
+                Long id = Long.valueOf(jTable1.getValueAt(selectedRow, 0).toString());
+                
+                // Chama o DAO para excluir o funcionário
                 FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-                funcionarioDAO.deleteByName(nome);
+                funcionarioDAO.deleteById(id); // Ajuste o método no DAO para excluir pelo ID
+                
+                // Recarrega a tabela após a exclusão
                 carregarFuncionarios();
                 JOptionPane.showMessageDialog(this, "Funcionário excluído com sucesso!");
             } catch (SQLException e) {
-                JOptionPane.showMessageDialog(this, "Erro ao excluir funcionário: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, 
+                        "Erro ao excluir funcionário: " + e.getMessage(), 
+                        "Erro", JOptionPane.ERROR_MESSAGE);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, 
+                        "Erro ao processar o ID do funcionário: " + e.getMessage(), 
+                        "Erro", JOptionPane.ERROR_MESSAGE);
             }
         }
     } else {
-        JOptionPane.showMessageDialog(this, "Selecione um funcionário para excluir.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(this, 
+                "Selecione um funcionário para excluir.", 
+                "Aviso", JOptionPane.WARNING_MESSAGE);
     }
     }//GEN-LAST:event_EXCLUIRBTTActionPerformed
 

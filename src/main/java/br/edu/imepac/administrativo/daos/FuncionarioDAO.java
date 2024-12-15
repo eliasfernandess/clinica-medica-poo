@@ -238,6 +238,40 @@ public Funcionario findByName(String nome) throws SQLException {
     return null; // Retorna null se o funcionário não for encontrado
 }
 
-
-
+    public void deleteById(Long id) throws SQLException {
+    String sql = "DELETE FROM funcionario WHERE id = ?";
+    try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        statement.setLong(1, id); // Define o ID para exclusão
+        statement.executeUpdate(); // Executa o comando SQL
+    }
 }
+
+    public Funcionario readByUsuario(String usuario) throws SQLException {
+        String sql = "SELECT * FROM funcionario WHERE usuario = ?";
+        Funcionario funcionario = null;
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, usuario);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    funcionario = new Funcionario(
+                        resultSet.getLong("id"),                  // ID do funcionário
+                        resultSet.getString("nome"),              // Nome completo
+                        resultSet.getString("usuario"),           // Nome de usuário
+                        resultSet.getInt("senha"),                // Senha (assumindo como um int)
+                        resultSet.getString("email"),             // E-mail
+                        resultSet.getString("tipo_funcionario")   // Tipo de funcionário (ex.: "Admin", "Atendente")
+                    );
+                }
+            }
+        }
+
+        return funcionario;
+    }
+}
+
+
+
+
+

@@ -4,13 +4,20 @@
  */
 package br.edu.imepac.administrativo.telas;
 
+import br.edu.imepac.administrativo.daos.FuncionarioDAO;
+import br.edu.imepac.administrativo.entidades.Funcionario;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.HeadlessException;
 import java.awt.Insets;
 import java.awt.RenderingHints;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.border.AbstractBorder;
 
 /**
@@ -19,52 +26,60 @@ import javax.swing.border.AbstractBorder;
  */
 public class TelaLogin extends javax.swing.JFrame {
 
+    private FuncionarioDAO funcionarioDAO;
+
     /**
-     * Creates new form TelaLogin
+     * Construtor da tela de login.
      */
     public TelaLogin() {
+        funcionarioDAO = new FuncionarioDAO();
+
         initComponents();
-UsuarioCampo.setBorder(new RoundedBorder(20)); // Define a borda arredondada
-UsuarioCampo.setOpaque(false); // Campo transparente
-UsuarioCampo.setBackground(new Color(0, 0, 0, 0)); // Fundo transparente
-UsuarioCampo.setForeground(Color.WHITE); // Texto branco
 
-SenhaCampo.setBorder(new RoundedBorder(20)); // Define a borda arredondada
-SenhaCampo.setOpaque(false); // Campo transparente
-SenhaCampo.setBackground(new Color(0, 0, 0, 0)); // Fundo transparente
-SenhaCampo.setForeground(Color.WHITE); // Texto branco
-
-BotaoAcessarLogin.setFocusPainted(false); // Remove o contorno ao clicar
-BotaoAcessarLogin.setBorderPainted(false); // Remove a borda padrão
-BotaoAcessarLogin.setContentAreaFilled(false); // Remove o fundo padrão
-BotaoAcessarLogin.setOpaque(true); // Permite transparência
-BotaoAcessarLogin.setBackground(new Color(120, 212, 255)); // Cor inicial
-BotaoAcessarLogin.setForeground(new Color(28, 103, 152)); // Cor do texto inicial
-
-// Adiciona efeito de hover e glow
-BotaoAcessarLogin.addMouseListener(new java.awt.event.MouseAdapter() {
-    @Override
-    public void mouseEntered(java.awt.event.MouseEvent evt) {
-        BotaoAcessarLogin.setBackground(new Color(255, 255, 255)); // Cor ao passar o mouse
-        BotaoAcessarLogin.setForeground(new Color(28, 103, 152)); // Texto muda para branco
-        BotaoAcessarLogin.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(0, 153, 255), 2)); // Glow azul
+        // Configurações de design dos campos e botões
+        configurarEstilo();
+        setLocationRelativeTo(null); // Centraliza a tela
     }
 
-    @Override
-    public void mouseExited(java.awt.event.MouseEvent evt) {
-        BotaoAcessarLogin.setBackground(new Color(120, 212, 255)); // Volta à cor original
-        BotaoAcessarLogin.setForeground(new Color(28, 103, 152)); // Volta ao texto original
-        BotaoAcessarLogin.setBorder(null); // Remove o glow
+   private void configurarEstilo() {
+        // Configuração para campo de usuário
+        UsuarioCampo.setBorder(new RoundedBorder(20));
+        UsuarioCampo.setOpaque(false);
+        UsuarioCampo.setBackground(new Color(0, 0, 0, 0));
+        UsuarioCampo.setForeground(Color.WHITE);
+
+        // Configuração para campo de senha
+        SenhaCampo.setBorder(new RoundedBorder(20));
+        SenhaCampo.setOpaque(false);
+        SenhaCampo.setBackground(new Color(0, 0, 0, 0));
+        SenhaCampo.setForeground(Color.WHITE);
+
+        // Configuração para o botão de acessar
+        BotaoAcessarLogin.setFocusPainted(false);
+        BotaoAcessarLogin.setBorderPainted(false);
+        BotaoAcessarLogin.setContentAreaFilled(false);
+        BotaoAcessarLogin.setOpaque(true);
+        BotaoAcessarLogin.setBackground(new Color(120, 212, 255));
+        BotaoAcessarLogin.setForeground(new Color(28, 103, 152));
+
+        // Efeito hover no botão
+        BotaoAcessarLogin.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                BotaoAcessarLogin.setBackground(new Color(255, 255, 255));
+                BotaoAcessarLogin.setForeground(new Color(28, 103, 152));
+                BotaoAcessarLogin.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(0, 153, 255), 2));
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                BotaoAcessarLogin.setBackground(new Color(120, 212, 255));
+                BotaoAcessarLogin.setForeground(new Color(28, 103, 152));
+                BotaoAcessarLogin.setBorder(null);
+            }
+        });
     }
-});
 
-
-            
-            
-
-
-        setLocationRelativeTo(null);
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -176,22 +191,29 @@ public class RoundedBorder extends AbstractBorder {
     }//GEN-LAST:event_SenhaCampoActionPerformed
 
     private void BotaoAcessarLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoAcessarLoginActionPerformed
-        // TODO add your handling code here:
-        String usuario = UsuarioCampo.getText().trim(); 
-    String senha = new String(SenhaCampo.getPassword()).trim();
+      String usuario = UsuarioCampo.getText().trim();
+        String senha = new String(SenhaCampo.getPassword()).trim();
 
-    
-    if (usuario.isEmpty() || senha.isEmpty()) { 
-        
-        javax.swing.JOptionPane.showMessageDialog(this, 
-            "Por favor, preencha todos os campos!", 
-            "Aviso", 
-            javax.swing.JOptionPane.WARNING_MESSAGE);
+        if (usuario.isEmpty() || senha.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos!", "Aviso", JOptionPane.WARNING_MESSAGE);
         } else {
-        // Exemplo: redireciona para outra tela
-        TelaLobby telaLobby = new TelaLobby(); // Instancia a próxima tela
-        telaLobby.setVisible(true); // Exibe a nova tela
-        this.dispose(); // Fecha a tela atual (TelaLogin)
+            try {
+                Funcionario funcionario = funcionarioDAO.readByUsuario(usuario);
+                if (funcionario != null && funcionario.getSenha() == Integer.parseInt(senha)) {
+                    JOptionPane.showMessageDialog(this, "Login bem-sucedido!");
+                    TelaLobby telaLobby = new TelaLobby();
+                    telaLobby.setVisible(true);
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Usuário ou senha inválidos!", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "A senha deve ser numérica!", "Erro", JOptionPane.ERROR_MESSAGE);
+            } catch (HeadlessException ex) {
+                JOptionPane.showMessageDialog(this, "Erro ao realizar login: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException ex) {
+              Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+          }
         }
     }//GEN-LAST:event_BotaoAcessarLoginActionPerformed
 

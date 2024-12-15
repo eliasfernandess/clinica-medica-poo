@@ -31,6 +31,17 @@ public class Funcionario {
     // Construtor vazio
     public Funcionario() {}
 
+    // Construtor para os campos usados no método readByUsuario
+    public Funcionario(Long id, String nome, String usuario, int senha, String email, String tipoFuncionario) {
+    this.id = id;
+    this.nome = nome;
+    this.usuario = usuario;
+    this.senha = senha;
+    this.email = email;
+    this.tipoFuncionario = tipoFuncionario;
+}
+
+    
     // Construtor principal com todos os campos
     public Funcionario(Long id, String usuario, int senha, String nome, int idade, char sexo, String cpf, String rua,
                        String numero, String complemento, String bairro, String cidade, String estado, String contato,
@@ -248,6 +259,8 @@ public class Funcionario {
     public void setPerfil(Perfil perfil) {
         this.perfil = perfil;
     }
+    
+    
 
     @Override
     public String toString() {

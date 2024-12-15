@@ -462,7 +462,9 @@ if (contato.isEmpty()) {
 
             // Mensagem de sucesso
             JOptionPane.showMessageDialog(this, "Paciente cadastrado com sucesso!");
-            this.dispose();
+            TelaLobby telaLobby = new TelaLobby(); // Instancia a próxima tela
+        telaLobby.setVisible(true); // Exibe a nova tela
+        this.dispose(); // Fecha a tela atual (TelaLogin)
 
         } catch (DateTimeParseException e) {
             JOptionPane.showMessageDialog(this, "Data de nascimento inválida. Use o formato dd/MM/yyyy.", "Erro", JOptionPane.ERROR_MESSAGE);
