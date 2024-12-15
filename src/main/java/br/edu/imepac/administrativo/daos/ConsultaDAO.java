@@ -1,6 +1,7 @@
 package br.edu.imepac.administrativo.daos;
 
 import br.edu.imepac.administrativo.entidades.Consulta;
+import br.edu.imepac.administrativo.entidades.Convenio;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -102,4 +103,38 @@ public class ConsultaDAO extends BaseDao {
             stmt.executeUpdate();
         }
     }
+    
+    public List<Convenio> listarConvenios() throws SQLException {
+        String sql = "SELECT id, nomeConvenio FROM convenio";
+        List<Convenio> convenios = new ArrayList<>();
+        
+        try (PreparedStatement stmt = connection.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Convenio convenio = new Convenio();
+                convenio.setId((int) rs.getLong("id"));
+                convenio.setNomeConvenio(rs.getString("nomeConvenio"));
+                convenios.add(convenio);
+            }
+        }
+        return convenios;
+    }
+
+    public void salvarConsulta(Consulta consulta) throws SQLException {
+        String sql = "INSERT INTO consulta (dataHorario, sintomas, eRetorno, estaAtiva, convenioId, prontuarioId) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            // Configura os parâmetros da consulta SQL
+            stmt.setTimestamp(1, Timestamp.valueOf(consulta.getDataHorario())); // Data e Hora
+            stmt.setString(2, consulta.getSintomas()); // Sintomas
+            stmt.setBoolean(3, consulta.eRetorno()); // Se é retorno
+            stmt.setBoolean(4, consulta.estaAtiva()); // Se está ativa
+            stmt.setLong(5, consulta.getConvenioId()); // ID do convênio
+            stmt.setLong(6, consulta.getProntuarioId()); // ID do prontuário
+
+            // Executa o comando SQL
+            stmt.executeUpdate();
+        }
+    }
 }
+

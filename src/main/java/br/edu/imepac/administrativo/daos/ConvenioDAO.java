@@ -85,4 +85,21 @@ public class ConvenioDAO extends BaseDao {
             stmt.executeUpdate();
         }
     }
+
+    public List<Convenio> listarConvenios() throws SQLException {
+        List<Convenio> convenios = new ArrayList<>();
+        String sql = "SELECT id_conv, nome_conv FROM convenio";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Convenio convenio = new Convenio();
+                convenio.setId((int) rs.getLong("id_conv"));
+                convenio.setNomeConvenio(rs.getString("nome_conv"));
+                convenios.add(convenio);
+            }
+        }
+        return convenios;
+    }
 }
