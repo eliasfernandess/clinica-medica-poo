@@ -4,20 +4,112 @@
  */
 package br.edu.imepac.agendamento.telas;
 
+import br.edu.imepac.administrativo.daos.ConsultaDAO;
+import br.edu.imepac.administrativo.daos.ConvenioDAO;
+import br.edu.imepac.administrativo.daos.ProntuarioDAO;
+import br.edu.imepac.administrativo.entidades.Consulta;
+import br.edu.imepac.administrativo.entidades.Convenio;
+import br.edu.imepac.administrativo.entidades.Prontuario;
 import br.edu.imepac.administrativo.telas.TelaLobby;
+import java.awt.HeadlessException;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author elias
  */
 public class EditarConsultas extends javax.swing.JFrame {
+private Long consultaId;
 
-    /**
-     * Creates new form EditarConsultas
-     */
-    public EditarConsultas() {
+
+   public EditarConsultas() {
         initComponents();
+        // Deixe a tela vazia ou com dados padrão para teste
     }
+
+private Consulta consulta; // Variável para armazenar a consulta
+
+public EditarConsultas(Consulta consulta) {
+    initComponents();
+    this.consulta = consulta;
+    this.consultaId = consulta.getId(); // Garante que o ID é atribuído
+    carregarConvenios();
+    carregarProntuarios();
+    carregarDados();
+}
+
+
+
+private void carregarConvenios() {
+    try {
+        ConvenioDAO dao = new ConvenioDAO();
+        List<Convenio> convenios = dao.listarConvenios();
+
+        // Limpa o JComboBox antes de adicionar novos itens
+        CONVENIOSjComboBox1.removeAllItems();
+
+        // Adiciona os convênios no JComboBox
+        for (Convenio c : convenios) {
+            CONVENIOSjComboBox1.addItem(c.getId() + " - " + c.getNomeConvenio());
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Erro ao carregar convênios: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+private void carregarProntuarios() {
+    try {
+        ProntuarioDAO dao = new ProntuarioDAO(); // Instância do DAO
+        List<Prontuario> prontuarios = dao.readAll(); // Busca os prontuários do banco
+        
+        CONVENIOSjComboBox2.removeAllItems(); // Limpa a JComboBox
+        for (Prontuario prontuario : prontuarios) {
+            // Adiciona os prontuários com ID e Receituário formatado
+            CONVENIOSjComboBox2.addItem(prontuario.getId() + " - " + prontuario.getReceituario());
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Erro ao carregar prontuários: " + e.getMessage());
+    }
+}
+
+
+
+
+
+private void carregarDados() {
+    try {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        jFormattedTextField1.setText(consulta.getDataHorario().format(formatter));
+        jTextField2.setText(consulta.getSintomas());
+        jCheckBox1.setSelected(consulta.eRetorno());
+        jCheckBox2.setSelected(consulta.estaAtiva());
+
+        // Define o item selecionado nos JComboBox
+        for (int i = 0; i < CONVENIOSjComboBox1.getItemCount(); i++) {
+            if (CONVENIOSjComboBox1.getItemAt(i).startsWith(consulta.getConvenioId().toString())) {
+                CONVENIOSjComboBox1.setSelectedIndex(i);
+                break;
+            }
+        }
+
+        for (int i = 0; i < CONVENIOSjComboBox2.getItemCount(); i++) {
+            if (CONVENIOSjComboBox2.getItemAt(i).startsWith(consulta.getProntuarioId().toString())) {
+                CONVENIOSjComboBox2.setSelectedIndex(i);
+                break;
+            }
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Erro ao carregar os dados: " + e.getMessage());
+    }
+}
+
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -36,8 +128,8 @@ public class EditarConsultas extends javax.swing.JFrame {
         jCheckBox1 = new javax.swing.JCheckBox();
         jCheckBox2 = new javax.swing.JCheckBox();
         jTextField2 = new javax.swing.JTextField();
-        ProntuarioBox = new javax.swing.JComboBox<>();
-        ConvenioBox = new javax.swing.JComboBox<>();
+        CONVENIOSjComboBox1 = new javax.swing.JComboBox<>();
+        CONVENIOSjComboBox2 = new javax.swing.JComboBox<>();
         ATTBotao = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -95,16 +187,21 @@ public class EditarConsultas extends javax.swing.JFrame {
         getContentPane().add(jTextField2);
         jTextField2.setBounds(50, 200, 360, 40);
 
-        ProntuarioBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        getContentPane().add(ProntuarioBox);
-        ProntuarioBox.setBounds(250, 300, 160, 40);
+        CONVENIOSjComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        getContentPane().add(CONVENIOSjComboBox1);
+        CONVENIOSjComboBox1.setBounds(250, 300, 160, 40);
 
-        ConvenioBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        getContentPane().add(ConvenioBox);
-        ConvenioBox.setBounds(50, 300, 160, 40);
+        CONVENIOSjComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        getContentPane().add(CONVENIOSjComboBox2);
+        CONVENIOSjComboBox2.setBounds(50, 300, 160, 40);
 
         ATTBotao.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         ATTBotao.setText("ATUALIZAR");
+        ATTBotao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ATTBotaoActionPerformed(evt);
+            }
+        });
         getContentPane().add(ATTBotao);
         ATTBotao.setBounds(470, 130, 160, 50);
 
@@ -138,46 +235,80 @@ public class EditarConsultas extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBox2ActionPerformed
 
+    private void ATTBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ATTBotaoActionPerformed
+   try {
+        if (consultaId == null) {
+            throw new IllegalArgumentException("ID da consulta não pode ser nulo.");
+        }
+
+        // Extrai o ID do convênio
+        String convenioSelecionado = CONVENIOSjComboBox1.getSelectedItem().toString();
+        Long convenioId = Long.parseLong(convenioSelecionado.split(" - ")[0].trim());
+
+        // Extrai o ID do prontuário
+        String prontuarioSelecionado = CONVENIOSjComboBox2.getSelectedItem().toString();
+        Long prontuarioId = Long.parseLong(prontuarioSelecionado.split(" - ")[0].trim());
+
+        // Outros campos
+        String sintomas = jTextField2.getText();
+        boolean retorno = jCheckBox1.isSelected();
+        boolean ativa = jCheckBox2.isSelected();
+
+        // Atualiza os dados da consulta
+        consulta.setId(consultaId);
+        consulta.setDataHorario(LocalDateTime.parse(jFormattedTextField1.getText()));
+        consulta.setSintomas(sintomas);
+        consulta.seteRetorno(retorno);
+        consulta.setEstaAtiva(ativa);
+        consulta.setConvenioId(convenioId);
+        consulta.setProntuarioId(prontuarioId);
+
+        // Atualiza no banco de dados
+        ConsultaDAO dao = new ConsultaDAO();
+        dao.update(consulta);
+
+        JOptionPane.showMessageDialog(this, "Consulta atualizada com sucesso!");
+        this.dispose();
+        new ListagemConsultas().setVisible(true);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Erro ao atualizar consulta: " + e.getMessage());
+    }
+
+    }//GEN-LAST:event_ATTBotaoActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+    try {
+        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) {
+                javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                break;
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EditarConsultas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EditarConsultas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EditarConsultas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EditarConsultas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new EditarConsultas().setVisible(true);
-            }
-        });
+    } catch (ClassNotFoundException ex) {
+        java.util.logging.Logger.getLogger(EditarConsultas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (InstantiationException ex) {
+        java.util.logging.Logger.getLogger(EditarConsultas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (IllegalAccessException ex) {
+        java.util.logging.Logger.getLogger(EditarConsultas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        java.util.logging.Logger.getLogger(EditarConsultas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     }
+
+    // Criando a tela e passando um ID fixo para teste
+    java.awt.EventQueue.invokeLater(() -> {
+        Long idConsulta = 1L; // Defina o ID da consulta para teste
+    });
+}
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ATTBotao;
     private javax.swing.JButton BotãoVoltar;
-    private javax.swing.JComboBox<String> ConvenioBox;
-    private javax.swing.JComboBox<String> ProntuarioBox;
+    private javax.swing.JComboBox<String> CONVENIOSjComboBox1;
+    private javax.swing.JComboBox<String> CONVENIOSjComboBox2;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JFormattedTextField jFormattedTextField1;

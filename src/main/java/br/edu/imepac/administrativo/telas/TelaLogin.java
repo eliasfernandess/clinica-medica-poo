@@ -96,6 +96,7 @@ public class TelaLogin extends javax.swing.JFrame {
         SenhaLabel = new javax.swing.JLabel();
         BotaoAcessarLogin = new javax.swing.JButton();
         Imagem = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("LOGIN");
@@ -104,7 +105,7 @@ public class TelaLogin extends javax.swing.JFrame {
         setResizable(false);
         getContentPane().setLayout(null);
 
-        UsuarioCampo.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        UsuarioCampo.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         UsuarioCampo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 UsuarioCampoActionPerformed(evt);
@@ -113,6 +114,7 @@ public class TelaLogin extends javax.swing.JFrame {
         getContentPane().add(UsuarioCampo);
         UsuarioCampo.setBounds(80, 290, 339, 45);
 
+        SenhaCampo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         SenhaCampo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SenhaCampoActionPerformed(evt);
@@ -146,6 +148,10 @@ public class TelaLogin extends javax.swing.JFrame {
         BotaoAcessarLogin.setBounds(80, 450, 340, 60);
         getContentPane().add(Imagem);
         Imagem.setBounds(0, 0, 500, 0);
+
+        jLabel3.setIcon(new javax.swing.ImageIcon("C:\\Users\\elias\\OneDrive\\Área de Trabalho\\multmed\\LOGIN.png")); // NOI18N
+        getContentPane().add(jLabel3);
+        jLabel3.setBounds(0, 0, 500, 700);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -257,6 +263,7 @@ public class RoundedBorder extends AbstractBorder {
     private javax.swing.JLabel SenhaLabel;
     private javax.swing.JTextField UsuarioCampo;
     private javax.swing.JLabel UsuarioLabel;
+    private javax.swing.JLabel jLabel3;
     // End of variables declaration//GEN-END:variables
 }
 

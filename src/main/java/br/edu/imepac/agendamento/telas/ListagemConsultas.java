@@ -4,20 +4,51 @@
  */
 package br.edu.imepac.agendamento.telas;
 
+import br.edu.imepac.administrativo.daos.ConsultaDAO;
+import br.edu.imepac.administrativo.entidades.Consulta;
 import br.edu.imepac.administrativo.telas.TelaLobby;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author elias
  */
 public class ListagemConsultas extends javax.swing.JFrame {
+    private void carregarConsultas() {
+    try {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0); // Limpa a tabela
+
+        ConsultaDAO dao = new ConsultaDAO();
+        List<Consulta> consultas = dao.readAll();
+
+        for (Consulta c : consultas) {
+            model.addRow(new Object[]{
+                c.getDataHorario(),
+                c.getSintomas(),
+                c.eRetorno(),
+                c.estaAtiva(),
+                c.getConvenioId(), // id_conv
+                c.getProntuarioId() // prontuario_id
+            });
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Erro ao carregar consultas: " + e.getMessage());
+    }
+}
+
 
     /**
      * Creates new form ListagemConsultas
      */
-    public ListagemConsultas() {
-        initComponents();
-    }
+   public ListagemConsultas() {
+    initComponents();
+    carregarConsultas();
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -37,6 +68,9 @@ public class ListagemConsultas extends javax.swing.JFrame {
         EditarBTT = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(996, 577));
+        setMinimumSize(new java.awt.Dimension(996, 577));
+        setPreferredSize(new java.awt.Dimension(996, 577));
         getContentPane().setLayout(null);
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -92,10 +126,16 @@ public class ListagemConsultas extends javax.swing.JFrame {
         ExcluirBtt.setBounds(800, 200, 150, 60);
 
         EditarBTT.setText("EDITAR");
+        EditarBTT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EditarBTTActionPerformed(evt);
+            }
+        });
         getContentPane().add(EditarBTT);
         EditarBTT.setBounds(800, 120, 150, 60);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void BotãoVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotãoVoltarActionPerformed
@@ -105,6 +145,46 @@ public class ListagemConsultas extends javax.swing.JFrame {
         this.dispose(); // Fecha a tela atual (TelaLogin)
     }//GEN-LAST:event_BotãoVoltarActionPerformed
 
+    private void EditarBTTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarBTTActionPerformed
+    int row = jTable1.getSelectedRow(); // Pega a linha selecionada
+    
+    if (row != -1) { // Verifica se uma linha foi selecionada
+        try {
+            // Captura os dados da linha selecionada
+            String dataHorario = jTable1.getValueAt(row, 0).toString();
+            String sintomas = jTable1.getValueAt(row, 1).toString();
+            Boolean eRetorno = (Boolean) jTable1.getValueAt(row, 2);
+            Boolean estaAtiva = (Boolean) jTable1.getValueAt(row, 3);
+            String convenio = jTable1.getValueAt(row, 4).toString();
+            String prontuario = jTable1.getValueAt(row, 5).toString();
+
+            Long convenioId = Long.parseLong(convenio.split(" - ")[0]); // Captura apenas o ID
+            Long prontuarioId = Long.parseLong(prontuario.split(" - ")[0]); 
+
+            // Cria um objeto Consulta com os dados capturados
+            Consulta consulta = new Consulta();
+            consulta.setDataHorario(LocalDateTime.parse(dataHorario)); // Parse LocalDateTime
+            consulta.setSintomas(sintomas);
+            consulta.seteRetorno(eRetorno);
+            consulta.setEstaAtiva(estaAtiva);
+            consulta.setConvenioId(convenioId);
+            consulta.setProntuarioId(prontuarioId);
+
+            // Abre a tela de edição passando a consulta
+            EditarConsultas editarTela = new EditarConsultas(consulta);
+            editarTela.setVisible(true);
+            dispose(); // Fecha a tela atual
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao carregar dados para edição: " + e.getMessage());
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "Por favor, selecione uma consulta para editar.");
+    }
+
+
+    }//GEN-LAST:event_EditarBTTActionPerformed
+
+    
     /**
      * @param args the command line arguments
      */
@@ -133,10 +213,8 @@ public class ListagemConsultas extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ListagemConsultas().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new ListagemConsultas().setVisible(true);
         });
     }
 

@@ -11,6 +11,7 @@ public class Convenio {
     private Date dataInicio;
     private Date dataFim;
     private boolean status;
+    
 
     // Construtores
     public Convenio() {

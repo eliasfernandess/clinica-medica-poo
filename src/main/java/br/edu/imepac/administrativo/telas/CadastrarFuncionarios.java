@@ -152,16 +152,18 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
         identificacaoTextField = new javax.swing.JFormattedTextField();
         contatoTextField = new javax.swing.JFormattedTextField();
         BotãoVoltar = new javax.swing.JButton();
+        jLabel22 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1278, 932));
         setMinimumSize(new java.awt.Dimension(1278, 932));
         getContentPane().setLayout(null);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("ENDEREÇO RESIDENCIAL");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(140, 380, 220, 25);
+        jLabel1.setBounds(140, 380, 310, 32);
         getContentPane().add(jSeparator1);
         jSeparator1.setBounds(-10, 640, 1250, 10);
 
@@ -183,116 +185,136 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
         getContentPane().add(emailTextField);
         emailTextField.setBounds(140, 280, 520, 50);
 
+        jLabel2.setBackground(new java.awt.Color(51, 255, 255));
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 102, 255));
+        jLabel2.setForeground(new java.awt.Color(0, 255, 255));
         jLabel2.setText("TIPO DE FUNCIONARIO");
         getContentPane().add(jLabel2);
         jLabel2.setBounds(720, 100, 150, 20);
 
+        jLabel3.setBackground(new java.awt.Color(51, 255, 255));
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 102, 255));
+        jLabel3.setForeground(new java.awt.Color(0, 255, 255));
         jLabel3.setText("NOME COMPLETO");
         getContentPane().add(jLabel3);
         jLabel3.setBounds(140, 100, 118, 20);
 
+        jLabel4.setBackground(new java.awt.Color(51, 255, 255));
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 102, 255));
+        jLabel4.setForeground(new java.awt.Color(0, 255, 255));
         jLabel4.setText("DOCUMENTO IDENTIFICAÇÃO");
         getContentPane().add(jLabel4);
         jLabel4.setBounds(140, 180, 200, 20);
 
+        jLabel5.setBackground(new java.awt.Color(51, 255, 255));
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 102, 255));
+        jLabel5.setForeground(new java.awt.Color(0, 255, 255));
         jLabel5.setText("E-MAIL");
         getContentPane().add(jLabel5);
         jLabel5.setBounds(140, 260, 50, 20);
 
+        jLabel6.setBackground(new java.awt.Color(51, 255, 255));
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(0, 102, 255));
+        jLabel6.setForeground(new java.awt.Color(0, 255, 255));
         jLabel6.setText("DATA DE NASCIMENTO");
         getContentPane().add(jLabel6);
         jLabel6.setBounds(720, 180, 150, 20);
 
+        jLabel7.setBackground(new java.awt.Color(51, 255, 255));
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(0, 102, 255));
+        jLabel7.setForeground(new java.awt.Color(0, 255, 255));
         jLabel7.setText("IDADE");
         getContentPane().add(jLabel7);
         jLabel7.setBounds(980, 180, 50, 20);
 
+        jLabel8.setBackground(new java.awt.Color(51, 255, 255));
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(0, 102, 255));
+        jLabel8.setForeground(new java.awt.Color(0, 255, 255));
         jLabel8.setText("TELEFONE PARA CONTATO");
         getContentPane().add(jLabel8);
         jLabel8.setBounds(720, 260, 180, 20);
 
+        jLabel9.setBackground(new java.awt.Color(51, 255, 255));
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(0, 102, 255));
+        jLabel9.setForeground(new java.awt.Color(0, 255, 255));
         jLabel9.setText("SEXO");
         getContentPane().add(jLabel9);
         jLabel9.setBounds(480, 180, 33, 20);
         getContentPane().add(jSeparator2);
         jSeparator2.setBounds(0, 68, 1250, 0);
 
-        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("CADASTRO FUNCIONARIOS");
         getContentPane().add(jLabel10);
-        jLabel10.setBounds(140, 20, 240, 25);
+        jLabel10.setBounds(140, 20, 330, 32);
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Rua");
         getContentPane().add(jLabel11);
         jLabel11.setBounds(140, 440, 40, 25);
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("Número");
         getContentPane().add(jLabel12);
         jLabel12.setBounds(700, 440, 65, 25);
 
         jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setText("Complemento");
         getContentPane().add(jLabel13);
         jLabel13.setBounds(140, 530, 114, 25);
 
         jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setText("Bairro");
         getContentPane().add(jLabel14);
         jLabel14.setBounds(660, 530, 46, 25);
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
         jLabel15.setText("Cidade");
         getContentPane().add(jLabel15);
         jLabel15.setBounds(400, 530, 55, 25);
 
         jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setText("Estado");
         getContentPane().add(jLabel16);
         jLabel16.setBounds(920, 530, 54, 25);
 
-        jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(255, 255, 255));
         jLabel17.setText("DADOS DE AUTENTICAÇÃO");
         getContentPane().add(jLabel17);
-        jLabel17.setBounds(140, 660, 236, 25);
+        jLabel17.setBounds(140, 660, 320, 32);
 
+        especialidadeLabel.setBackground(new java.awt.Color(51, 255, 255));
         especialidadeLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        especialidadeLabel.setForeground(new java.awt.Color(0, 102, 255));
+        especialidadeLabel.setForeground(new java.awt.Color(0, 255, 255));
         especialidadeLabel.setText("Especialidade");
         getContentPane().add(especialidadeLabel);
         especialidadeLabel.setBounds(580, 800, 120, 25);
 
+        jLabel18.setBackground(new java.awt.Color(51, 255, 255));
         jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel18.setForeground(new java.awt.Color(0, 102, 255));
+        jLabel18.setForeground(new java.awt.Color(0, 255, 255));
         jLabel18.setText("Perfil");
         getContentPane().add(jLabel18);
-        jLabel18.setBounds(580, 710, 60, 25);
+        jLabel18.setBounds(580, 710, 50, 25);
 
+        jLabel19.setBackground(new java.awt.Color(51, 255, 255));
         jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel19.setForeground(new java.awt.Color(0, 102, 255));
-        jLabel19.setText("Senha[números]");
+        jLabel19.setForeground(new java.awt.Color(0, 255, 255));
+        jLabel19.setText("Senha: numeros");
         getContentPane().add(jLabel19);
-        jLabel19.setBounds(140, 800, 170, 25);
+        jLabel19.setBounds(140, 800, 130, 25);
 
+        jLabel20.setBackground(new java.awt.Color(51, 255, 255));
         jLabel20.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel20.setForeground(new java.awt.Color(0, 102, 255));
+        jLabel20.setForeground(new java.awt.Color(0, 255, 255));
         jLabel20.setText("Usuário");
         getContentPane().add(jLabel20);
         jLabel20.setBounds(140, 710, 70, 25);
@@ -362,8 +384,9 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
         getContentPane().add(jSeparator3);
         jSeparator3.setBounds(0, 80, 1250, 10);
 
+        jLabel21.setBackground(new java.awt.Color(51, 102, 255));
         jLabel21.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
-        jLabel21.setForeground(new java.awt.Color(51, 102, 255));
+        jLabel21.setForeground(new java.awt.Color(0, 255, 255));
         jLabel21.setText("Campo com as cores AZUL são obrigatórios.");
         getContentPane().add(jLabel21);
         jLabel21.setBounds(140, 50, 280, 20);
@@ -381,7 +404,7 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
         getContentPane().add(CancelarBotao);
         CancelarBotao.setBounds(1000, 840, 230, 70);
 
-        SalvarBotão.setBackground(new java.awt.Color(153, 255, 153));
+        SalvarBotão.setBackground(new java.awt.Color(51, 204, 255));
         SalvarBotão.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         SalvarBotão.setText("SALVAR");
         SalvarBotão.addActionListener(new java.awt.event.ActionListener() {
@@ -507,6 +530,10 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
         });
         getContentPane().add(BotãoVoltar);
         BotãoVoltar.setBounds(1050, 20, 170, 30);
+
+        jLabel22.setIcon(new javax.swing.ImageIcon("C:\\Users\\elias\\OneDrive\\Área de Trabalho\\multmed\\Prancheta 4.png")); // NOI18N
+        getContentPane().add(jLabel22);
+        jLabel22.setBounds(-7, -4, 1290, 940);
 
         pack();
         setLocationRelativeTo(null);
@@ -735,6 +762,7 @@ public class CadastrarFuncionarios extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

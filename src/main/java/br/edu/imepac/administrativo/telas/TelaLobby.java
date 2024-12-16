@@ -4,6 +4,9 @@
  */
 package br.edu.imepac.administrativo.telas;
 
+import br.edu.imepac.agendamento.telas.ConsultasAgendar;
+import br.edu.imepac.agendamento.telas.CriarProntuario;
+import br.edu.imepac.agendamento.telas.ListagemConsultas;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
@@ -41,10 +44,15 @@ public class TelaLobby extends javax.swing.JFrame {
         ListPacientes = new javax.swing.JButton();
         CadPacientes = new javax.swing.JButton();
         BotaoSair = new javax.swing.JButton();
+        GerenciarConsuljButton2 = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        prontuariojButton3 = new javax.swing.JButton();
+        agendarjButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1000, 1050));
-        setPreferredSize(new java.awt.Dimension(1000, 1050));
+        setMaximumSize(new java.awt.Dimension(1000, 1000));
+        setPreferredSize(new java.awt.Dimension(1000, 1000));
         setResizable(false);
         getContentPane().setLayout(null);
 
@@ -56,7 +64,7 @@ public class TelaLobby extends javax.swing.JFrame {
             }
         });
         getContentPane().add(ListConvenios);
-        ListConvenios.setBounds(90, 100, 340, 52);
+        ListConvenios.setBounds(590, 180, 340, 60);
 
         CadConvenios.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         CadConvenios.setText("Cadastrar convênios");
@@ -66,7 +74,7 @@ public class TelaLobby extends javax.swing.JFrame {
             }
         });
         getContentPane().add(CadConvenios);
-        CadConvenios.setBounds(90, 170, 340, 52);
+        CadConvenios.setBounds(590, 250, 340, 60);
 
         ListEspecialidades.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         ListEspecialidades.setText("Listagem de especialidades");
@@ -76,7 +84,7 @@ public class TelaLobby extends javax.swing.JFrame {
             }
         });
         getContentPane().add(ListEspecialidades);
-        ListEspecialidades.setBounds(90, 260, 340, 52);
+        ListEspecialidades.setBounds(590, 340, 340, 60);
 
         CadEspecialidades.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         CadEspecialidades.setText("Cadastrar especialidades");
@@ -86,7 +94,7 @@ public class TelaLobby extends javax.swing.JFrame {
             }
         });
         getContentPane().add(CadEspecialidades);
-        CadEspecialidades.setBounds(90, 330, 340, 52);
+        CadEspecialidades.setBounds(590, 410, 340, 60);
 
         ListPerfis.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         ListPerfis.setText("Listagem de perfis");
@@ -96,7 +104,7 @@ public class TelaLobby extends javax.swing.JFrame {
             }
         });
         getContentPane().add(ListPerfis);
-        ListPerfis.setBounds(90, 420, 340, 52);
+        ListPerfis.setBounds(590, 500, 340, 60);
 
         CadPerfis.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         CadPerfis.setText("Cadastrar perfis");
@@ -107,7 +115,7 @@ public class TelaLobby extends javax.swing.JFrame {
             }
         });
         getContentPane().add(CadPerfis);
-        CadPerfis.setBounds(90, 490, 340, 52);
+        CadPerfis.setBounds(590, 570, 340, 60);
 
         ListFuncionarios.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         ListFuncionarios.setText("Listagem de funcionarios");
@@ -117,7 +125,7 @@ public class TelaLobby extends javax.swing.JFrame {
             }
         });
         getContentPane().add(ListFuncionarios);
-        ListFuncionarios.setBounds(90, 580, 340, 52);
+        ListFuncionarios.setBounds(590, 660, 340, 60);
 
         CadFuncionarios.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         CadFuncionarios.setText("Cadastrar funcionarios");
@@ -127,7 +135,7 @@ public class TelaLobby extends javax.swing.JFrame {
             }
         });
         getContentPane().add(CadFuncionarios);
-        CadFuncionarios.setBounds(90, 650, 340, 52);
+        CadFuncionarios.setBounds(590, 730, 340, 60);
 
         ListPacientes.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         ListPacientes.setText("Listagem Pacientes\n");
@@ -137,7 +145,7 @@ public class TelaLobby extends javax.swing.JFrame {
             }
         });
         getContentPane().add(ListPacientes);
-        ListPacientes.setBounds(90, 740, 340, 52);
+        ListPacientes.setBounds(590, 820, 340, 60);
 
         CadPacientes.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         CadPacientes.setText("Cadastrar Pacientes");
@@ -147,7 +155,7 @@ public class TelaLobby extends javax.swing.JFrame {
             }
         });
         getContentPane().add(CadPacientes);
-        CadPacientes.setBounds(90, 810, 340, 52);
+        CadPacientes.setBounds(590, 890, 340, 60);
 
         BotaoSair.setBackground(new java.awt.Color(255, 0, 0));
         BotaoSair.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
@@ -159,7 +167,43 @@ public class TelaLobby extends javax.swing.JFrame {
             }
         });
         getContentPane().add(BotaoSair);
-        BotaoSair.setBounds(90, 900, 340, 50);
+        BotaoSair.setBounds(800, 30, 160, 40);
+
+        GerenciarConsuljButton2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        GerenciarConsuljButton2.setText("GERENCIAR CONSULTAS");
+        GerenciarConsuljButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GerenciarConsuljButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(GerenciarConsuljButton2);
+        GerenciarConsuljButton2.setBounds(80, 520, 340, 90);
+        getContentPane().add(jSeparator1);
+        jSeparator1.setBounds(-60, 110, 1080, 20);
+
+        prontuariojButton3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        prontuariojButton3.setText("REALIZAR PRONTUARIO");
+        prontuariojButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                prontuariojButton3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(prontuariojButton3);
+        prontuariojButton3.setBounds(80, 650, 340, 90);
+
+        agendarjButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        agendarjButton1.setText("AGENDAR CONSULTAS");
+        agendarjButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agendarjButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(agendarjButton1);
+        agendarjButton1.setBounds(80, 390, 340, 90);
+
+        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\elias\\OneDrive\\Área de Trabalho\\multmed\\Prancheta 2.png")); // NOI18N
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(0, 0, 1000, 1000);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -243,6 +287,24 @@ public class TelaLobby extends javax.swing.JFrame {
     this.dispose(); // Fecha a tela atual
     }//GEN-LAST:event_CadPacientesActionPerformed
 
+    private void agendarjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agendarjButton1ActionPerformed
+    ConsultasAgendar consultasAgendar = new ConsultasAgendar(); // Instancia a próxima tela
+    consultasAgendar.setVisible(true); // Exibe a nova tela
+    this.dispose(); // Fecha a tela atual
+    }//GEN-LAST:event_agendarjButton1ActionPerformed
+
+    private void GerenciarConsuljButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GerenciarConsuljButton2ActionPerformed
+     ListagemConsultas listagemConsultas = new ListagemConsultas(); // Instancia a próxima tela
+    listagemConsultas.setVisible(true); // Exibe a nova tela
+    this.dispose();
+    }//GEN-LAST:event_GerenciarConsuljButton2ActionPerformed
+
+    private void prontuariojButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prontuariojButton3ActionPerformed
+     CriarProntuario criarProntuario = new CriarProntuario(); // Instancia a próxima tela
+    criarProntuario.setVisible(true); // Exibe a nova tela
+    this.dispose(); // Fecha a tela atual
+    }//GEN-LAST:event_prontuariojButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -283,10 +345,15 @@ public class TelaLobby extends javax.swing.JFrame {
     private javax.swing.JButton CadFuncionarios;
     private javax.swing.JButton CadPacientes;
     private javax.swing.JButton CadPerfis;
+    private javax.swing.JButton GerenciarConsuljButton2;
     private javax.swing.JButton ListConvenios;
     private javax.swing.JButton ListEspecialidades;
     private javax.swing.JButton ListFuncionarios;
     private javax.swing.JButton ListPacientes;
     private javax.swing.JButton ListPerfis;
+    private javax.swing.JButton agendarjButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JButton prontuariojButton3;
     // End of variables declaration//GEN-END:variables
 }
